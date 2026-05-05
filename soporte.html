@@ -7,10 +7,49 @@
      <!-- Incluir Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      // Inicializar Supabase (createClient es global)
-      const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
-      window.supabase = createClient(supabaseUrl, supabaseKey);
+      
+    // Configuración de Supabase
+    const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
+    
+    // Función para inicializar Supabase correctamente
+    function initSupabase() {
+        if (typeof supabase !== 'undefined' && supabase.createClient) {
+            window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+            window.supabaseClient = window.supabase;
+            console.log('✅ Supabase inicializado correctamente');
+            return true;
+        }
+        return false;
+    }
+    
+    // Intentar inicializar inmediatamente
+    if (!initSupabase()) {
+        console.log('⏳ Esperando carga de Supabase...');
+        let attempts = 0;
+        const interval = setInterval(() => {
+            attempts++;
+            if (initSupabase()) {
+                clearInterval(interval);
+                console.log(`✅ Supabase inicializado después de ${attempts} intentos`);
+            } else if (attempts > 30) {
+                clearInterval(interval);
+                console.error('❌ No se pudo inicializar Supabase');
+                // Mostrar error en la página
+                document.body.innerHTML += `
+                    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 10000; text-align: center;">
+                        <i class="fas fa-database fa-3x" style="color: #e74c3c; margin-bottom: 15px;"></i>
+                        <h3>Error de conexión</h3>
+                        <p>No se pudo conectar con la base de datos.</p>
+                        <button onclick="location.reload()" style="background: #2e7d32; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                            <i class="fas fa-sync-alt"></i> Recargar
+                        </button>
+                    </div>
+                `;
+            }
+        }, 200);
+    }
+
     </script>
     <style>
       /* soporte.css - Estilos con tema de Heliconias (verde oscuro y blanco) */
@@ -1386,9 +1425,9 @@ async function subirArchivo(file, idSoporte) {
     console.log('📁 Subiendo archivo como:', nombreArchivo);
 
     // Subir archivo al bucket 'soportes'
-    const { data, error } = await supabase.storage
-      .from('soportes')
-      .upload(nombreArchivo, file);
+const { data, error } = await window.supabase.storage
+    .from('soportes')
+    .upload(nombreArchivo, file);
 
     if (error) throw error;
 
@@ -1477,53 +1516,60 @@ if (archivoSeleccionado) {
 
 // Función mejorada para obtener el ID del usuario
 async function obtenerUsuarioId() {
-  try {
-    console.log('🔍 Intentando obtener usuario autenticado...');
-    
-    // Opción 1: Verificar autenticación de Supabase
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
-    if (authError) {
-      console.warn('Error en auth:', authError);
-    }
-    
-    if (user && user.email) {
-      console.log('👤 Usuario de Supabase Auth encontrado:', user.email);
-      
-      // Buscar en tabla usuarios usando CORREO (no email)
-      const { data: usuario, error: userError } = await supabase
-        .from('usuarios')
-        .select('id_usuario')
-        .eq('correo', user.email)
-        .single();
-      
-      if (userError) {
-        console.warn('Usuario no encontrado en tabla usuarios:', userError);
+    try {
+        console.log('🔍 Intentando obtener usuario autenticado...');
+        
+        // Verificar que supabase esté disponible
+        if (!window.supabase || typeof window.supabase.auth === 'undefined') {
+            console.warn('⚠️ Supabase no está disponible, usando ID por defecto');
+            return 1;
+        }
+        
+        // Opción 1: Verificar autenticación de Supabase
+        const { data: { user }, error: authError } = await window.supabase.auth.getUser();
+        
+        if (authError) {
+            console.warn('Error en auth:', authError);
+        }
+        
+        if (user && user.email) {
+            console.log('👤 Usuario de Supabase Auth encontrado:', user.email);
+            
+            // Buscar en tabla usuarios usando CORREO
+            const { data: usuario, error: userError } = await window.supabase
+                .from('usuarios')
+                .select('id_usuario')
+                .eq('correo', user.email)
+                .maybeSingle(); // Usar maybeSingle en lugar de single para evitar errores
+            
+            if (userError) {
+                console.warn('Error buscando usuario:', userError);
+                console.warn('⚠️ Usando ID por defecto para desarrollo');
+                return 1;
+            }
+            
+            if (usuario && usuario.id_usuario) {
+                console.log('✅ Usuario encontrado en BD:', usuario.id_usuario);
+                return usuario.id_usuario;
+            }
+        }
+        
+        // Opción 2: Verificar localStorage/sessionStorage
+        const usuarioGuardado = localStorage.getItem('usuario_id') || sessionStorage.getItem('usuario_id');
+        if (usuarioGuardado) {
+            console.log('📁 Usuario de storage:', usuarioGuardado);
+            return parseInt(usuarioGuardado);
+        }
+        
+        // Opción 3: Valor por defecto (para desarrollo)
         console.warn('⚠️ Usando ID por defecto para desarrollo');
         return 1;
-      }
-      
-      console.log('✅ Usuario encontrado en BD:', usuario.id_usuario);
-      return usuario.id_usuario;
+        
+    } catch (error) {
+        console.error('❌ Error crítico obteniendo usuario:', error);
+        return 1; // Valor por defecto para evitar bloqueos
     }
-    
-    // Opción 2: Verificar localStorage/sessionStorage
-    const usuarioGuardado = localStorage.getItem('usuario_id') || sessionStorage.getItem('usuario_id');
-    if (usuarioGuardado) {
-      console.log('📁 Usuario de storage:', usuarioGuardado);
-      return parseInt(usuarioGuardado);
-    }
-    
-    // Opción 3: Valor por defecto (para desarrollo)
-    console.warn('⚠️ Usando ID por defecto para desarrollo');
-    return 1;
-    
-  } catch (error) {
-    console.error('❌ Error crítico obteniendo usuario:', error);
-    return 1; // Valor por defecto para evitar bloqueos
-  }
 }
-
 // FORMULARIO DE SOPORTE - VERSIÓN CON SUBIDA DE ARCHIVOS
 document.getElementById("formSoporte").addEventListener("submit", async function (e) {
   e.preventDefault();
