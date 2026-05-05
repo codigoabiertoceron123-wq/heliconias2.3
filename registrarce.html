@@ -1355,7 +1355,7 @@ async function manejarRegistro(e) {
     });
 
     try {
-        // Verificar si el usuario ya existe
+        // Verificar si el usuario ya existe por correo o documento
         const { data: usuariosExistentes, error: checkError } = await window.supabase
             .from('usuarios')
             .select('correo, documento')
@@ -1365,31 +1365,45 @@ async function manejarRegistro(e) {
             const existeCorreo = usuariosExistentes.some(u => u.correo === correo);
             const existeDocumento = usuariosExistentes.some(u => u.documento === documento);
             
+            await loadingAlert.close();
+            
             if (existeCorreo) {
-                throw new Error('Este correo ya está registrado');
+                throw new Error('Este correo electrónico ya está registrado');
             }
             if (existeDocumento) {
-                throw new Error('Este documento ya está registrado');
+                throw new Error('Este número de documento ya está registrado');
             }
         }
 
-        // Crear usuario en Auth
+        // Crear usuario en Supabase Auth
+        console.log('🛠️ Creando usuario en Auth...');
         const { data: authData, error: authError } = await window.supabase.auth.signUp({
             email: correo,
             password: contrasena,
             options: {
-                data: { nombre, apellido, documento },
+                data: { 
+                    nombre: nombre,
+                    apellido: apellido,
+                    documento: documento
+                },
                 emailRedirectTo: window.location.origin + '/index.html'
             }
         });
 
         if (authError) {
-            throw new Error('Error al crear la cuenta: ' + authError.message);
+            await loadingAlert.close();
+            throw new Error('Error de autenticación: ' + authError.message);
         }
 
-        // Insertar en tabla usuarios
+        console.log('✅ Usuario creado en Auth:', authData);
+
+        // Insertar usuario en la tabla usuarios con la contraseña
         const userData = {
-            nombre, apellido, correo, documento,
+            nombre: nombre,
+            apellido: apellido,
+            correo: correo,
+            documento: documento,
+            contrasena: contrasena,  // ← AGREGADO: la contraseña en texto plano
             telefono: telefono || null,
             id_genero: id_genero ? parseInt(id_genero) : null,
             id_instituciones: id_instituciones ? parseInt(id_instituciones) : null,
@@ -1402,34 +1416,79 @@ async function manejarRegistro(e) {
             auth_id: authData.user?.id || null
         };
 
-        const { error: userError } = await window.supabase
+        console.log('💾 Insertando en tabla usuarios...', userData);
+
+        const { data: dbData, error: userError } = await window.supabase
             .from('usuarios')
-            .insert([userData]);
+            .insert([userData])
+            .select();
 
         if (userError) {
-            console.error('Error en insert:', userError);
-            // No lanzamos error porque el usuario ya se creó en Auth
+            console.error('❌ Error en insert:', userError);
+            
+            // Si hay error en la tabla, intentar limpiar el auth creado
+            if (authData.user) {
+                console.log('🧹 Limpiando auth por error en tabla...');
+                // Nota: No podemos eliminar el usuario auth fácilmente, pero al menos notificamos
+            }
+            
+            if (userError.code === '23505') {
+                if (userError.message.includes('correo')) {
+                    throw new Error('El correo electrónico ya está registrado');
+                } else if (userError.message.includes('documento')) {
+                    throw new Error('El número de documento ya está registrado');
+                }
+            }
+            
+            throw new Error('Error al guardar los datos: ' + userError.message);
         }
 
+        console.log('✅ Usuario guardado en tabla:', dbData);
         await loadingAlert.close();
 
-        await Swal.fire({
-            title: '¡Cuenta creada!',
-            html: `
-                <p>Tu cuenta ha sido creada exitosamente.</p>
-                <p>📨 Te hemos enviado un correo de confirmación a:<br><strong>${correo}</strong></p>
-                <p>Por favor, revisa tu bandeja de entrada y haz clic en el enlace de confirmación.</p>
-            `,
-            icon: 'success',
-            confirmButtonText: 'Entendido'
-        });
-
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 3000);
+        // Mostrar mensaje de éxito
+        if (authData.user && !authData.user.email_confirmed_at) {
+            await Swal.fire({
+                title: '¡Cuenta creada! 📧',
+                html: `
+                    <div style="text-align: left;">
+                        <p>Tu cuenta ha sido creada exitosamente.</p>
+                        <div style="background: #e8f6f3; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong>📨 ¡Confirmación requerida!</strong><br><br>
+                            Hemos enviado un enlace de activación a:<br>
+                            <strong>${correo}</strong><br><br>
+                            <strong>Por favor:</strong>
+                            <ul style="margin: 10px 0 0 20px;">
+                                <li>Revisa tu bandeja de entrada</li>
+                                <li>Busca en la carpeta de SPAM</li>
+                                <li>Haz clic en "Confirmar mi email"</li>
+                            </ul>
+                        </div>
+                        <p><small>¿No recibiste el correo? <a href="#" onclick="reenviarConfirmacion('${correo}')">Reenviar confirmación</a></small></p>
+                    </div>
+                `,
+                icon: 'success',
+                confirmButtonText: 'Entendido'
+            });
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 5000);
+        } else {
+            await Swal.fire({
+                title: '¡Cuenta creada!',
+                text: 'Tu cuenta ha sido creada exitosamente. Ya puedes iniciar sesión.',
+                icon: 'success',
+                confirmButtonText: 'Iniciar Sesión'
+            }).then(() => {
+                window.location.href = 'index.html';
+            });
+        }
 
     } catch (error) {
         await loadingAlert.close();
+        console.error('❌ Error completo:', error);
+        
         Swal.fire({
             title: 'Error',
             text: error.message,
