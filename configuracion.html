@@ -191,113 +191,41 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .main-dashboard {
-            display: flex;
-            gap: 25px;
-            max-width: 1600px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        /* Panel de configuración lateral */
-        .config-panel {
-            width: 240px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-
-        .config-header {
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .config-header i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .config-header h3 {
-            font-size: 1.1rem;
-        }
-
-        .config-body {
-            padding: 20px;
-        }
-
-        .config-section {
-            margin-bottom: 20px;
-        }
-
-        .config-section-title {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #e8f5e8;
-        }
-
-        .config-option {
-            margin-bottom: 12px;
-        }
-
-        .config-option label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            color: #555;
-        }
-
-        .config-option input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #2e7d32;
-        }
-
-        .reset-btn {
-            width: 100%;
-            padding: 10px;
-            background: #f8f9fa;
-            border: 1px solid #e8f5e8;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-        }
-
-        .reset-btn:hover {
-            background: #ffeaa7;
-            border-color: #f39c12;
-        }
-
-        /* Contenido principal */
         .main-container {
-            flex: 1;
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 30px 40px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8f5e8;
+        }
+
+        .page-title i {
+            font-size: 28px;
+            color: #2e7d32;
+        }
+
+        .page-title h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2e7d32;
         }
 
         .profile-card {
             background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #e8f5e8;
         }
 
         .profile-header {
@@ -305,6 +233,7 @@
             color: white;
             padding: 25px;
             text-align: center;
+            position: relative;
         }
 
         .profile-avatar {
@@ -317,6 +246,7 @@
             align-items: center;
             justify-content: center;
             border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .profile-avatar i {
@@ -332,6 +262,24 @@
         .profile-role {
             font-size: 16px;
             opacity: 0.9;
+        }
+
+        .profile-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .profile-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .profile-body {
@@ -374,25 +322,31 @@
 
         .info-label i {
             color: #2e7d32;
+            width: 20px;
         }
 
         .info-value {
             padding: 12px 16px;
             background: #f8f9fa;
-            border-radius: 8px;
+            border-radius: 10px;
             border: 1px solid #e9ecef;
+            font-size: 14px;
+            color: #2c3e50;
         }
 
         .info-input, .info-select, .info-date {
             padding: 12px 16px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 10px;
             width: 100%;
+            font-size: 14px;
+            transition: all 0.3s ease;
         }
 
         .info-input:focus, .info-select:focus, .info-date:focus {
             outline: none;
             border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
         }
 
         .action-buttons {
@@ -553,18 +507,12 @@
             background: #f8faf8;
         }
 
-        /* Barra de búsqueda */
         .search-bar {
             background: white;
             padding: 20px;
             border-radius: 20px;
             margin-bottom: 25px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .search-bar.hidden {
-            display: none;
         }
 
         .search-input-group {
@@ -604,11 +552,6 @@
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            transition: all 0.3s ease;
-        }
-
-        .filter-buttons.hidden {
-            display: none;
         }
 
         .filter-btn {
@@ -634,7 +577,28 @@
             border-color: transparent;
         }
 
-        /* Layout de dos columnas */
+        .stats-badges {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .stat-badge.pendiente .count { color: #e74c3c; font-weight: bold; font-size: 1.1rem; }
+        .stat-badge.contestada .count { color: #27ae60; font-weight: bold; font-size: 1.1rem; }
+
         .mensajes-columnas {
             display: flex;
             gap: 25px;
@@ -667,12 +631,11 @@
             color: #27ae60;
         }
 
-        /* Tarjetas de mensajes COMPACTAS */
         .mensajes-cards {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 65vh;
+            max-height: 55vh;
             overflow-y: auto;
             padding-right: 5px;
         }
@@ -688,12 +651,10 @@
             height: auto;
         }
         
-        /* Tarjeta PENDIENTE */
         .columna-pendientes .mensaje-card {
             border-left: 4px solid #f39c12;
         }
         
-        /* Tarjeta CONTESTADA */
         .columna-contestadas .mensaje-card {
             border-left: 4px solid #27ae60;
         }
@@ -779,26 +740,6 @@
             color: #2e7d32;
         }
         
-        .estado-badge {
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .estado-pendiente-small {
-            background: #ffeaa7;
-            color: #d63031;
-        }
-        
-        .estado-contestada-small {
-            background: #a8e6cf;
-            color: #27ae60;
-        }
-        
         .mensaje-fecha-small {
             font-size: 10px;
             color: #95a5a6;
@@ -807,7 +748,6 @@
             gap: 4px;
         }
         
-        /* Botón VER MÁS con tooltip */
         .ver-mas-btn {
             margin-top: 12px;
             padding-top: 10px;
@@ -837,11 +777,6 @@
             transform: translateX(3px);
         }
         
-        /* Tooltip */
-        .btn-ver-mas {
-            position: relative;
-        }
-        
         .btn-ver-mas::after {
             content: "Haz clic para ver todos los detalles del mensaje";
             position: absolute;
@@ -858,7 +793,6 @@
             transition: all 0.3s ease;
             pointer-events: none;
             z-index: 100;
-            font-weight: normal;
         }
         
         .btn-ver-mas::before {
@@ -899,8 +833,8 @@
             border-color: #2e7d32;
         }
 
-        .swal2-container {
-            z-index: 10000 !important;
+        .swal2-popup {
+            border-radius: 20px !important;
         }
 
         ::-webkit-scrollbar {
@@ -917,46 +851,49 @@
             border-radius: 10px;
         }
 
-        .stats-badges {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .stat-badge {
-            background: white;
-            padding: 10px 20px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            font-weight: 500;
-            font-size: 13px;
-        }
-
-        .stat-badge.pendiente .count { color: #e74c3c; font-weight: bold; font-size: 1.1rem; }
-        .stat-badge.contestada .count { color: #27ae60; font-weight: bold; font-size: 1.1rem; }
-
         @media (max-width: 992px) {
-            .main-dashboard {
+            .main-container {
+                padding: 20px;
+                margin: 20px;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .mensajes-columnas {
                 flex-direction: column;
-                padding: 0 15px;
             }
-            .config-panel {
-                width: 100%;
-                position: static;
-                margin-bottom: 20px;
-            }
-            .info-grid { grid-template-columns: 1fr; }
-            .mensajes-columnas { flex-direction: column; }
         }
 
         @media (max-width: 768px) {
-            .columna-pendientes, .columna-contestadas { min-width: 280px; }
-            .action-buttons { flex-direction: column; }
-            .action-buttons .btn { width: 100%; justify-content: center; }
+            .main-container {
+                padding: 15px;
+                margin: 15px;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+            .action-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .user-actions, .top-section {
+                justify-content: center;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+            .main-nav {
+                justify-content: center;
+            }
+            .nav-item {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            .columna-pendientes, .columna-contestadas {
+                min-width: 280px;
+            }
         }
     </style>
 </head>
@@ -1016,107 +953,103 @@
         </div>
     </div>
 
-    <div class="main-dashboard">
-        <!-- Panel de Configuración Lateral -->
-        <div class="config-panel">
-            <div class="config-header">
-                <i class="fas fa-sliders-h"></i>
-                <h3>Ajustes de Visualización</h3>
-            </div>
-            <div class="config-body">
-                <div class="config-section">
-                    <div class="config-section-title">
-                        <i class="fas fa-search"></i> Elementos visibles
-                    </div>
-                    <div class="config-option">
-                        <label>
-                            <input type="checkbox" id="show-search" checked>
-                            <i class="fas fa-search"></i> Mostrar barra de búsqueda
-                        </label>
-                    </div>
-                    <div class="config-option">
-                        <label>
-                            <input type="checkbox" id="show-filters" checked>
-                            <i class="fas fa-filter"></i> Mostrar filtros
-                        </label>
-                    </div>
-                </div>
-
-                <button class="reset-btn" id="reset-config">
-                    <i class="fas fa-undo-alt"></i> Restablecer
-                </button>
-            </div>
+    <div class="main-container">
+        <div class="page-title">
+            <i class="fas fa-cog"></i>
+            <h2>Configuración del Perfil</h2>
         </div>
 
-        <!-- Contenido Principal -->
-        <div class="main-container">
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h2 class="profile-name" id="profile-name">Cargando...</h2>
-                    <p class="profile-role" id="profile-role">Cargando rol...</p>
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar" id="profile-avatar">
+                    <i class="fas fa-user"></i>
                 </div>
-                <div class="profile-body">
-                    <div class="section-title">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Información Personal</span>
-                    </div>
-                    <div id="loading-section" class="loading-spinner">
-                        <div class="spinner"></div>
-                        <p>Cargando información del usuario...</p>
-                    </div>
-                    <div id="profile-info" style="display: none;">
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-user"></i> Nombre</label>
-                                <div class="info-value" id="info-nombre">Cargando...</div>
-                                <input type="text" class="info-input" id="edit-nombre" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-user"></i> Apellido</label>
-                                <div class="info-value" id="info-apellido">Cargando...</div>
-                                <input type="text" class="info-input" id="edit-apellido" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-envelope"></i> Correo Electrónico</label>
-                                <div class="info-value" id="info-correo">Cargando...</div>
-                                <input type="email" class="info-input" id="edit-correo" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-id-card"></i> Documento</label>
-                                <div class="info-value" id="info-documento">Cargando...</div>
-                                <input type="text" class="info-input" id="edit-documento" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-phone"></i> Teléfono</label>
-                                <div class="info-value" id="info-telefono">Cargando...</div>
-                                <input type="tel" class="info-input" id="edit-telefono" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-calendar"></i> Fecha de Nacimiento</label>
-                                <div class="info-value" id="info-fecha-nacimiento">Cargando...</div>
-                                <input type="date" class="info-date" id="edit-fecha-nacimiento" style="display: none;">
-                            </div>
+                <h2 class="profile-name" id="profile-name">Cargando...</h2>
+                <p class="profile-role" id="profile-role">Cargando rol...</p>
+                <div class="profile-badges" id="profile-badges">
+                    <!-- Badges de estado se llenarán dinámicamente -->
+                </div>
+            </div>
+            <div class="profile-body">
+                <div class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Información Personal</span>
+                </div>
+                <div id="loading-section" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Cargando información del usuario...</p>
+                </div>
+                <div id="profile-info" style="display: none;">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label class="info-label"><i class="fas fa-user"></i> Nombre</label>
+                            <div class="info-value" id="info-nombre">Cargando...</div>
+                            <input type="text" class="info-input" id="edit-nombre" style="display: none;">
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn btn-secondary" id="edit-profile-btn">
-                                <i class="fas fa-edit"></i> Editar Perfil
-                            </button>
-                            <button class="btn btn-warning" id="cancel-edit-btn" style="display: none;">
-                                <i class="fas fa-times"></i> Cancelar
-                            </button>
-                            <button class="btn btn-success" id="save-changes-btn" style="display: none;">
-                                <i class="fas fa-save"></i> Guardar Cambios
-                            </button>
+                        <div class="info-item">
+                            <label class="info-label"><i class="fas fa-user"></i> Apellido</label>
+                            <div class="info-value" id="info-apellido">Cargando...</div>
+                            <input type="text" class="info-input" id="edit-apellido" style="display: none;">
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                            <div class="info-value" id="info-correo">Cargando...</div>
+                            <input type="email" class="info-input" id="edit-correo" style="display: none;">
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label"><i class="fas fa-id-card"></i> Documento</label>
+                            <div class="info-value" id="info-documento">Cargando...</div>
+                            <input type="text" class="info-input" id="edit-documento" style="display: none;">
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label"><i class="fas fa-phone"></i> Teléfono</label>
+                            <div class="info-value" id="info-telefono">Cargando...</div>
+                            <input type="tel" class="info-input" id="edit-telefono" style="display: none;">
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label"><i class="fas fa-venus-mars"></i> Género</label>
+                            <div class="info-value" id="info-genero">Cargando...</div>
+                            <select class="info-select" id="edit-genero" style="display: none;">
+                                <option value="">Seleccionar género</option>
+                            </select>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label"><i class="fas fa-university"></i> Institución</label>
+                            <div class="info-value" id="info-institucion">Cargando...</div>
+                            <select class="info-select" id="edit-institucion" style="display: none;">
+                                <option value="">Cargando instituciones...</option>
+                            </select>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label"><i class="fas fa-city"></i> Ciudad</label>
+                            <div class="info-value" id="info-ciudad">Cargando...</div>
+                            <select class="info-select" id="edit-ciudad" style="display: none;">
+                                <option value="">Cargando ciudades...</option>
+                            </select>
+                        </div>
+                        <div class="info-item">
+                            <label class="info-label"><i class="fas fa-calendar"></i> Fecha de Nacimiento</label>
+                            <div class="info-value" id="info-fecha-nacimiento">Cargando...</div>
+                            <input type="date" class="info-date" id="edit-fecha-nacimiento" style="display: none;">
                         </div>
                     </div>
-                    <div id="login-prompt" class="login-prompt" style="display: none;">
-                        <h3><i class="fas fa-exclamation-triangle"></i> Sesión no iniciada</h3>
-                        <p>Debe iniciar sesión para ver su información de perfil.</p>
-                        <button class="btn btn-success" id="login-redirect-btn">Ir a Iniciar Sesión</button>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" id="edit-profile-btn">
+                            <i class="fas fa-edit"></i> Editar Perfil
+                        </button>
+                        <button class="btn btn-warning" id="cancel-edit-btn" style="display: none;">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button class="btn btn-success" id="save-changes-btn" style="display: none;">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
                     </div>
+                </div>
+                <div id="login-prompt" class="login-prompt" style="display: none;">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Sesión no iniciada</h3>
+                    <p>Debe iniciar sesión para ver su información de perfil.</p>
+                    <button class="btn btn-success" id="login-redirect-btn">Ir a Iniciar Sesión</button>
                 </div>
             </div>
         </div>
@@ -1138,14 +1071,13 @@
                 </div>
             </div>
             <div class="modal-body-mensajes">
-                <!-- Barra de búsqueda -->
-                <div class="search-bar" id="search-bar">
+                <div class="search-bar">
                     <div class="search-input-group">
                         <div class="search-input-wrapper">
                             <i class="fas fa-search"></i>
                             <input type="text" id="search-input" class="search-input" placeholder="Buscar por usuario, correo o tipo...">
                         </div>
-                        <div class="filter-buttons" id="filter-buttons">
+                        <div class="filter-buttons">
                             <button class="filter-btn active" data-filter="todos">
                                 <i class="fas fa-list"></i> Todos
                             </button>
@@ -1159,8 +1091,7 @@
                     </div>
                 </div>
 
-                <!-- Estadísticas -->
-                <div class="stats-badges" id="stats-badges">
+                <div class="stats-badges">
                     <div class="stat-badge pendiente">
                         <i class="fas fa-clock fa-fw"></i>
                         <span>Pendientes: <span class="count" id="count-pendiente">0</span></span>
@@ -1171,7 +1102,6 @@
                     </div>
                 </div>
 
-                <!-- Contenedor de mensajes -->
                 <div id="mensajes-container" class="mensajes-columnas">
                     <div class="columna-pendientes">
                         <div class="columna-titulo pendiente">
@@ -1192,46 +1122,11 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-    // ========== CONFIGURACIÓN Y LOCALSTORAGE ==========
-    let userPreferences = {
-        showSearch: true,
-        showFilters: true
-    };
-
-    function loadPreferences() {
-        const saved = localStorage.getItem('heliconias_config_prefs');
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                userPreferences = { ...userPreferences, ...parsed };
-            } catch(e) {}
-        }
-        
-        document.getElementById('show-search').checked = userPreferences.showSearch;
-        document.getElementById('show-filters').checked = userPreferences.showFilters;
-        
-        aplicarPreferencias();
-    }
-
-    function savePreferences() {
-        localStorage.setItem('heliconias_config_prefs', JSON.stringify(userPreferences));
-        aplicarPreferencias();
-    }
-
-    function aplicarPreferencias() {
-        document.getElementById('search-bar').classList.toggle('hidden', !userPreferences.showSearch);
-        document.getElementById('filter-buttons').classList.toggle('hidden', !userPreferences.showFilters);
-        
-        if (todosLosMensajes && todosLosMensajes.length > 0) {
-            filtrarMensajes();
-        }
-    }
-
-    // ========== SUPABASE ==========
+    // ========== INICIALIZACIÓN SUPABASE ==========
     (function() {
         const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
@@ -1255,13 +1150,18 @@
         }
     })();
 
+    // ========== VARIABLES GLOBALES ==========
     let currentUserData = null;
     let currentUserId = null;
-    let esAdmin = false;
+    let esAdmin = false;  // true si id_rol === 1 (Administrador)
+    let isEditing = false;
+    
+    // Variables para mensajes
     let todosLosMensajes = [];
     let filtroActual = 'todos';
     let textoBusqueda = '';
 
+    // ========== FUNCIONES DE FECHA ==========
     function updateDateTime() {
         const now = new Date();
         document.getElementById("current-date-time").textContent = now.toLocaleString("es-ES", {
@@ -1275,6 +1175,32 @@
         return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
     }
 
+    // ========== CARGA DE DATOS RELACIONADOS ==========
+    async function loadGeneros() {
+        try {
+            const { data, error } = await window.supabase.from('genero').select('id_genero, genero').order('id_genero');
+            if (error) throw error;
+            return data || [];
+        } catch (error) { return []; }
+    }
+
+    async function loadInstituciones() {
+        try {
+            const { data, error } = await window.supabase.from('instituciones').select('id_institucion, nombre_institucion').order('nombre_institucion');
+            if (error) throw error;
+            return data || [];
+        } catch (error) { return []; }
+    }
+
+    async function loadCiudades() {
+        try {
+            const { data, error } = await window.supabase.from('ciudades').select('id, nombre').order('nombre');
+            if (error) throw error;
+            return data || [];
+        } catch (error) { return []; }
+    }
+
+    // ========== PERFIL DE USUARIO ==========
     async function loadUserProfile() {
         try {
             const { data: { session } } = await window.supabase.auth.getSession();
@@ -1284,41 +1210,220 @@
                 return;
             }
 
-            const { data: userData } = await window.supabase
+            const { data: userData, error } = await window.supabase
                 .from('usuarios')
                 .select('*')
                 .eq('correo', session.user.email)
                 .single();
 
+            if (error) throw error;
             if (!userData) throw new Error('No se encontraron datos');
 
             currentUserData = userData;
             currentUserId = userData.id_usuario;
-            esAdmin = (userData.id_usuario === 20);
+            // ADMIN es SOLO id_rol = 1 (Administrador)
+            esAdmin = (userData.id_rol === 1);
             
             document.getElementById('messages-btn').style.display = 'inline-flex';
-            document.getElementById('modal-title-text').textContent = esAdmin ? '📋 Centro de Mensajes - Todos los Reportes' : '📬 Mis Mensajes - Soporte Técnico';
             
-            document.getElementById('info-nombre').textContent = userData.nombre || 'No especificado';
-            document.getElementById('info-apellido').textContent = userData.apellido || 'No especificado';
-            document.getElementById('info-correo').textContent = userData.correo || 'No especificado';
-            document.getElementById('info-documento').textContent = userData.documento || 'No especificado';
-            document.getElementById('info-telefono').textContent = userData.telefono || 'No especificado';
-            document.getElementById('info-fecha-nacimiento').textContent = userData.fecha_nacimiento ? new Date(userData.fecha_nacimiento).toLocaleDateString('es-ES') : 'No especificado';
-            document.getElementById('profile-name').textContent = `${userData.nombre || ''} ${userData.apellido || ''}`.trim() || 'Usuario';
-            document.getElementById('profile-role').textContent = esAdmin ? 'Administrador' : 'Usuario';
+            // Cargar nombres relacionados
+            if (userData.id_genero) {
+                const { data: generoData } = await window.supabase.from('genero').select('genero').eq('id_genero', userData.id_genero).single();
+                if (generoData) currentUserData.genero_nombre = generoData.genero;
+            }
+            if (userData.id_instituciones) {
+                const { data: instData } = await window.supabase.from('instituciones').select('nombre_institucion').eq('id_institucion', userData.id_instituciones).single();
+                if (instData) currentUserData.institucion_nombre = instData.nombre_institucion;
+            }
+            if (userData.id_ciudad) {
+                const { data: ciudadData } = await window.supabase.from('ciudades').select('nombre').eq('id', userData.id_ciudad).single();
+                if (ciudadData) currentUserData.ciudad_nombre = ciudadData.nombre;
+            }
             
+            // Obtener nombre del rol
+            if (userData.id_rol) {
+                const { data: rolData } = await window.supabase.from('roles').select('nombre_rol').eq('id_rol', userData.id_rol).single();
+                if (rolData) currentUserData.rol_nombre = rolData.nombre_rol;
+            }
+
+            updateProfileDisplay();
             document.getElementById('loading-section').style.display = 'none';
             document.getElementById('profile-info').style.display = 'block';
             document.getElementById('login-prompt').style.display = 'none';
             
+            // Cargar contador de mensajes para admin
             if (esAdmin) cargarContadorMensajes();
+            
         } catch (error) {
+            console.error('Error:', error);
             document.getElementById('loading-section').style.display = 'none';
             document.getElementById('login-prompt').style.display = 'block';
         }
     }
 
+    function updateProfileDisplay() {
+        if (!currentUserData) return;
+        
+        // Actualizar header
+        document.getElementById('profile-name').textContent = `${currentUserData.nombre || ''} ${currentUserData.apellido || ''}`.trim() || 'Usuario';
+        document.getElementById('profile-role').textContent = currentUserData.rol_nombre || (esAdmin ? 'Administrador' : 'Usuario');
+        
+        // Actualizar badge de email confirmado (solo como badge)
+        const badgesContainer = document.getElementById('profile-badges');
+        badgesContainer.innerHTML = `
+            <span class="profile-badge"><i class="fas ${currentUserData.email_confirmado ? 'fa-check-circle' : 'fa-clock'}"></i> ${currentUserData.email_confirmado ? 'Email Confirmado' : 'Email Pendiente'}</span>
+            <span class="profile-badge"><i class="fas ${currentUserData.usuario_activo ? 'fa-user-check' : 'fa-user-times'}"></i> ${currentUserData.usuario_activo ? 'Activo' : 'Inactivo'}</span>
+        `;
+        
+        // Actualizar información personal
+        document.getElementById('info-nombre').textContent = currentUserData.nombre || 'No especificado';
+        document.getElementById('info-apellido').textContent = currentUserData.apellido || 'No especificado';
+        document.getElementById('info-correo').textContent = currentUserData.correo || 'No especificado';
+        document.getElementById('info-documento').textContent = currentUserData.documento || 'No especificado';
+        document.getElementById('info-telefono').textContent = currentUserData.telefono || 'No especificado';
+        document.getElementById('info-genero').textContent = currentUserData.genero_nombre || 'No especificado';
+        document.getElementById('info-institucion').textContent = currentUserData.institucion_nombre || 'No especificado';
+        document.getElementById('info-ciudad').textContent = currentUserData.ciudad_nombre || 'No especificado';
+        document.getElementById('info-fecha-nacimiento').textContent = currentUserData.fecha_nacimiento ? new Date(currentUserData.fecha_nacimiento).toLocaleDateString('es-ES') : 'No especificado';
+    }
+
+    // ========== EDICIÓN DE PERFIL ==========
+    async function toggleEditMode(editing) {
+        isEditing = editing;
+        
+        const [generos, instituciones, ciudades] = await Promise.all([
+            loadGeneros(),
+            loadInstituciones(),
+            loadCiudades()
+        ]);
+        
+        const editFields = ['nombre', 'apellido', 'correo', 'documento', 'telefono', 'fecha-nacimiento'];
+        editFields.forEach(field => {
+            const displayEl = document.getElementById(`info-${field}`);
+            const inputEl = document.getElementById(`edit-${field}`);
+            if (displayEl && inputEl) {
+                displayEl.style.display = editing ? 'none' : 'block';
+                inputEl.style.display = editing ? 'block' : 'none';
+                if (editing && currentUserData) {
+                    const fieldName = field === 'fecha-nacimiento' ? 'fecha_nacimiento' : field;
+                    inputEl.value = currentUserData[fieldName] || '';
+                    if (field === 'fecha-nacimiento' && currentUserData.fecha_nacimiento) {
+                        inputEl.value = new Date(currentUserData.fecha_nacimiento).toISOString().split('T')[0];
+                    }
+                }
+            }
+        });
+        
+        // Género
+        const generoDisplay = document.getElementById('info-genero');
+        const generoSelect = document.getElementById('edit-genero');
+        if (generoDisplay && generoSelect) {
+            generoDisplay.style.display = editing ? 'none' : 'block';
+            generoSelect.style.display = editing ? 'block' : 'none';
+            if (editing) {
+                generoSelect.innerHTML = '<option value="">Seleccionar género</option>';
+                generos.forEach(g => {
+                    const option = document.createElement('option');
+                    option.value = g.id_genero;
+                    option.textContent = g.genero;
+                    if (currentUserData?.id_genero === g.id_genero) option.selected = true;
+                    generoSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // Institución
+        const instDisplay = document.getElementById('info-institucion');
+        const instSelect = document.getElementById('edit-institucion');
+        if (instDisplay && instSelect) {
+            instDisplay.style.display = editing ? 'none' : 'block';
+            instSelect.style.display = editing ? 'block' : 'none';
+            if (editing) {
+                instSelect.innerHTML = '<option value="">Seleccionar institución</option>';
+                instituciones.forEach(i => {
+                    const option = document.createElement('option');
+                    option.value = i.id_institucion;
+                    option.textContent = i.nombre_institucion;
+                    if (currentUserData?.id_instituciones === i.id_institucion) option.selected = true;
+                    instSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // Ciudad
+        const ciudadDisplay = document.getElementById('info-ciudad');
+        const ciudadSelect = document.getElementById('edit-ciudad');
+        if (ciudadDisplay && ciudadSelect) {
+            ciudadDisplay.style.display = editing ? 'none' : 'block';
+            ciudadSelect.style.display = editing ? 'block' : 'none';
+            if (editing) {
+                ciudadSelect.innerHTML = '<option value="">Seleccionar ciudad</option>';
+                ciudades.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c.id;
+                    option.textContent = c.nombre;
+                    if (currentUserData?.id_ciudad === c.id) option.selected = true;
+                    ciudadSelect.appendChild(option);
+                });
+            }
+        }
+        
+        document.getElementById('edit-profile-btn').style.display = editing ? 'none' : 'inline-flex';
+        document.getElementById('cancel-edit-btn').style.display = editing ? 'inline-flex' : 'none';
+        document.getElementById('save-changes-btn').style.display = editing ? 'inline-flex' : 'none';
+    }
+
+    async function saveChanges() {
+        try {
+            const nombre = capitalizeName(document.getElementById('edit-nombre').value.trim());
+            const apellido = capitalizeName(document.getElementById('edit-apellido').value.trim());
+            const correo = document.getElementById('edit-correo').value.trim();
+            const documento = document.getElementById('edit-documento').value.trim();
+            const telefono = document.getElementById('edit-telefono').value.trim();
+            const fecha_nacimiento = document.getElementById('edit-fecha-nacimiento').value;
+            const id_genero = document.getElementById('edit-genero').value || null;
+            const id_instituciones = document.getElementById('edit-institucion').value || null;
+            const id_ciudad = document.getElementById('edit-ciudad').value || null;
+            
+            if (!nombre || !apellido || !correo) throw new Error('Nombre, apellido y correo son obligatorios');
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(correo)) throw new Error('Correo inválido');
+            
+            Swal.fire({ title: 'Guardando cambios...', text: 'Por favor espere', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            
+            const { error } = await window.supabase
+                .from('usuarios')
+                .update({ nombre, apellido, correo, documento, telefono, fecha_nacimiento, id_genero, id_instituciones, id_ciudad })
+                .eq('id_usuario', currentUserData.id_usuario);
+            
+            if (error) throw error;
+            
+            currentUserData = { ...currentUserData, nombre, apellido, correo, documento, telefono, fecha_nacimiento, id_genero, id_instituciones, id_ciudad };
+            
+            if (id_genero) {
+                const { data: generoData } = await window.supabase.from('genero').select('genero').eq('id_genero', id_genero).single();
+                if (generoData) currentUserData.genero_nombre = generoData.genero;
+            }
+            if (id_instituciones) {
+                const { data: instData } = await window.supabase.from('instituciones').select('nombre_institucion').eq('id_institucion', id_instituciones).single();
+                if (instData) currentUserData.institucion_nombre = instData.nombre_institucion;
+            }
+            if (id_ciudad) {
+                const { data: ciudadData } = await window.supabase.from('ciudades').select('nombre').eq('id', id_ciudad).single();
+                if (ciudadData) currentUserData.ciudad_nombre = ciudadData.nombre;
+            }
+            
+            updateProfileDisplay();
+            toggleEditMode(false);
+            
+            Swal.fire({ icon: 'success', title: '¡Éxito!', text: 'Cambios guardados correctamente', confirmButtonColor: '#2e7d32', timer: 2000, showConfirmButton: false });
+        } catch (error) {
+            Swal.fire({ icon: 'error', title: 'Error', text: error.message, confirmButtonColor: '#e74c3c' });
+        }
+    }
+
+    // ========== SISTEMA DE MENSAJES ==========
     async function cargarContadorMensajes() {
         try {
             if (esAdmin) {
@@ -1386,9 +1491,7 @@
                 </div>
             `;
             
-            // Agregar evento click a la tarjeta completa
             card.addEventListener('click', () => verDetalleMensaje(msg.id_soporte));
-            
             container.appendChild(card);
         }
     }
@@ -1426,7 +1529,12 @@
         
         try {
             let query = window.supabase.from('soporte').select('*');
-            if (!esAdmin) query = query.eq('id_usuario', currentUserId);
+            
+            // Si NO es admin (id_rol !== 1), solo ver sus propios mensajes
+            if (!esAdmin) {
+                query = query.eq('id_usuario', currentUserId);
+            }
+            // Si es admin (id_rol === 1), ve TODOS los mensajes
             
             const { data: mensajes, error } = await query.order('fecha_creacion', { ascending: false });
             if (error) throw error;
@@ -1590,6 +1698,24 @@
         }
     }
 
+    function abrirModalMensajes() {
+        const modal = document.getElementById('modalMensajes');
+        if (modal) {
+            modal.classList.add('show');
+            if (esAdmin) {
+                document.getElementById('modal-title-text').textContent = '📋 Centro de Mensajes - Todos los Reportes';
+            } else {
+                document.getElementById('modal-title-text').textContent = '📬 Mis Mensajes - Soporte Técnico';
+            }
+            cargarMensajes();
+        }
+    }
+
+    function cerrarModalMensajes() {
+        const modal = document.getElementById('modalMensajes');
+        if (modal) modal.classList.remove('show');
+    }
+
     function mostrarAyudaModal() {
         if (esAdmin) {
             Swal.fire({
@@ -1615,46 +1741,120 @@
         }
     }
 
-    function abrirModalMensajes() {
-        const modal = document.getElementById('modalMensajes');
-        if (modal) {
-            modal.classList.add('show');
-            cargarMensajes();
-        }
+    // ========== AYUDA PRINCIPAL ELEGANTE ==========
+    function mostrarAyudaConfiguracion() {
+        Swal.fire({
+            title: '<div style="display: flex; align-items: center; justify-content: center; gap: 12px;">' +
+                '<i class="fas fa-cog" style="color: #2e7d32; font-size: 1.8rem;"></i>' +
+                '<span style="color: #2e7d32; font-size: 1.5rem;">Configuración de Perfil</span>' +
+                '</div>',
+            html: `
+                <div style="text-align: left;">
+                    <div style="background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; padding: 18px; border-radius: 15px; margin-bottom: 20px;">
+                        <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-info-circle"></i>
+                            Gestiona tu información personal
+                        </h4>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: start; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #3498db;">
+                            <i class="fas fa-eye" style="color: #3498db; font-size: 1.3rem;"></i>
+                            <div>
+                                <strong>👤 Visualiza tus datos</strong>
+                                <p style="margin-top: 5px; color: #7f8c8d;">Aquí puedes ver toda tu información personal registrada.</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: start; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #27ae60;">
+                            <i class="fas fa-edit" style="color: #27ae60; font-size: 1.3rem;"></i>
+                            <div>
+                                <strong>✏️ Edita tu información</strong>
+                                <p style="margin-top: 5px; color: #7f8c8d;">Haz clic en "Editar Perfil" para modificar tus datos personales.</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: start; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #f39c12;">
+                            <i class="fas fa-save" style="color: #f39c12; font-size: 1.3rem;"></i>
+                            <div>
+                                <strong>💾 Guarda tus cambios</strong>
+                                <p style="margin-top: 5px; color: #7f8c8d;">No olvides hacer clic en "Guardar Cambios" para actualizar tu perfil.</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: start; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #9b59b6;">
+                            <i class="fas fa-envelope" style="color: #9b59b6; font-size: 1.3rem;"></i>
+                            <div>
+                                <strong>📬 Mensajes de soporte</strong>
+                                <p style="margin-top: 5px; color: #7f8c8d;">Haz clic en el botón "Mensajes" para ver tus consultas y respuestas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 12px; border-left: 4px solid #2e7d32;">
+                        <h5 style="margin: 0 0 10px 0; color: #2e7d32; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-star"></i>
+                            Campos disponibles para editar
+                        </h5>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;">📝 Nombre</span>
+                            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;">📝 Apellido</span>
+                            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;">📧 Correo</span>
+                            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;">🆔 Documento</span>
+                            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;">📞 Teléfono</span>
+                            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;">⚥ Género</span>
+                            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;">🏫 Institución</span>
+                            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;">🏙️ Ciudad</span>
+                            <span style="background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;">📅 Fecha nacimiento</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 12px; background: #fff8e1; border-radius: 10px; display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-lightbulb" style="color: #f39c12; font-size: 1.2rem;"></i>
+                        <p style="margin: 0; color: #e65100; font-size: 0.85rem;">
+                            <strong>💡 Consejo:</strong> Mantén tu información actualizada para recibir notificaciones importantes.
+                        </p>
+                    </div>
+                </div>
+            `,
+            showCloseButton: true,
+            confirmButtonColor: '#2e7d32',
+            confirmButtonText: '<i class="fas fa-check-circle"></i> Entendido',
+            width: '650px',
+            background: '#ffffff'
+        });
     }
 
-    function cerrarModalMensajes() {
-        const modal = document.getElementById('modalMensajes');
-        if (modal) modal.classList.remove('show');
-    }
-
-    // Eventos de configuración
-    document.getElementById('show-search').addEventListener('change', (e) => { userPreferences.showSearch = e.target.checked; savePreferences(); });
-    document.getElementById('show-filters').addEventListener('change', (e) => { userPreferences.showFilters = e.target.checked; savePreferences(); });
-    document.getElementById('reset-config').addEventListener('click', () => {
-        userPreferences = { showSearch: true, showFilters: true };
-        savePreferences();
-        loadPreferences();
-        cargarMensajes();
-        Swal.fire({ icon: 'success', title: 'Restablecido', text: 'Configuración restablecida', confirmButtonColor: '#2e7d32', timer: 1500, showConfirmButton: false });
-    });
-
-    // Eventos principales
-    document.getElementById('edit-profile-btn')?.addEventListener('click', () => toggleEditMode(true));
-    document.getElementById('cancel-edit-btn')?.addEventListener('click', () => toggleEditMode(false));
-    document.getElementById('save-changes-btn')?.addEventListener('click', saveChanges);
-    document.getElementById('logout-btn')?.addEventListener('click', () => {
-        Swal.fire({ title: '¿Cerrar sesión?', icon: 'question', showCancelButton: true, confirmButtonColor: '#27ae60', confirmButtonText: 'Sí, salir' })
-            .then(result => { if (result.isConfirmed) window.location.href = 'index.html'; });
-    });
-    document.getElementById('help-btn')?.addEventListener('click', () => {
-        Swal.fire({ title: 'Ayuda', html: '<p>Panel de configuración personalizable. Tus preferencias se guardan automáticamente.</p>', icon: 'info', confirmButtonText: 'Entendido' });
-    });
-    document.getElementById('login-redirect-btn')?.addEventListener('click', () => window.location.href = 'index.html');
-    document.getElementById('messages-btn')?.addEventListener('click', () => abrirModalMensajes());
-    document.getElementById('modal-help-btn')?.addEventListener('click', (e) => { e.stopPropagation(); mostrarAyudaModal(); });
+    // ========== EVENT LISTENERS ==========
+    document.getElementById('edit-profile-btn').addEventListener('click', () => toggleEditMode(true));
+    document.getElementById('cancel-edit-btn').addEventListener('click', () => toggleEditMode(false));
+    document.getElementById('save-changes-btn').addEventListener('click', saveChanges);
     
-    document.getElementById('search-input')?.addEventListener('input', (e) => {
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        Swal.fire({
+            title: '¿Cerrar sesión?',
+            text: '¿Estás seguro de que deseas salir?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#27ae60',
+            cancelButtonColor: '#e74c3c',
+            confirmButtonText: 'Sí, salir',
+            cancelButtonText: 'Cancelar'
+        }).then(result => {
+            if (result.isConfirmed) window.location.href = 'index.html';
+        });
+    });
+    
+    document.getElementById('help-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        mostrarAyudaConfiguracion();
+    });
+    
+    document.getElementById('login-redirect-btn').addEventListener('click', () => window.location.href = 'index.html');
+    document.getElementById('messages-btn').addEventListener('click', () => abrirModalMensajes());
+    document.getElementById('modal-help-btn').addEventListener('click', (e) => { e.stopPropagation(); mostrarAyudaModal(); });
+    
+    document.getElementById('search-input').addEventListener('input', (e) => {
         textoBusqueda = e.target.value;
         filtrarMensajes();
     });
@@ -1668,58 +1868,9 @@
         });
     });
 
-    async function toggleEditMode(editing) {
-        document.getElementById('edit-profile-btn').style.display = editing ? 'none' : 'inline-flex';
-        document.getElementById('cancel-edit-btn').style.display = editing ? 'inline-flex' : 'none';
-        document.getElementById('save-changes-btn').style.display = editing ? 'inline-flex' : 'none';
-        
-        const fields = ['nombre', 'apellido', 'correo', 'documento', 'telefono', 'fecha-nacimiento'];
-        fields.forEach(field => {
-            const displayEl = document.getElementById(`info-${field}`);
-            const inputEl = document.getElementById(`edit-${field}`);
-            if (displayEl && inputEl) {
-                displayEl.style.display = editing ? 'none' : 'block';
-                inputEl.style.display = editing ? 'block' : 'none';
-                if (editing && currentUserData) {
-                    const fieldName = field === 'fecha-nacimiento' ? 'fecha_nacimiento' : field;
-                    inputEl.value = currentUserData[fieldName] || '';
-                }
-            }
-        });
-    }
-
-    async function saveChanges() {
-        try {
-            const nombre = capitalizeName(document.getElementById('edit-nombre').value.trim());
-            const apellido = capitalizeName(document.getElementById('edit-apellido').value.trim());
-            const correo = document.getElementById('edit-correo').value.trim();
-            
-            if (!nombre || !apellido || !correo) throw new Error('Campos obligatorios');
-            
-            Swal.fire({ title: 'Guardando...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            
-            await window.supabase
-                .from('usuarios')
-                .update({ nombre, apellido, correo })
-                .eq('id_usuario', currentUserData.id_usuario);
-            
-            currentUserData = { ...currentUserData, nombre, apellido, correo };
-            document.getElementById('info-nombre').textContent = nombre;
-            document.getElementById('info-apellido').textContent = apellido;
-            document.getElementById('info-correo').textContent = correo;
-            document.getElementById('profile-name').textContent = `${nombre} ${apellido}`;
-            
-            toggleEditMode(false);
-            Swal.fire({ icon: 'success', title: '¡Éxito!', text: 'Cambios guardados', timer: 1500, showConfirmButton: false });
-        } catch (error) {
-            Swal.fire({ icon: 'error', title: 'Error', text: error.message });
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
         updateDateTime();
         setInterval(updateDateTime, 1000);
-        loadPreferences();
         loadUserProfile();
     });
     </script>
