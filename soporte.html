@@ -1,1727 +1,2031 @@
 <!doctype html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parque de las Heliconias - Configuración</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <title>Centro de Soporte - Heliconias</title>
+     <!-- Incluir Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      
+    // Configuración de Supabase
+    const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
     
+    // Función para inicializar Supabase correctamente
+    function initSupabase() {
+        if (typeof supabase !== 'undefined' && supabase.createClient) {
+            window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+            window.supabaseClient = window.supabase;
+            console.log('✅ Supabase inicializado correctamente');
+            return true;
+        }
+        return false;
+    }
+    
+    // Intentar inicializar inmediatamente
+    if (!initSupabase()) {
+        console.log('⏳ Esperando carga de Supabase...');
+        let attempts = 0;
+        const interval = setInterval(() => {
+            attempts++;
+            if (initSupabase()) {
+                clearInterval(interval);
+                console.log(`✅ Supabase inicializado después de ${attempts} intentos`);
+            } else if (attempts > 30) {
+                clearInterval(interval);
+                console.error('❌ No se pudo inicializar Supabase');
+                // Mostrar error en la página
+                document.body.innerHTML += `
+                    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 10000; text-align: center;">
+                        <i class="fas fa-database fa-3x" style="color: #e74c3c; margin-bottom: 15px;"></i>
+                        <h3>Error de conexión</h3>
+                        <p>No se pudo conectar con la base de datos.</p>
+                        <button onclick="location.reload()" style="background: #2e7d32; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                            <i class="fas fa-sync-alt"></i> Recargar
+                        </button>
+                    </div>
+                `;
+            }
+        }, 200);
+    }
+
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+      /* soporte.css - Estilos con tema de Heliconias (verde oscuro y blanco) */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: #f0f2f0;
-        }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white; /* Fondo blanco */
+        z-index: -1;
+    }
+    /* Header Styles */
+    /* Header Styles */
+    .header {
+        background: linear-gradient(135deg, #ffffff, #ffffff);
+        color: #2e7d32;
+        padding: 15px 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
 
-        .header {
-            background: white;
-            padding: 15px 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    .top-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
 
-        .top-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+    .logo {
+        display: flex;           /* Activar flexbox */
+        align-items: center;     /* Centrar verticalmente el contenido */
+        gap: 15px;               /* Espacio entre logo y título */
+    }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    .logo-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .logo-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .logo-img i {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-image: url("img/logo.png"); /* Tu logo real */
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        font-size: 0; /* Oculta el ícono de fontawesome */
+        color: transparent;
+    }
 
-        .logo-img i {
-            display: block;
-            width: 100%;
-            height: 100%;
-            background-image: url("img/logo.png");
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            font-size: 0;
-            color: transparent;
-        }
+    .logo h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .top-bar {
+        display: flex;
+        justify-content: space-between; /* izquierda - derecha */
+        align-items: center;            /* misma línea */
+        width: 100%;
+        margin-bottom: 10px;
+        margin-top: 15px; 
+    }
 
-        .logo h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #2e7d32;
+    .system-date {
+        display: flex;
+        margin-left: 20px;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+        color: #000000;
+        background: rgba(255, 255, 255, 0.15); /* efecto cristal */
+        padding: 10px 18px;
+        border-radius: 25px;
+        backdrop-filter: blur(6px);  /* efecto vidrio borroso */
+        -webkit-backdrop-filter: blur(6px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        font-size: 15px;
+        letter-spacing: 0.5px;        /* más elegante */
+    }
+
+    /* Navigation Styles */
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .main-nav {
+        display: flex;
+        gap: 5px;
+        left: 50px;/* ajusta el valor para mover más a la izquierda o derecha */
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        color: #2e7d32;
+        text-decoration: none;
+        border-radius: 6px;
+        position: relative;
+        background: transparent; /* quitar fondo */
+        transition: all 0.3s ease;
+    }
+
+    /* Línea inferior al pasar el mouse */
+    .nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 10%;           /* margen izquierdo de la línea */
+        width: 80%;          /* ancho de la línea */
+        height: 2px;         /* grosor de la línea */
+        background: linear-gradient(135deg, #2e7d32, #4caf50);
+        transform: scaleX(0); /* inicialmente invisible */
+        transition: transform 0.3s ease;
+        transform-origin: center;
+    }
+
+    .nav-item:hover::after {
+        transform: scaleX(1); /* línea aparece */
+    }
+
+    .user-actions {
+        display: flex;        /* ya estaba flex */
+        justify-content: flex-end;  /* esto los lleva a la derecha */
+        gap: 10px; 
+    }
+
+    .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        position: relative;
+        left: -20px; /* mueve cada botón 20px hacia la izquierda */
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #2e7d32, #4caf50); /* verde degradado */
+        color: white;
+    }
+
+
+    .btn-accent {
+        background: linear-gradient(135deg, #e74c3c, #fe5926); 
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+
+      /* Tooltip Styles */
+      .tooltip {
+        position: relative;
+      }
+
+      .tooltip-text {
+        visibility: hidden;
+        width: 140px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1000;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 0.8rem;
+        font-weight: normal;
+      }
+
+      .tooltip-text::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+      }
+
+      .tooltip:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      /* Botones inferiores VERTICALES */
+      .botones-inferiores {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1000;
+      }
+
+      .btn-inferior {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 12px 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        width: auto;
+        justify-content: center;
+      }
+
+      .btn-inferior:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(39, 174, 96, 0.6);
+      }
+
+      .btn-gmail {
+        background: linear-gradient(135deg, #d14836 0%, #ea4335 100%);
+      }
+
+      .btn-whatsapp {
+        background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      }
+
+      /* Modal para mostrar correo */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-contenido {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        animation: modalAppear 0.3s ease-out;
+      }
+
+      @keyframes modalAppear {
+        from {
+          opacity: 0;
+          transform: scale(0.8) translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .modal h3 {
+        color: #27ae60;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+      }
+
+      .correo-display {
+        background: #f8fff8;
+        border: 2px solid #e8f5e8;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 20px 0;
+        font-size: 1.1rem;
+        color: #27ae60;
+        font-weight: 600;
+        word-break: break-all;
+      }
+
+      .botones-modal {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .btn-modal {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex: 1;
+      }
+
+      .btn-enviar {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        color: white;
+      }
+
+      .btn-cerrar {
+        background: #f8f9fa;
+        color: #6c757d;
+        border: 1px solid #dee2e6;
+      }
+
+      .btn-modal:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Modal de ayuda */
+      .modal-ayuda {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-ayuda-contenido {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        animation: modalAppear 0.3s ease-out;
+      }
+
+      .modal-ayuda-contenido h3 {
+        color: #27ae60;
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+      }
+
+      .modal-ayuda-contenido p {
+        margin-bottom: 20px;
+        line-height: 1.6;
+        color: #2d3748;
+      }
+
+      .pasos-ayuda {
+        text-align: left;
+        margin: 20px 0;
+      }
+
+      .paso {
+        margin-bottom: 15px;
+        padding: 10px;
+        background: #f8fff8;
+        border-radius: 8px;
+        border-left: 4px solid #2ecc71;
+      }
+
+      .paso strong {
+        color: #27ae60;
+      }
+
+      /* Contenedor principal */
+      .container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(39, 174, 96, 0.1);
+        overflow: hidden;
+        border: 2px solid #e8f5e8;
+      }
+
+      /* Header estilo heliconia - COMPLETAMENTE BLANCO */
+      .header-soporte {
+        background: white;
+        color: #27ae60;
+        padding: 50px 40px;
+        text-align: center;
+        position: relative;
+        border-bottom: 3px solid #e8f5e8;
+      }
+
+      .header-soporte::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+          radial-gradient(
+            circle at 20% 80%,
+            rgba(46, 204, 113, 0.05) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(39, 174, 96, 0.05) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 40%,
+            rgba(144, 238, 144, 0.05) 0%,
+            transparent 50%
+          );
+      }
+
+      .icono-soporte {
+        display: block;
+        margin: 0 auto 20px auto; 
+        width: 100px;        /* tamaño de la imagen */
+        height: 100px;
+        background-image: url('img/logo.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .header-soporte h1 {
+        margin: 0 0 12px 0;
+        font-size: 2.8rem;
+        font-weight: 800;
+        position: relative;
+        z-index: 2;
+        color: #2e7d32;
+      }
+
+      .subtitulo {
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: 400;
+        position: relative;
+        z-index: 2;
+        color: #2d3748;
+      }
+
+      /* Mensaje de éxito estilo heliconia */
+      .mensaje-exito {
+        background: linear-gradient(135deg, #f0fff0 0%, #e8f5e8 100%);
+        color: #2e7d32;
+        padding: 20px 25px;
+        margin: 25px;
+        border-radius: 15px;
+        border: 2px solid #90ee90;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+        animation: slideInUp 0.6s ease-out;
+        box-shadow: 0 8px 25px rgba(144, 238, 144, 0.3);
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Formulario estilo heliconia */
+      .form-soporte {
+        padding: 40px;
+      }
+
+      .seccion-form {
+        margin-bottom: 35px;
+        padding: 30px;
+        background: #f8fff8;
+        border-radius: 16px;
+        border: 2px solid #e8f5e8;
+        transition: all 0.4s ease;
+        position: relative;
+      }
+
+      .seccion-form:hover {
+        background: white;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(39, 174, 96, 0.1);
+        border-color: #90ee90;
+      }
+
+      .seccion-form h3 {
+        color: #2e7d32;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.3rem;
+        font-weight: 700;
+      }
+
+      .seccion-form h3 i {
+        color: #2e7d32;
+        width: 24px;
+      }
+
+      /* Campos de formulario */
+      .grupo-campos {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+      }
+
+      .campo {
+        margin-bottom: 25px;
+        position: relative;
+      }
+
+      .campo label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 0.95rem;
+      }
+
+      .campo label i {
+        color: #2e7d32;
+        width: 16px;
+      }
+
+      .campo input,
+      .campo select,
+      .campo textarea {
+        width: 100%;
+        padding: 16px 18px;
+        border: 2px solid #e8f5e8;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+        box-sizing: border-box;
+        font-family: inherit;
+      }
+
+      .campo input:focus,
+      .campo select:focus,
+      .campo textarea:focus {
+        outline: none;
+        border-color: #2e7d32;
+        box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.1);
+        background: #f8fff8;
+      }
+
+      /* Select estilo heliconia */
+      .select-estilizado {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%232ecc71' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 16px center;
+        background-repeat: no-repeat;
+        background-size: 18px;
+        appearance: none;
+        padding-right: 50px;
+        cursor: pointer;
+      }
+
+      /* Área de archivo estilo heliconia */
+      .area-archivo {
+        border: 2px dashed #e8f5e8;
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        background: #f8fff8;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .area-archivo:hover {
+        border-color: #2e7d32;
+        background: white;
+        transform: scale(1.02);
+      }
+
+      .area-archivo input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .info-archivo p {
+        margin: 8px 0 0 0;
+        color: #2e7d32;
+        font-size: 0.9rem;
+      }
+
+      /* Prioridad estilo heliconia */
+      .grupo-prioridad {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .opcion-prioridad {
+        flex: 1;
+        min-width: 130px;
+      }
+
+      .opcion-prioridad input {
+        display: none;
+      }
+
+      .opcion-prioridad label {
+        display: block;
+        padding: 18px 15px;
+        text-align: center;
+        border: 2px solid #e8f5e8;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .opcion-prioridad label:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(39, 174, 96, 0.15);
+      }
+
+      .opcion-prioridad input:checked + label {
+        border-color: transparent;
+        transform: scale(1.05);
+        box-shadow: 0 12px 30px rgba(39, 174, 96, 0.2);
+        color: white;
+      }
+
+      .prioridad-baja {
+        color: #2e7d32;
+        border-color: #2e7d32 !important;
+      }
+
+      .prioridad-media {
+        color: #ffa500;
+        border-color: #ffa500 !important;
+      }
+
+      .prioridad-alta {
+        color: #dc143c;
+        border-color: #dc143c !important;
+      }
+
+      .opcion-prioridad input:checked + label.prioridad-baja {
+        background: #2e7d32;
+      }
+
+      .opcion-prioridad input:checked + label.prioridad-media {
+        background: #ffa500;
+      }
+
+      .opcion-prioridad input:checked + label.prioridad-alta {
+        background: #dc143c;
+      }
+
+      /* Contador de caracteres */
+      .contador-caracteres {
+        text-align: right;
+        margin-top: 8px;
+        color: #2e7d32;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      /* Botón de envío estilo heliconia */
+      .seccion-boton {
+        text-align: center;
+        padding: 30px 20px 20px;
+        background: transparent;
+      }
+
+      .btn-reporte {
+        background: linear-gradient(135deg, #2e7d32 0%, #2e7d32 100%);
+        color: white;
+        padding: 20px 45px;
+        border: none;
+        border-radius: 15px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(39, 174, 96, 0.4);
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-reporte::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .btn-reporte:hover::before {
+        left: 100%;
+      }
+
+      .btn-reporte:hover {
+        background: linear-gradient(135deg, #2e7d32 0%, #2e7d32 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(39, 174, 96, 0.6);
+      }
+
+      .btn-reporte:active {
+        transform: translateY(-1px);
+      }
+
+      .btn-reporte:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .texto-ayuda {
+        margin-top: 18px;
+        color: #2e7d32;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      /* Footer eliminado */
+      .footer-soporte {
+        display: none;
+      }
+
+      /* RESPONSIVE - IDÉNTICO AL PANEL ANTERIOR */
+      @media (max-width: 1024px) {
+        .nav-container {
+          flex-direction: column;
+          gap: 15px;
         }
         
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-            gap: 15px;
-            padding: 0 20px;
-        }
-
-        .system-date {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(46, 125, 50, 0.1);
-            padding: 10px 18px;
-            border-radius: 25px;
-            font-size: 15px;
-        }
-
         .main-nav {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          padding: 15px;
+        }
+        
+        .top-section {
+          flex-direction: column;
+          gap: 15px;
+          text-align: center;
+        }
+        
+        .content {
+          grid-template-columns: 1fr;
+          padding: 15px;
+        }
+        
+        .main-content {
+          padding: 15px;
+        }
+        
+        .user-actions {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        
+        .nav-item {
+          padding: 8px 12px;
+          font-size: 0.9rem;
+        }
+
+        /* Responsive específico del soporte */
+        .grupo-campos {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .container {
+          margin: 20px;
+          border-radius: 15px;
+        }
+
+        .form-soporte {
+          padding: 25px;
+        }
+
+        .seccion-form {
+          padding: 25px 20px;
+          margin-bottom: 25px;
+        }
+
+        .header-soporte {
+          padding: 40px 25px;
+        }
+
+        .header-soporte h1 {
+          font-size: 2.2rem;
+        }
+
+        .grupo-prioridad {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .opcion-prioridad {
+          min-width: auto;
+        }
+
+        .btn-reporte {
+          width: 100%;
+          justify-content: center;
+          padding: 18px 30px;
+        }
+
+        .botones-inferiores {
+          position: static;
+          flex-direction: row;
+          justify-content: center;
+          margin: 20px 0;
+          flex-wrap: wrap;
+        }
+
+        .btn-inferior {
+          font-size: 0.75rem;
+          padding: 10px 14px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .form-soporte {
+          padding: 20px 15px;
+        }
+
+        .seccion-form {
+          padding: 20px 15px;
+        }
+
+        .header-soporte {
+          padding: 30px 20px;
+        }
+
+        .header-soporte h1 {
+          font-size: 1.8rem;
+        }
+
+        .subtitulo {
+          font-size: 1.1rem;
+        }
+
+        .botones-inferiores {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .modal-contenido,
+        .modal-ayuda-contenido {
+          padding: 20px;
+        }
+
+        .botones-modal {
+          flex-direction: column;
         }
 
         .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            color: #2e7d32;
-            text-decoration: none;
-            border-radius: 6px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 10%;
-            width: 80%;
-            height: 2px;
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .nav-item:hover::after, .nav-item.active::after {
-            transform: scaleX(1);
-        }
-
-        .nav-item.active {
-            font-weight: 600;
-        }
-
-        .user-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+          padding: 6px 10px;
+          font-size: 0.8rem;
         }
 
         .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
+          padding: 6px 12px;
+          font-size: 0.8rem;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
-            color: white;
+        .logo h1 {
+          font-size: 1.1rem;
         }
 
-        .btn-accent {
-            background: linear-gradient(135deg, #e74c3c, #fe5926);
-            color: white;
+        .logo-img {
+          width: 40px;
+          height: 40px;
         }
-        
-        .btn-messages {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            color: white;
-            position: relative;
-        }
-        
-        .btn-messages .badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #e74c3c;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 10px;
-            font-weight: bold;
-            min-width: 18px;
-            text-align: center;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .main-dashboard {
-            display: flex;
-            gap: 25px;
-            max-width: 1600px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        /* Panel de configuración lateral */
-        .config-panel {
-            width: 240px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-
-        .config-header {
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .config-header i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .config-header h3 {
-            font-size: 1.1rem;
-        }
-
-        .config-body {
-            padding: 20px;
-        }
-
-        .config-section {
-            margin-bottom: 20px;
-        }
-
-        .config-section-title {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #e8f5e8;
-        }
-
-        .config-option {
-            margin-bottom: 12px;
-        }
-
-        .config-option label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            color: #555;
-        }
-
-        .config-option input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #2e7d32;
-        }
-
-        .reset-btn {
-            width: 100%;
-            padding: 10px;
-            background: #f8f9fa;
-            border: 1px solid #e8f5e8;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-        }
-
-        .reset-btn:hover {
-            background: #ffeaa7;
-            border-color: #f39c12;
-        }
-
-        /* Contenido principal */
-        .main-container {
-            flex: 1;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-
-        .profile-card {
-            background: white;
-        }
-
-        .profile-header {
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
-            color: white;
-            padding: 25px;
-            text-align: center;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: white;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 4px solid white;
-        }
-
-        .profile-avatar i {
-            font-size: 40px;
-            color: #2e7d32;
-        }
-
-        .profile-name {
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .profile-role {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .profile-body {
-            padding: 30px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-left: 4px solid #2e7d32;
-            padding-left: 15px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px 30px;
-            margin-bottom: 30px;
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .info-label {
-            font-size: 14px;
-            color: #2c3e50;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-label i {
-            color: #2e7d32;
-        }
-
-        .info-value {
-            padding: 12px 16px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-        }
-
-        .info-input, .info-select, .info-date {
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            width: 100%;
-        }
-
-        .info-input:focus, .info-select:focus, .info-date:focus {
-            outline: none;
-            border-color: #2e7d32;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e8f5e8;
-            flex-wrap: wrap;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-warning {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 60px;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #2e7d32;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .login-prompt {
-            text-align: center;
-            padding: 60px;
-        }
-
-        /* ========== MODAL DE MENSAJES ========== */
-        .modal-mensajes {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-mensajes.show {
-            display: flex;
-            animation: fadeInModal 0.3s ease-out;
-        }
-
-        @keyframes fadeInModal {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .modal-contenido-mensajes {
-            background: white;
-            border-radius: 24px;
-            width: 95%;
-            max-width: 1300px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            animation: slideUp 0.3s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-header-mensajes {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 25px;
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
-            color: white;
-            border-radius: 24px 24px 0 0;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .modal-header-mensajes .modal-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .modal-help-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .modal-help-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
-
-        .close-modal {
-            cursor: pointer;
-            font-size: 28px;
-            transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .close-modal:hover {
-            background: rgba(255,255,255,0.2);
-            transform: rotate(90deg);
-        }
-
-        .modal-body-mensajes {
-            padding: 25px;
-            background: #f8faf8;
-        }
-
-        /* Barra de búsqueda */
-        .search-bar {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .search-bar.hidden {
-            display: none;
-        }
-
-        .search-input-group {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .search-input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-
-        .search-input-wrapper i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #2e7d32;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 14px 15px 14px 45px;
-            border: 2px solid #e8f5e8;
-            border-radius: 14px;
-            font-size: 14px;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #2e7d32;
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            transition: all 0.3s ease;
-        }
-
-        .filter-buttons.hidden {
-            display: none;
-        }
-
-        .filter-btn {
-            padding: 10px 20px;
-            border: 2px solid #e8f5e8;
-            background: white;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .filter-btn:hover {
-            border-color: #2e7d32;
-        }
-
-        .filter-btn.active {
-            background: linear-gradient(135deg, #2e7d32, #4caf50);
-            color: white;
-            border-color: transparent;
-        }
-
-        /* Layout de dos columnas */
-        .mensajes-columnas {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-
-        .columna-pendientes, .columna-contestadas {
-            flex: 1;
-            min-width: 320px;
-        }
 
-        .columna-titulo {
-            font-size: 1rem;
-            font-weight: 700;
-            padding: 12px 18px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .system-date {
+          font-size: 0.8rem;
+          padding: 6px 12px;
         }
+      }
 
-        .columna-titulo.pendiente {
-            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-            color: #d63031;
-        }
-
-        .columna-titulo.contestada {
-            background: linear-gradient(135deg, #a8e6cf, #55efc4);
-            color: #27ae60;
-        }
-
-        /* Tarjetas de mensajes COMPACTAS */
-        .mensajes-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 65vh;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-        
-        .mensaje-card {
-            background: white;
-            border-radius: 14px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            overflow: hidden;
-            border: 1px solid #e8f5e8;
-            height: auto;
-        }
-        
-        /* Tarjeta PENDIENTE */
-        .columna-pendientes .mensaje-card {
-            border-left: 4px solid #f39c12;
-        }
-        
-        /* Tarjeta CONTESTADA */
-        .columna-contestadas .mensaje-card {
-            border-left: 4px solid #27ae60;
-        }
-        
-        .columna-pendientes .mensaje-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(243, 156, 18, 0.15);
-        }
-        
-        .columna-contestadas .mensaje-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(46, 125, 50, 0.15);
-        }
-        
-        .mensaje-content {
-            padding: 14px 16px;
-        }
-        
-        .mensaje-header-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        
-        .mensaje-id-numero {
-            font-weight: bold;
-            color: #2e7d32;
-            background: #e8f5e8;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-        }
-        
-        .mensaje-usuario-nombre {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        .mensaje-usuario-nombre i {
-            color: #2e7d32;
-            font-size: 12px;
-        }
-        
-        .mensaje-prioridad-badge {
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-        
-        .mensaje-email {
-            font-size: 11px;
-            color: #7f8c8d;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 8px;
-            padding-bottom: 6px;
-            border-bottom: 1px dashed #e8f5e8;
-        }
-        
-        .mensaje-stats {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 4px;
-        }
-        
-        .mensaje-tipo-badge {
-            background: #e8f5e8;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            color: #2e7d32;
-        }
-        
-        .estado-badge {
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .estado-pendiente-small {
-            background: #ffeaa7;
-            color: #d63031;
-        }
-        
-        .estado-contestada-small {
-            background: #a8e6cf;
-            color: #27ae60;
-        }
-        
-        .mensaje-fecha-small {
-            font-size: 10px;
-            color: #95a5a6;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        /* Botón VER MÁS con tooltip */
-        .ver-mas-btn {
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid #e8f5e8;
-            display: flex;
-            justify-content: flex-end;
-        }
-        
-        .btn-ver-mas {
-            background: transparent;
-            border: none;
-            color: #2e7d32;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 10px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .btn-ver-mas:hover {
-            background: #e8f5e8;
-            transform: translateX(3px);
-        }
-        
-        /* Tooltip */
-        .btn-ver-mas {
-            position: relative;
-        }
-        
-        .btn-ver-mas::after {
-            content: "Haz clic para ver todos los detalles del mensaje";
-            position: absolute;
-            bottom: 130%;
-            right: 0;
-            background: #2c3e50;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            pointer-events: none;
-            z-index: 100;
-            font-weight: normal;
-        }
-        
-        .btn-ver-mas::before {
-            content: "";
-            position: absolute;
-            bottom: 130%;
-            right: 15px;
-            border: 5px solid transparent;
-            border-top-color: #2c3e50;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-        
-        .btn-ver-mas:hover::after,
-        .btn-ver-mas:hover::before {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .prioridad-baja { background: #d4edda; color: #155724; }
-        .prioridad-media { background: #fff3cd; color: #856404; }
-        .prioridad-alta { background: #f8d7da; color: #721c24; }
-
-        .respuesta-textarea {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #e8f5e8;
-            border-radius: 12px;
-            resize: vertical;
-            font-family: inherit;
-            font-size: 14px;
-        }
-        
-        .respuesta-textarea:focus {
-            outline: none;
-            border-color: #2e7d32;
-        }
+      /* Estados de carga */
+      .btn-reporte.loading {
+        pointer-events: none;
+        opacity: 0.8;
+      }
 
-        .swal2-container {
-            z-index: 10000 !important;
-        }
-
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #e8f5e8;
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #2e7d32;
-            border-radius: 10px;
-        }
+      .btn-reporte.loading i {
+        animation: spin 1s linear infinite;
+      }
 
-        .stats-badges {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
-
-        .stat-badge {
-            background: white;
-            padding: 10px 20px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            font-weight: 500;
-            font-size: 13px;
-        }
-
-        .stat-badge.pendiente .count { color: #e74c3c; font-weight: bold; font-size: 1.1rem; }
-        .stat-badge.contestada .count { color: #27ae60; font-weight: bold; font-size: 1.1rem; }
-
-        @media (max-width: 992px) {
-            .main-dashboard {
-                flex-direction: column;
-                padding: 0 15px;
-            }
-            .config-panel {
-                width: 100%;
-                position: static;
-                margin-bottom: 20px;
-            }
-            .info-grid { grid-template-columns: 1fr; }
-            .mensajes-columnas { flex-direction: column; }
-        }
-
-        @media (max-width: 768px) {
-            .columna-pendientes, .columna-contestadas { min-width: 280px; }
-            .action-buttons { flex-direction: column; }
-            .action-buttons .btn { width: 100%; justify-content: center; }
+        100% {
+          transform: rotate(360deg);
         }
+      }
     </style>
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Header - Mismo del panel anterior -->
     <header class="header">
-        <div class="top-section">
-            <div class="logo">
-                <div class="logo-img">
-                    <i class="fas fa-leaf"></i>
+            <div class="top-section">
+                <div class="logo">
+                    <div class="logo-img">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h1>Heliconias Reports</h1>
                 </div>
-                <h1>Heliconias Reports</h1>
+                    <!-- Navegación horizontal -->
+                <nav class="main-nav">
+                    <a href="principal.html" class="nav-item active tooltip">
+                        <i class="fas fa-home"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="eventos.html" class="nav-item tooltip">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Eventos</span>
+                    </a>
+                    <a href="actividad.html" class="nav-item tooltip">
+                        <i class="fas fa-hiking"></i>
+                        <span>Actividades</span>
+                    </a>
+                    <a href="reportes.html" class="nav-item tooltip">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reportes</span>
+                    </a>
+                    <a href="configuracion.html" class="nav-item tooltip">
+                        <i class="fas fa-cog"></i>
+                        <span>Configuración</span>
+                    </a>
+                </nav>
             </div>
-            <nav class="main-nav">
-                <a href="principal.html" class="nav-item">
-                    <i class="fas fa-home"></i>
-                    <span>Inicio</span>
-                </a>
-                <a href="eventos.html" class="nav-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Eventos</span>
-                </a>
-                <a href="actividad.html" class="nav-item">
-                    <i class="fas fa-hiking"></i>
-                    <span>Actividades</span>
-                </a>
-                <a href="reportes.html" class="nav-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Reportes</span>
-                </a>
-                <a href="configuracion.html" class="nav-item active">
-                    <i class="fas fa-cog"></i>
-                    <span>Configuración</span>
-                </a>
-            </nav>
-        </div>
-    </header>
+        </header>
 
-    <div class="top-bar">
-        <div class="system-date">
-            <i class="fas fa-clock"></i>
-            <span id="current-date-time">Cargando fecha y hora...</span>
-        </div>
-        <div class="user-actions">
-            <a href="soporte.html" class="btn btn-primary">
-                <i class="fas fa-headset"></i> Soporte
-            </a>
-            <button class="btn btn-primary" id="help-btn">
-                <i class="fas fa-question-circle"></i> Ayuda
-            </button>
-            <button class="btn btn-messages" id="messages-btn" style="display: none;">
-                <i class="fas fa-envelope"></i> Mensajes
-                <span class="badge" id="messages-badge" style="display: none;">0</span>
-            </button>
-            <button class="btn btn-accent" id="logout-btn">
-                <i class="fas fa-sign-out-alt"></i> Salir
-            </button>
-        </div>
-    </div>
-
-    <div class="main-dashboard">
-        <!-- Panel de Configuración Lateral -->
-        <div class="config-panel">
-            <div class="config-header">
-                <i class="fas fa-sliders-h"></i>
-                <h3>Ajustes de Visualización</h3>
+        <div class="top-bar">
+            <div class="system-date">
+                <i class="fas fa-clock"></i>
+                <span id="current-date-time">Cargando fecha y hora...</span>
             </div>
-            <div class="config-body">
-                <div class="config-section">
-                    <div class="config-section-title">
-                        <i class="fas fa-search"></i> Elementos visibles
-                    </div>
-                    <div class="config-option">
-                        <label>
-                            <input type="checkbox" id="show-search" checked>
-                            <i class="fas fa-search"></i> Mostrar barra de búsqueda
-                        </label>
-                    </div>
-                    <div class="config-option">
-                        <label>
-                            <input type="checkbox" id="show-filters" checked>
-                            <i class="fas fa-filter"></i> Mostrar filtros
-                        </label>
-                    </div>
-                </div>
 
-                <button class="reset-btn" id="reset-config">
-                    <i class="fas fa-undo-alt"></i> Restablecer
+            <div class="user-actions">
+                <a href="soporte.html" class="btn btn-primary tooltip">
+                    <i class="fas fa-headset"></i> Soporte
+                </a>
+
+                <button class="btn btn-primary tooltip" id="help-btn">
+                    <i class="fas fa-question-circle"></i> Ayuda
+                </button>
+
+                <button class="btn btn-accent tooltip" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Salir
                 </button>
             </div>
         </div>
 
-        <!-- Contenido Principal -->
-        <div class="main-container">
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h2 class="profile-name" id="profile-name">Cargando...</h2>
-                    <p class="profile-role" id="profile-role">Cargando rol...</p>
-                </div>
-                <div class="profile-body">
-                    <div class="section-title">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Información Personal</span>
-                    </div>
-                    <div id="loading-section" class="loading-spinner">
-                        <div class="spinner"></div>
-                        <p>Cargando información del usuario...</p>
-                    </div>
-                    <div id="profile-info" style="display: none;">
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-user"></i> Nombre</label>
-                                <div class="info-value" id="info-nombre">Cargando...</div>
-                                <input type="text" class="info-input" id="edit-nombre" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-user"></i> Apellido</label>
-                                <div class="info-value" id="info-apellido">Cargando...</div>
-                                <input type="text" class="info-input" id="edit-apellido" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-envelope"></i> Correo Electrónico</label>
-                                <div class="info-value" id="info-correo">Cargando...</div>
-                                <input type="email" class="info-input" id="edit-correo" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-id-card"></i> Documento</label>
-                                <div class="info-value" id="info-documento">Cargando...</div>
-                                <input type="text" class="info-input" id="edit-documento" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-phone"></i> Teléfono</label>
-                                <div class="info-value" id="info-telefono">Cargando...</div>
-                                <input type="tel" class="info-input" id="edit-telefono" style="display: none;">
-                            </div>
-                            <div class="info-item">
-                                <label class="info-label"><i class="fas fa-calendar"></i> Fecha de Nacimiento</label>
-                                <div class="info-value" id="info-fecha-nacimiento">Cargando...</div>
-                                <input type="date" class="info-date" id="edit-fecha-nacimiento" style="display: none;">
-                            </div>
-                        </div>
-                        <div class="action-buttons">
-                            <button class="btn btn-secondary" id="edit-profile-btn">
-                                <i class="fas fa-edit"></i> Editar Perfil
-                            </button>
-                            <button class="btn btn-warning" id="cancel-edit-btn" style="display: none;">
-                                <i class="fas fa-times"></i> Cancelar
-                            </button>
-                            <button class="btn btn-success" id="save-changes-btn" style="display: none;">
-                                <i class="fas fa-save"></i> Guardar Cambios
-                            </button>
-                        </div>
-                    </div>
-                    <div id="login-prompt" class="login-prompt" style="display: none;">
-                        <h3><i class="fas fa-exclamation-triangle"></i> Sesión no iniciada</h3>
-                        <p>Debe iniciar sesión para ver su información de perfil.</p>
-                        <button class="btn btn-success" id="login-redirect-btn">Ir a Iniciar Sesión</button>
-                    </div>
-                </div>
-            </div>
+    <!-- Contenido principal -->
+    <div class="container">
+      <!-- Header -->
+      <div class="header-soporte">
+        <div class="icono-soporte">
+          <i class="fas fa-seedling"></i>
         </div>
+        <h1>Centro de Soporte Técnico</h1>
+        <p class="subtitulo">
+          Estamos aquí para ayudarte. Reporta cualquier problema y te
+          atenderemos pronto.
+        </p>
+      </div>
+
+      <!-- Mensaje de confirmación -->
+      <div id="mensajeConfirmacion" class="mensaje-exito" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+        <span id="mensajeTexto">Tu reporte ha sido enviado exitosamente</span>
+      </div>
+
+      <!-- Formulario de soporte -->
+      <form
+        id="formSoporte"
+        method="POST"
+        enctype="multipart/form-data"
+        class="form-soporte"
+      >
+        <!-- Información personal -->
+        <div class="seccion-form">
+          <h3><i class="fas fa-user"></i> Información Personal</h3>
+          <div class="grupo-campos">
+            <div class="campo">
+              <label for="nombre">
+                <i class="fas fa-signature"></i> Nombre completo
+              </label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                required
+                placeholder="Ingresa tu nombre completo"
+              />
+            </div>
+            <div class="campo">
+              <label for="email">
+                <i class="fas fa-envelope"></i> Correo electrónico
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="tu@email.com"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Tipo de problema -->
+        <div class="seccion-form">
+          <h3><i class="fas fa-exclamation-triangle"></i> Tipo de Problema</h3>
+          <div class="campo">
+            <label for="tipo">
+              <i class="fas fa-tags"></i> Selecciona el tipo de problema
+            </label>
+            <select id="tipo" name="tipo" class="select-estilizado">
+              <option value="estadisticas">
+                📊 Error en estadísticas y gráficos
+              </option>
+              <option value="carga">⬆️ Problema de carga de datos</option>
+              <option value="base_datos">💾 Error en base de datos</option>
+              <option value="exportacion">📥 Problema con exportación</option>
+              <option value="login">🔐 Error de inicio de sesión</option>
+              <option value="interfaz">🎨 Problema de interfaz visual</option>
+              <option value="rendimiento">
+                ⚡ Bajo rendimiento del sistema
+              </option>
+              <option value="otro">❓ Otro tipo de problema</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Descripción detallada -->
+        <div class="seccion-form">
+          <h3><i class="fas fa-file-alt"></i> Descripción Detallada</h3>
+          <div class="campo">
+            <label for="descripcion">
+              <i class="fas fa-edit"></i> Describe el problema en detalle
+            </label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              rows="6"
+              required
+              placeholder="Por favor, describe el problema que estás experimentando, incluyendo los pasos para reproducirlo..."
+            ></textarea>
+            <div class="contador-caracteres">
+              <span id="contador">0</span> caracteres
+            </div>
+          </div>
+        </div>
+
+        <!-- Archivos adjuntos -->
+        <div class="seccion-form">
+          <h3><i class="fas fa-paperclip"></i> Archivos Adjuntos</h3>
+          <div class="campo">
+            <label for="archivo">
+              <i class="fas fa-upload"></i> Adjuntar archivos (opcional)
+            </label>
+            <div class="area-archivo">
+              <input
+                type="file"
+                id="archivo"
+                name="archivo"
+                accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xlsx,.txt"
+              />
+              <div class="info-archivo">
+                <p>
+                  <small
+                    >Formatos permitidos: JPG, PNG, PDF, DOC, XLSX, TXT (Máx.
+                    10MB)</small
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prioridad -->
+        <div class="seccion-form">
+          <h3><i class="fas fa-flag"></i> Prioridad</h3>
+          <div class="grupo-prioridad">
+            <div class="opcion-prioridad">
+              <input
+                type="radio"
+                id="baja"
+                name="prioridad"
+                value="baja"
+                checked
+              />
+              <label for="baja" class="prioridad-baja">
+                <i class="fas fa-info-circle"></i> Baja
+              </label>
+            </div>
+            <div class="opcion-prioridad">
+              <input type="radio" id="media" name="prioridad" value="media" />
+              <label for="media" class="prioridad-media">
+                <i class="fas fa-exclamation-circle"></i> Media
+              </label>
+            </div>
+            <div class="opcion-prioridad">
+              <input type="radio" id="alta" name="prioridad" value="alta" />
+              <label for="alta" class="prioridad-alta">
+                <i class="fas fa-exclamation-triangle"></i> Alta
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón de envío -->
+        <div class="seccion-boton">
+          <button type="submit" class="btn-reporte">
+            <i class="fas fa-paper-plane"></i> Enviar Reporte de Soporte
+          </button>
+          <p class="texto-ayuda">
+            <i class="fas fa-clock"></i> Te responderemos en un plazo máximo de
+            24 horas
+          </p>
+        </div>
+      </form>
     </div>
 
-    <!-- Modal de Mensajes -->
-    <div id="modalMensajes" class="modal-mensajes">
-        <div class="modal-contenido-mensajes">
-            <div class="modal-header-mensajes">
-                <div class="modal-title">
-                    <i class="fas fa-envelope"></i>
-                    <span id="modal-title-text">Centro de Mensajes - Soporte Técnico</span>
-                </div>
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <button class="modal-help-btn" id="modal-help-btn">
-                        <i class="fas fa-question-circle"></i> ¿Qué hace esto?
-                    </button>
-                    <div class="close-modal" onclick="cerrarModalMensajes()">&times;</div>
-                </div>
-            </div>
-            <div class="modal-body-mensajes">
-                <!-- Barra de búsqueda -->
-                <div class="search-bar" id="search-bar">
-                    <div class="search-input-group">
-                        <div class="search-input-wrapper">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="search-input" class="search-input" placeholder="Buscar por usuario, correo o tipo...">
-                        </div>
-                        <div class="filter-buttons" id="filter-buttons">
-                            <button class="filter-btn active" data-filter="todos">
-                                <i class="fas fa-list"></i> Todos
-                            </button>
-                            <button class="filter-btn" data-filter="pendiente">
-                                <i class="fas fa-clock"></i> Pendientes
-                            </button>
-                            <button class="filter-btn" data-filter="contestada">
-                                <i class="fas fa-check-double"></i> Contestadas
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Estadísticas -->
-                <div class="stats-badges" id="stats-badges">
-                    <div class="stat-badge pendiente">
-                        <i class="fas fa-clock fa-fw"></i>
-                        <span>Pendientes: <span class="count" id="count-pendiente">0</span></span>
-                    </div>
-                    <div class="stat-badge contestada">
-                        <i class="fas fa-check-double fa-fw"></i>
-                        <span>Contestadas: <span class="count" id="count-contestada">0</span></span>
-                    </div>
-                </div>
-
-                <!-- Contenedor de mensajes -->
-                <div id="mensajes-container" class="mensajes-columnas">
-                    <div class="columna-pendientes">
-                        <div class="columna-titulo pendiente">
-                            <i class="fas fa-clock"></i> Pendientes
-                            <span id="pendiente-count-badge" class="count" style="background: white; padding: 2px 10px; border-radius: 30px; margin-left: 8px; font-size: 11px;">0</span>
-                        </div>
-                        <div id="pendientes-cards" class="mensajes-cards"></div>
-                    </div>
-                    <div class="columna-contestadas">
-                        <div class="columna-titulo contestada">
-                            <i class="fas fa-check-double"></i> Contestadas
-                            <span id="contestada-count-badge" class="count" style="background: white; padding: 2px 10px; border-radius: 30px; margin-left: 8px; font-size: 11px;">0</span>
-                        </div>
-                        <div id="contestadas-cards" class="mensajes-cards"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Botones inferiores VERTICALES - Solo Gmail y WhatsApp -->
+    <div class="botones-inferiores">
+      <a href="#" class="btn-inferior btn-gmail" id="btnGmail">
+        <i class="fab fa-google"></i> Gmail
+      </a>
+      <a href="#" class="btn-inferior btn-whatsapp" id="btnWhatsapp">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
-    // ========== CONFIGURACIÓN Y LOCALSTORAGE ==========
-    let userPreferences = {
-        showSearch: true,
-        showFilters: true
+      // Función para actualizar fecha y hora
+function updateDateTime() {
+  const now = new Date();
+  const dateTimeString = now.toLocaleString("es-ES", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+
+  const dateTimeElement = document.getElementById("current-date-time");
+  if (dateTimeElement) {
+    dateTimeElement.textContent = dateTimeString;
+  }
+}
+
+// Inicializar fecha y hora
+updateDateTime();
+setInterval(updateDateTime, 1000);
+
+// Contador de caracteres para la descripción
+const descripcion = document.getElementById("descripcion");
+const contador = document.getElementById("contador");
+
+if (descripcion && contador) {
+  descripcion.addEventListener("input", function () {
+    contador.textContent = this.value.length;
+  });
+}
+
+// Variables para el manejo de archivos
+let archivoSeleccionado = null;
+const areaArchivo = document.querySelector('.area-archivo');
+const infoArchivo = document.querySelector('.info-archivo');
+
+// Manejar la selección de archivos
+document.getElementById('archivo').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    // Validar tipo de archivo
+    const tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf', 
+                           'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                           'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                           'text/plain'];
+    
+    if (!tiposPermitidos.includes(file.type)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Tipo de archivo no válido',
+        text: 'Solo se permiten imágenes, PDF, documentos de Word, Excel y archivos de texto.',
+        confirmButtonColor: '#e74c3c'
+      });
+      this.value = '';
+      return;
+    }
+
+    // Validar tamaño (10MB máximo)
+    if (file.size > 10 * 1024 * 1024) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Archivo muy grande',
+        text: 'El archivo no puede ser mayor a 10MB.',
+        confirmButtonColor: '#e74c3c'
+      });
+      this.value = '';
+      return;
+    }
+
+    archivoSeleccionado = file;
+    
+    // Mostrar información del archivo
+    if (infoArchivo) {
+      const tamanoMB = (file.size / (1024 * 1024)).toFixed(2);
+      infoArchivo.innerHTML = `
+        <p><i class="fas fa-file"></i> <strong>${file.name}</strong></p>
+        <p><i class="fas fa-weight-hanging"></i> ${tamanoMB} MB</p>
+        <p><i class="fas fa-check-circle" style="color: #27ae60;"></i> Archivo listo para subir</p>
+      `;
+    }
+
+    // Si es una imagen, mostrar vista previa
+    if (file.type.startsWith('image/')) {
+      mostrarVistaPrevia(file);
+    }
+  }
+});
+
+// Función para mostrar vista previa de imágenes
+function mostrarVistaPrevia(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // Crear elemento de vista previa
+    let vistaPrevia = document.getElementById('vista-previa');
+    if (!vistaPrevia) {
+      vistaPrevia = document.createElement('div');
+      vistaPrevia.id = 'vista-previa';
+      vistaPrevia.style.cssText = `
+        margin-top: 15px;
+        text-align: center;
+      `;
+      areaArchivo.appendChild(vistaPrevia);
+    }
+
+    vistaPrevia.innerHTML = `
+      <div style="display: inline-block; position: relative;">
+        <img src="${e.target.result}" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 8px; border: 2px solid #e8f5e8;">
+        <button type="button" id="eliminar-vista-previa" style="position: absolute; top: -8px; right: -8px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 12px;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    `;
+
+    // Agregar evento para eliminar vista previa
+    document.getElementById('eliminar-vista-previa').addEventListener('click', function() {
+      vistaPrevia.remove();
+      document.getElementById('archivo').value = '';
+      archivoSeleccionado = null;
+      if (infoArchivo) {
+        infoArchivo.innerHTML = `
+          <p><small>Formatos permitidos: JPG, PNG, PDF, DOC, XLSX, TXT (Máx. 10MB)</small></p>
+        `;
+      }
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+// Función para subir archivo a Supabase Storage (VERSIÓN CORREGIDA)
+async function subirArchivo(file, idSoporte) {
+  try {
+    console.log('📤 Subiendo archivo...', file.name);
+    
+    // Crear nombre único para el archivo
+    const extension = file.name.split('.').pop();
+    const nombreArchivo = `soporte_${idSoporte}_${Date.now()}.${extension}`;
+
+    console.log('📁 Subiendo archivo como:', nombreArchivo);
+
+    // Subir archivo al bucket 'soportes'
+const { data, error } = await window.supabase.storage
+    .from('soportes')
+    .upload(nombreArchivo, file);
+
+    if (error) throw error;
+
+    console.log('✅ Archivo subido exitosamente:', data);
+
+    // Obtener URL pública del archivo
+    const { data: urlData } = supabase.storage
+      .from('soportes')
+      .getPublicUrl(nombreArchivo);
+
+    return {
+      nombre_original: file.name,
+      nombre_archivo: nombreArchivo,
+      url_publica: urlData.publicUrl,
+      tipo: file.type,
+      tamaño: file.size
     };
 
-    function loadPreferences() {
-        const saved = localStorage.getItem('heliconias_config_prefs');
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                userPreferences = { ...userPreferences, ...parsed };
-            } catch(e) {}
-        }
-        
-        document.getElementById('show-search').checked = userPreferences.showSearch;
-        document.getElementById('show-filters').checked = userPreferences.showFilters;
-        
-        aplicarPreferencias();
+  } catch (error) {
+    console.error('❌ Error subiendo archivo:', error);
+    throw new Error('No se pudo subir el archivo: ' + error.message);
+  }
+}
+
+// Función para verificar si el bucket existe (VERSIÓN CORREGIDA)
+async function verificarBucket() {
+  try {
+    const { data, error } = await supabase.storage.getBucket('soportes');
+    if (error) {
+      if (error.message.includes('not found')) {
+        console.warn('❌ Bucket "soportes" no encontrado');
+        return false;
+      }
+      throw error;
     }
+    console.log('✅ Bucket "soportes" verificado');
+    return true;
+  } catch (error) {
+    console.warn('⚠️ No se pudo verificar el bucket:', error.message);
+    return false;
+  }
+}
 
-    function savePreferences() {
-        localStorage.setItem('heliconias_config_prefs', JSON.stringify(userPreferences));
-        aplicarPreferencias();
-    }
-
-    function aplicarPreferencias() {
-        document.getElementById('search-bar').classList.toggle('hidden', !userPreferences.showSearch);
-        document.getElementById('filter-buttons').classList.toggle('hidden', !userPreferences.showFilters);
-        
-        if (todosLosMensajes && todosLosMensajes.length > 0) {
-            filtrarMensajes();
-        }
-    }
-
-    // ========== SUPABASE ==========
-    (function() {
-        const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
-        
-        function initSupabase() {
-            if (typeof supabase !== 'undefined' && supabase.createClient) {
-                window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
-                console.log('✅ Supabase inicializado');
-                return true;
-            }
-            return false;
-        }
-        
-        if (!initSupabase()) {
-            let attempts = 0;
-            const interval = setInterval(() => {
-                attempts++;
-                if (initSupabase()) clearInterval(interval);
-                else if (attempts > 30) clearInterval(interval);
-            }, 200);
-        }
-    })();
-
-    let currentUserData = null;
-    let currentUserId = null;
-    let esAdmin = false;
-    let todosLosMensajes = [];
-    let filtroActual = 'todos';
-    let textoBusqueda = '';
-
-    function updateDateTime() {
-        const now = new Date();
-        document.getElementById("current-date-time").textContent = now.toLocaleString("es-ES", {
-            weekday: "long", year: "numeric", month: "long", day: "numeric",
-            hour: "2-digit", minute: "2-digit", hour12: true,
-        });
-    }
-
-    function capitalizeName(text) {
-        if (!text) return '';
-        return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-    }
-
-    async function loadUserProfile() {
-        try {
-            const { data: { session } } = await window.supabase.auth.getSession();
-            if (!session || !session.user) {
-                document.getElementById('loading-section').style.display = 'none';
-                document.getElementById('login-prompt').style.display = 'block';
-                return;
-            }
-
-            const { data: userData } = await window.supabase
-                .from('usuarios')
-                .select('*')
-                .eq('correo', session.user.email)
-                .single();
-
-            if (!userData) throw new Error('No se encontraron datos');
-
-            currentUserData = userData;
-            currentUserId = userData.id_usuario;
-            esAdmin = (userData.id_usuario === 20);
-            
-            document.getElementById('messages-btn').style.display = 'inline-flex';
-            document.getElementById('modal-title-text').textContent = esAdmin ? '📋 Centro de Mensajes - Todos los Reportes' : '📬 Mis Mensajes - Soporte Técnico';
-            
-            document.getElementById('info-nombre').textContent = userData.nombre || 'No especificado';
-            document.getElementById('info-apellido').textContent = userData.apellido || 'No especificado';
-            document.getElementById('info-correo').textContent = userData.correo || 'No especificado';
-            document.getElementById('info-documento').textContent = userData.documento || 'No especificado';
-            document.getElementById('info-telefono').textContent = userData.telefono || 'No especificado';
-            document.getElementById('info-fecha-nacimiento').textContent = userData.fecha_nacimiento ? new Date(userData.fecha_nacimiento).toLocaleDateString('es-ES') : 'No especificado';
-            document.getElementById('profile-name').textContent = `${userData.nombre || ''} ${userData.apellido || ''}`.trim() || 'Usuario';
-            document.getElementById('profile-role').textContent = esAdmin ? 'Administrador' : 'Usuario';
-            
-            document.getElementById('loading-section').style.display = 'none';
-            document.getElementById('profile-info').style.display = 'block';
-            document.getElementById('login-prompt').style.display = 'none';
-            
-            if (esAdmin) cargarContadorMensajes();
-        } catch (error) {
-            document.getElementById('loading-section').style.display = 'none';
-            document.getElementById('login-prompt').style.display = 'block';
-        }
-    }
-
-    async function cargarContadorMensajes() {
-        try {
-            if (esAdmin) {
-                const { count } = await window.supabase
-                    .from('soporte')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('estado', 'pendiente');
-                const badge = document.getElementById('messages-badge');
-                if (count > 0) {
-                    badge.textContent = count;
-                    badge.style.display = 'inline-block';
-                } else {
-                    badge.style.display = 'none';
-                }
-            }
-        } catch (error) {}
-    }
-
-    function renderizarTarjetas(mensajes, containerId) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-        
-        if (mensajes.length === 0) {
-            container.innerHTML = `
-                <div style="text-align: center; padding: 40px; background: white; border-radius: 16px;">
-                    <i class="fas fa-inbox fa-2x" style="color: #cbd5e1; margin-bottom: 10px;"></i>
-                    <p style="color: #7f8c8d; font-size: 13px;">No hay mensajes</p>
-                </div>
-            `;
-            return;
-        }
-        
-        container.innerHTML = '';
-        
-        for (const msg of mensajes) {
-            let prioridadClass = '', prioridadText = '';
-            if (msg.prioridad === 'baja') { prioridadClass = 'prioridad-baja'; prioridadText = 'Baja'; }
-            else if (msg.prioridad === 'media') { prioridadClass = 'prioridad-media'; prioridadText = 'Media'; }
-            else { prioridadClass = 'prioridad-alta'; prioridadText = 'Alta'; }
-            
-            const card = document.createElement('div');
-            card.className = 'mensaje-card';
-            
-            card.innerHTML = `
-                <div class="mensaje-content">
-                    <div class="mensaje-header-line">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span class="mensaje-id-numero">#${msg.id_soporte}</span>
-                            <span class="mensaje-usuario-nombre"><i class="fas fa-user-circle"></i> ${msg.usuario_nombre}</span>
-                        </div>
-                        <span class="mensaje-prioridad-badge ${prioridadClass}">${prioridadText}</span>
-                    </div>
-                    <div class="mensaje-email">
-                        <i class="fas fa-envelope"></i> ${msg.usuario_correo || 'Sin correo'}
-                    </div>
-                    <div class="mensaje-stats">
-                        <span class="mensaje-tipo-badge"><i class="fas fa-tag"></i> ${msg.tipo || 'General'}</span>
-                        <span class="mensaje-fecha-small"><i class="far fa-calendar-alt"></i> ${msg.fecha_formateada}</span>
-                    </div>
-                    <div class="ver-mas-btn">
-                        <button class="btn-ver-mas" onclick="event.stopPropagation(); verDetalleMensaje(${msg.id_soporte})">
-                            <i class="fas fa-arrow-right"></i> Ver más
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            // Agregar evento click a la tarjeta completa
-            card.addEventListener('click', () => verDetalleMensaje(msg.id_soporte));
-            
-            container.appendChild(card);
-        }
-    }
-
-    function filtrarMensajes() {
-        let filtrados = [...todosLosMensajes];
-        if (filtroActual !== 'todos') filtrados = filtrados.filter(m => m.estado === filtroActual);
-        if (textoBusqueda.trim() !== '') {
-            const busqueda = textoBusqueda.toLowerCase();
-            filtrados = filtrados.filter(m => 
-                (m.usuario_nombre || '').toLowerCase().includes(busqueda) ||
-                (m.usuario_correo || '').toLowerCase().includes(busqueda) ||
-                (m.tipo || '').toLowerCase().includes(busqueda)
-            );
-        }
-        
-        const pendientes = filtrados.filter(m => m.estado === 'pendiente');
-        const contestadas = filtrados.filter(m => m.estado === 'contestada');
-        
-        document.getElementById('count-pendiente').textContent = pendientes.length;
-        document.getElementById('count-contestada').textContent = contestadas.length;
-        document.getElementById('pendiente-count-badge').textContent = pendientes.length;
-        document.getElementById('contestada-count-badge').textContent = contestadas.length;
-        
-        renderizarTarjetas(pendientes, 'pendientes-cards');
-        renderizarTarjetas(contestadas, 'contestadas-cards');
-    }
-
-    async function cargarMensajes() {
-        const pendientesDiv = document.getElementById('pendientes-cards');
-        const contestadasDiv = document.getElementById('contestadas-cards');
-        
-        if (pendientesDiv) pendientesDiv.innerHTML = '<div class="loading-spinner" style="padding: 20px;"><div class="spinner"></div><p>Cargando...</p></div>';
-        if (contestadasDiv) contestadasDiv.innerHTML = '<div class="loading-spinner" style="padding: 20px;"><div class="spinner"></div><p>Cargando...</p></div>';
-        
-        try {
-            let query = window.supabase.from('soporte').select('*');
-            if (!esAdmin) query = query.eq('id_usuario', currentUserId);
-            
-            const { data: mensajes, error } = await query.order('fecha_creacion', { ascending: false });
-            if (error) throw error;
-            
-            if (!mensajes || mensajes.length === 0) {
-                const noDataHtml = `<div style="text-align: center; padding: 40px;"><i class="fas fa-inbox fa-2x" style="color: #cbd5e1;"></i><p style="color: #7f8c8d;">No hay mensajes</p></div>`;
-                if (pendientesDiv) pendientesDiv.innerHTML = noDataHtml;
-                if (contestadasDiv) contestadasDiv.innerHTML = noDataHtml;
-                return;
-            }
-            
-            let usuarioMap = {};
-            if (esAdmin) {
-                const userIds = [...new Set(mensajes.map(m => m.id_usuario))];
-                const { data: usuarios } = await window.supabase
-                    .from('usuarios')
-                    .select('id_usuario, nombre, apellido, correo')
-                    .in('id_usuario', userIds);
-                if (usuarios) usuarios.forEach(u => { usuarioMap[u.id_usuario] = u; });
-            }
-            
-            todosLosMensajes = mensajes.map(msg => {
-                let nombre = '', correo = '';
-                if (esAdmin) {
-                    const u = usuarioMap[msg.id_usuario] || {};
-                    nombre = u.nombre ? `${u.nombre} ${u.apellido || ''}` : `Usuario #${msg.id_usuario}`;
-                    correo = u.correo || '';
-                } else {
-                    nombre = currentUserData?.nombre ? `${currentUserData.nombre} ${currentUserData.apellido}` : 'Yo';
-                    correo = currentUserData?.correo || '';
-                }
-                return {
-                    ...msg,
-                    usuario_nombre: nombre,
-                    usuario_correo: correo,
-                    fecha_formateada: new Date(msg.fecha_creacion).toLocaleDateString('es-ES'),
-                    estado: msg.estado || 'pendiente'
-                };
-            });
-            
-            filtrarMensajes();
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-    async function verDetalleMensaje(idSoporte) {
-        try {
-            cerrarModalMensajes();
-            
-            const { data: mensaje } = await window.supabase
-                .from('soporte')
-                .select('*')
-                .eq('id_soporte', idSoporte)
-                .single();
-            
-            if (!mensaje) throw new Error('Mensaje no encontrado');
-            
-            let usuario = {};
-            if (esAdmin && mensaje.id_usuario !== currentUserId) {
-                const { data: u } = await window.supabase
-                    .from('usuarios')
-                    .select('nombre, apellido, correo')
-                    .eq('id_usuario', mensaje.id_usuario)
-                    .single();
-                usuario = u || {};
-            } else {
-                usuario = currentUserData;
-            }
-            
-            const nombreUsuario = esAdmin ? (usuario.nombre ? `${usuario.nombre} ${usuario.apellido || ''}` : 'Usuario') : (currentUserData?.nombre || 'Yo');
-            const correoUsuario = usuario.correo || '';
-            const fecha = new Date(mensaje.fecha_creacion).toLocaleString('es-ES');
-            const fechaRespuesta = mensaje.fecha_respuesta ? new Date(mensaje.fecha_respuesta).toLocaleString('es-ES') : null;
-            
-            let prioridadColor = '';
-            if (mensaje.prioridad === 'baja') prioridadColor = '#d4edda';
-            else if (mensaje.prioridad === 'media') prioridadColor = '#fff3cd';
-            else prioridadColor = '#f8d7da';
-            
-            if (!esAdmin) {
-                await Swal.fire({
-                    title: `<i class="fas fa-envelope-open-text"></i> Mi Mensaje #${mensaje.id_soporte}`,
-                    html: `
-                        <div style="text-align: left;">
-                            <div style="background: #e8f5e8; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-                                <p><strong>📅 Fecha:</strong> ${fecha}</p>
-                                <p><strong>🏷️ Tipo:</strong> ${mensaje.tipo || 'No especificado'}</p>
-                                <p><strong>⚡ Prioridad:</strong> <span style="background: ${prioridadColor}; padding: 3px 12px; border-radius: 20px;">${mensaje.prioridad}</span></p>
-                                <p><strong>📌 Estado:</strong> ${mensaje.estado === 'pendiente' ? '⏳ Pendiente' : '✅ Contestada'}</p>
-                            </div>
-                            <p><strong>📝 Tu consulta:</strong></p>
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px;">${mensaje.descripcion || 'No hay descripción'}</div>
-                            ${mensaje.respuesta ? `
-                            <p><strong>💬 Respuesta del soporte:</strong></p>
-                            <div style="background: #e8f5e8; padding: 15px; border-radius: 12px;">
-                                ${mensaje.respuesta}
-                                ${fechaRespuesta ? `<div style="margin-top: 8px; font-size: 11px; color: #27ae60;"><i class="fas fa-clock"></i> Respondido: ${fechaRespuesta}</div>` : ''}
-                            </div>
-                            ` : '<div style="background: #fff3cd; padding: 15px; border-radius: 12px; text-align: center;">⏳ Tu mensaje está siendo procesado.</div>'}
-                        </div>
-                    `,
-                    icon: mensaje.respuesta ? 'success' : 'info',
-                    confirmButtonText: 'Entendido',
-                    confirmButtonColor: '#2e7d32'
-                });
-            } else {
-                const result = await Swal.fire({
-                    title: `<i class="fas fa-envelope-open-text"></i> Mensaje #${mensaje.id_soporte}`,
-                    html: `
-                        <div style="text-align: left; max-height: 55vh; overflow-y: auto;">
-                            <div style="background: #e8f5e8; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-                                <p><strong>👤 Usuario:</strong> ${nombreUsuario}</p>
-                                <p><strong>📧 Correo:</strong> ${correoUsuario}</p>
-                                <p><strong>📅 Fecha:</strong> ${fecha}</p>
-                                <p><strong>🏷️ Tipo:</strong> ${mensaje.tipo || 'No especificado'}</p>
-                                <p><strong>⚡ Prioridad:</strong> <span style="background: ${prioridadColor}; padding: 3px 12px; border-radius: 20px;">${mensaje.prioridad}</span></p>
-                                <p><strong>📌 Estado:</strong> ${mensaje.estado === 'pendiente' ? '⏳ Pendiente' : '✅ Contestada'}</p>
-                            </div>
-                            <p><strong>📝 Descripción del problema:</strong></p>
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px;">${mensaje.descripcion || 'No hay descripción'}</div>
-                            ${mensaje.respuesta ? `<p><strong>💬 Respuesta anterior:</strong></p><div style="background: #e8f5e8; padding: 15px; border-radius: 12px; margin-bottom: 15px;">${mensaje.respuesta}</div>` : ''}
-                            <label><strong>✍️ Tu respuesta:</strong></label>
-                            <textarea id="respuesta-textarea-${mensaje.id_soporte}" class="respuesta-textarea" rows="4" placeholder="Escribe tu respuesta aquí...">${mensaje.respuesta || ''}</textarea>
-                        </div>
-                    `,
-                    showCancelButton: true,
-                    confirmButtonText: '<i class="fas fa-paper-plane"></i> Enviar Respuesta',
-                    cancelButtonText: 'Cerrar',
-                    confirmButtonColor: '#2e7d32',
-                    width: '650px',
-                    preConfirm: () => {
-                        const respuesta = document.getElementById(`respuesta-textarea-${mensaje.id_soporte}`).value;
-                        if (!respuesta.trim()) {
-                            Swal.showValidationMessage('Escribe una respuesta antes de enviar');
-                            return false;
-                        }
-                        return { respuesta };
-                    }
-                });
-                
-                if (result.isConfirmed && result.value) {
-                    Swal.fire({ title: 'Enviando...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-                    await window.supabase
-                        .from('soporte')
-                        .update({
-                            respuesta: result.value.respuesta,
-                            estado: 'contestada',
-                            fecha_respuesta: new Date().toISOString(),
-                            respondido_por: currentUserId
-                        })
-                        .eq('id_soporte', mensaje.id_soporte);
-                    
-                    Swal.fire({ icon: 'success', title: '¡Respuesta enviada!', text: 'El usuario podrá ver tu respuesta.', confirmButtonColor: '#2e7d32' });
-                    cargarMensajes();
-                    cargarContadorMensajes();
-                }
-            }
-        } catch (error) {
-            Swal.fire('Error', 'No se pudo cargar el detalle', 'error');
-        }
-    }
-
-    function mostrarAyudaModal() {
-        if (esAdmin) {
-            Swal.fire({
-                title: '📋 Panel de Administrador',
-                html: `<div style="text-align: left;">
-                    <p><i class="fas fa-eye"></i> <strong>Ver todos los reportes</strong> - Todos los mensajes de usuarios.</p>
-                    <p><i class="fas fa-reply-all"></i> <strong>Responder mensajes</strong> - Haz clic en "Ver más" para responder.</p>
-                    <p><i class="fas fa-chart-line"></i> <strong>Seguimiento</strong> - Los mensajes cambian a "Contestada".</p>
-                    <p><i class="fas fa-bell"></i> <strong>Notificaciones</strong> - El contador rojo muestra los pendientes.</p>
-                </div>`,
-                icon: 'info', confirmButtonText: 'Entendido', confirmButtonColor: '#2e7d32'
-            });
-        } else {
-            Swal.fire({
-                title: '📬 Mis Mensajes',
-                html: `<div style="text-align: left;">
-                    <p><i class="fas fa-paper-plane"></i> <strong>Envía tu consulta</strong> - Ve a "Soporte".</p>
-                    <p><i class="fas fa-clock"></i> <strong>Tiempo de respuesta</strong> - Te responderemos pronto.</p>
-                    <p><i class="fas fa-envelope-open-text"></i> <strong>Revisa respuestas</strong> - Haz clic en "Ver más" para ver los detalles.</p>
-                </div>`,
-                icon: 'info', confirmButtonText: 'Entendido', confirmButtonColor: '#3498db'
-            });
-        }
-    }
-
-    function abrirModalMensajes() {
-        const modal = document.getElementById('modalMensajes');
-        if (modal) {
-            modal.classList.add('show');
-            cargarMensajes();
-        }
-    }
-
-    function cerrarModalMensajes() {
-        const modal = document.getElementById('modalMensajes');
-        if (modal) modal.classList.remove('show');
-    }
-
-    // Eventos de configuración
-    document.getElementById('show-search').addEventListener('change', (e) => { userPreferences.showSearch = e.target.checked; savePreferences(); });
-    document.getElementById('show-filters').addEventListener('change', (e) => { userPreferences.showFilters = e.target.checked; savePreferences(); });
-    document.getElementById('reset-config').addEventListener('click', () => {
-        userPreferences = { showSearch: true, showFilters: true };
-        savePreferences();
-        loadPreferences();
-        cargarMensajes();
-        Swal.fire({ icon: 'success', title: 'Restablecido', text: 'Configuración restablecida', confirmButtonColor: '#2e7d32', timer: 1500, showConfirmButton: false });
-    });
-
-    // Eventos principales
-    document.getElementById('edit-profile-btn')?.addEventListener('click', () => toggleEditMode(true));
-    document.getElementById('cancel-edit-btn')?.addEventListener('click', () => toggleEditMode(false));
-    document.getElementById('save-changes-btn')?.addEventListener('click', saveChanges);
-    document.getElementById('logout-btn')?.addEventListener('click', () => {
-        Swal.fire({ title: '¿Cerrar sesión?', icon: 'question', showCancelButton: true, confirmButtonColor: '#27ae60', confirmButtonText: 'Sí, salir' })
-            .then(result => { if (result.isConfirmed) window.location.href = 'index.html'; });
-    });
-    document.getElementById('help-btn')?.addEventListener('click', () => {
-        Swal.fire({ title: 'Ayuda', html: '<p>Panel de configuración personalizable. Tus preferencias se guardan automáticamente.</p>', icon: 'info', confirmButtonText: 'Entendido' });
-    });
-    document.getElementById('login-redirect-btn')?.addEventListener('click', () => window.location.href = 'index.html');
-    document.getElementById('messages-btn')?.addEventListener('click', () => abrirModalMensajes());
-    document.getElementById('modal-help-btn')?.addEventListener('click', (e) => { e.stopPropagation(); mostrarAyudaModal(); });
+// En la parte del formulario donde manejas el archivo (VERSIÓN CORREGIDA)
+if (archivoSeleccionado) {
+  try {
+    boton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo archivo...';
     
-    document.getElementById('search-input')?.addEventListener('input', (e) => {
-        textoBusqueda = e.target.value;
-        filtrarMensajes();
-    });
+    // Llamar a la función async correctamente
+    infoArchivoSubido = subirArchivo(archivoSeleccionado, idSoporte);
     
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            filtroActual = btn.dataset.filter;
-            filtrarMensajes();
-        });
-    });
+    // Actualizar el reporte con SOLO la columna que existe
+    const { error: updateError } = supabase
+      .from('soporte')
+      .update({
+        archivo: infoArchivoSubido.nombre_archivo  // Solo esta columna existe
+      })
+      .eq('id_soporte', idSoporte);
 
-    async function toggleEditMode(editing) {
-        document.getElementById('edit-profile-btn').style.display = editing ? 'none' : 'inline-flex';
-        document.getElementById('cancel-edit-btn').style.display = editing ? 'inline-flex' : 'none';
-        document.getElementById('save-changes-btn').style.display = editing ? 'inline-flex' : 'none';
+    if (updateError) {
+      console.warn('⚠️ No se pudo actualizar la información del archivo:', updateError);
+    } else {
+      console.log('✅ Información de archivo actualizada en la BD');
+    }
+
+  } catch (error) {
+    console.warn('⚠️ Error subiendo archivo, pero el reporte se guardó:', error);
+    
+    // Mostrar mensaje informativo al usuario
+    Swal.fire({
+      icon: 'warning',
+      title: 'Archivo no subido',
+      html: `
+        <div style="text-align: center;">
+          <p>El reporte se guardó correctamente, pero el archivo no pudo subirse.</p>
+          <p style="color: #7f8c8d; font-size: 0.9rem;">
+            <strong>Razón:</strong> ${error.message}
+          </p>
+        </div>
+      `,
+      confirmButtonColor: '#f39c12',
+      confirmButtonText: 'Entendido'
+    });
+  }
+}
+
+// Función mejorada para obtener el ID del usuario
+async function obtenerUsuarioId() {
+    try {
+        console.log('🔍 Intentando obtener usuario autenticado...');
         
-        const fields = ['nombre', 'apellido', 'correo', 'documento', 'telefono', 'fecha-nacimiento'];
-        fields.forEach(field => {
-            const displayEl = document.getElementById(`info-${field}`);
-            const inputEl = document.getElementById(`edit-${field}`);
-            if (displayEl && inputEl) {
-                displayEl.style.display = editing ? 'none' : 'block';
-                inputEl.style.display = editing ? 'block' : 'none';
-                if (editing && currentUserData) {
-                    const fieldName = field === 'fecha-nacimiento' ? 'fecha_nacimiento' : field;
-                    inputEl.value = currentUserData[fieldName] || '';
-                }
-            }
-        });
-    }
-
-    async function saveChanges() {
-        try {
-            const nombre = capitalizeName(document.getElementById('edit-nombre').value.trim());
-            const apellido = capitalizeName(document.getElementById('edit-apellido').value.trim());
-            const correo = document.getElementById('edit-correo').value.trim();
-            
-            if (!nombre || !apellido || !correo) throw new Error('Campos obligatorios');
-            
-            Swal.fire({ title: 'Guardando...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            
-            await window.supabase
-                .from('usuarios')
-                .update({ nombre, apellido, correo })
-                .eq('id_usuario', currentUserData.id_usuario);
-            
-            currentUserData = { ...currentUserData, nombre, apellido, correo };
-            document.getElementById('info-nombre').textContent = nombre;
-            document.getElementById('info-apellido').textContent = apellido;
-            document.getElementById('info-correo').textContent = correo;
-            document.getElementById('profile-name').textContent = `${nombre} ${apellido}`;
-            
-            toggleEditMode(false);
-            Swal.fire({ icon: 'success', title: '¡Éxito!', text: 'Cambios guardados', timer: 1500, showConfirmButton: false });
-        } catch (error) {
-            Swal.fire({ icon: 'error', title: 'Error', text: error.message });
+        // Verificar que supabase esté disponible
+        if (!window.supabase || typeof window.supabase.auth === 'undefined') {
+            console.warn('⚠️ Supabase no está disponible, usando ID por defecto');
+            return 1;
         }
+        
+        // Opción 1: Verificar autenticación de Supabase
+        const { data: { user }, error: authError } = await window.supabase.auth.getUser();
+        
+        if (authError) {
+            console.warn('Error en auth:', authError);
+        }
+        
+        if (user && user.email) {
+            console.log('👤 Usuario de Supabase Auth encontrado:', user.email);
+            
+            // Buscar en tabla usuarios usando CORREO
+            const { data: usuario, error: userError } = await window.supabase
+                .from('usuarios')
+                .select('id_usuario')
+                .eq('correo', user.email)
+                .maybeSingle(); // Usar maybeSingle en lugar de single para evitar errores
+            
+            if (userError) {
+                console.warn('Error buscando usuario:', userError);
+                console.warn('⚠️ Usando ID por defecto para desarrollo');
+                return 1;
+            }
+            
+            if (usuario && usuario.id_usuario) {
+                console.log('✅ Usuario encontrado en BD:', usuario.id_usuario);
+                return usuario.id_usuario;
+            }
+        }
+        
+        // Opción 2: Verificar localStorage/sessionStorage
+        const usuarioGuardado = localStorage.getItem('usuario_id') || sessionStorage.getItem('usuario_id');
+        if (usuarioGuardado) {
+            console.log('📁 Usuario de storage:', usuarioGuardado);
+            return parseInt(usuarioGuardado);
+        }
+        
+        // Opción 3: Valor por defecto (para desarrollo)
+        console.warn('⚠️ Usando ID por defecto para desarrollo');
+        return 1;
+        
+    } catch (error) {
+        console.error('❌ Error crítico obteniendo usuario:', error);
+        return 1; // Valor por defecto para evitar bloqueos
+    }
+}
+// FORMULARIO DE SOPORTE - VERSIÓN CON SUBIDA DE ARCHIVOS
+document.getElementById("formSoporte").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  
+  const boton = this.querySelector(".btn-reporte");
+  const botonOriginalHTML = boton.innerHTML;
+  boton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+  boton.disabled = true;
+  boton.classList.add("loading");
+
+  try {
+    // Obtener datos del formulario
+    const nombre = document.getElementById("nombre").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const tipo = document.getElementById("tipo").value;
+    const descripcionTexto = document.getElementById("descripcion").value.trim();
+    const prioridad = document.querySelector('input[name="prioridad"]:checked').value;
+
+    // Validaciones básicas
+    if (!nombre || !email || !descripcionTexto) {
+      throw new Error('Por favor completa todos los campos obligatorios');
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-        loadPreferences();
-        loadUserProfile();
+    if (!email.includes('@')) {
+      throw new Error('Por favor ingresa un email válido');
+    }
+
+    // Obtener ID de usuario
+    const usuarioId = await obtenerUsuarioId();
+    console.log('👤 ID de usuario a usar:', usuarioId);
+
+    // Preparar descripción
+    const descripcionCompleta = `📧 EMAIL: ${email}\n👤 NOMBRE: ${nombre}\n\n📝 DESCRIPCIÓN:\n${descripcionTexto}`;
+
+    // DATOS PARA INSERTAR - USANDO LOS NOMBRES CORRECTOS DE COLUMNAS
+    const insertData = {
+      id_usuario: usuarioId,
+      tipo: tipo,
+      descripcion: descripcionCompleta,
+      prioridad: prioridad,
+      estado: 'pendiente',
+      fecha_creacion: new Date().toISOString(),
+      email: email
+    };
+
+    console.log('📤 Enviando datos del reporte...');
+
+    // Insertar reporte en Supabase
+    const { data: reporteData, error: reporteError } = await supabase
+      .from('soporte')
+      .insert([insertData])
+      .select();
+
+    if (reporteError) {
+      console.error('❌ Error de Supabase:', reporteError);
+      
+      // Manejar error de foreign key específicamente
+      if (reporteError.message.includes('foreign key') || reporteError.code === '23503') {
+        throw new Error('Error de usuario no válido. Por favor contacta al administrador.');
+      }
+      
+      throw reporteError;
+    }
+
+    const idSoporte = reporteData[0].id_soporte;
+    console.log('✅ Reporte insertado exitosamente. ID:', idSoporte);
+
+    let infoArchivoSubido = null;
+
+    // Subir archivo si hay uno seleccionado
+    if (archivoSeleccionado) {
+      try {
+        boton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo archivo...';
+        
+        infoArchivoSubido = await subirArchivo(archivoSeleccionado, idSoporte);
+        
+        // Actualizar el reporte con la información del archivo
+        const { error: updateError } = await supabase
+          .from('soporte')
+          .update({
+            archivo: infoArchivoSubido.nombre_archivo,
+            ruta_archivo: infoArchivoSubido.ruta,
+            url_archivo: infoArchivoSubido.url_publica
+          })
+          .eq('id_soporte', idSoporte);
+
+        if (updateError) {
+          console.warn('⚠️ No se pudo actualizar la información del archivo:', updateError);
+        }
+
+        console.log('✅ Información de archivo actualizada');
+
+      } catch (error) {
+        console.warn('⚠️ Error subiendo archivo, pero el reporte se guardó:', error);
+        // No lanzar error aquí para que el reporte se guarde aunque falle la subida del archivo
+      }
+    }
+
+    // Mostrar mensaje de éxito
+    let mensajeExito = `
+      <div style="text-align: center;">
+        <div style="font-size: 3rem; color: #27ae60; margin-bottom: 15px;">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <p style="margin-bottom: 10px; font-size: 1.1rem; font-weight: 600;">
+          Tu solicitud ha sido registrada exitosamente.
+        </p>
+        <p style="color: #7f8c8d; font-size: 0.9rem;">
+          Número de ticket: <strong>#${idSoporte}</strong>
+        </p>
+    `;
+
+    if (infoArchivoSubido) {
+      mensajeExito += `
+        <p style="color: #2e7d32; font-size: 0.8rem; margin-top: 10px;">
+          <i class="fas fa-paperclip"></i> Archivo adjunto: ${infoArchivoSubido.nombre_original}
+        </p>
+      `;
+    }
+
+    mensajeExito += `
+        <p style="color: #2e7d32; font-size: 0.8rem; margin-top: 10px;">
+          <i class="fas fa-envelope"></i> Te contactaremos a: ${email}
+        </p>
+      </div>
+    `;
+
+    await Swal.fire({
+      icon: 'success',
+      title: '¡Reporte Enviado!',
+      html: mensajeExito,
+      confirmButtonColor: '#2e7d32',
+      confirmButtonText: 'Aceptar',
+      width: 450
     });
+
+    // Resetear formulario
+    this.reset();
+    archivoSeleccionado = null;
+    if (contador) contador.textContent = "0";
+    
+    // Limpiar vista previa e info de archivo
+    const vistaPrevia = document.getElementById('vista-previa');
+    if (vistaPrevia) vistaPrevia.remove();
+    
+    if (infoArchivo) {
+      infoArchivo.innerHTML = `
+        <p><small>Formatos permitidos: JPG, PNG, PDF, DOC, XLSX, TXT (Máx. 10MB)</small></p>
+      `;
+    }
+
+  } catch (error) {
+    console.error('❌ Error general:', error);
+    
+    let mensajeError = 'No se pudo enviar el reporte. ';
+    
+    if (error.message.includes('foreign key')) {
+      mensajeError += 'Error de configuración de usuario.';
+    } else if (error.message.includes('network') || error.message.includes('fetch')) {
+      mensajeError += 'Error de conexión. Verifica tu internet.';
+    } else if (error.message.includes('JWT')) {
+      mensajeError += 'Error de autenticación. Por favor, inicia sesión nuevamente.';
+    } else {
+      mensajeError += error.message;
+    }
+
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: mensajeError,
+      confirmButtonColor: '#e74c3c'
+    });
+  } finally {
+    // Restaurar botón
+    boton.innerHTML = botonOriginalHTML;
+    boton.disabled = false;
+    boton.classList.remove("loading");
+  }
+});
+
+// Función para mostrar SweetAlert de Gmail
+function mostrarSweetAlertGmail() {
+  Swal.fire({
+    title: '<div style="display: flex; align-items: center; gap: 10px; color: #2c3e50;"><i class="fas fa-envelope" style="color: #21773EFF; font-size: 1.5rem;"></i><span>Contactar por Correo</span></div>',
+    html: `
+      <div style="text-align: center;">
+        <div style="background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+          <h4 style="margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <i class="fas fa-question-circle"></i>
+            ¿Enviar correo a soporte?
+          </h4>
+        </div>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 2px solid #e8f5e8; margin-bottom: 20px;">
+          <div style="font-size: 1.1rem; font-weight: 600; color: #2c3e50; margin-bottom: 10px;">
+            <i class="fas fa-at" style="color: #2e7d32;"></i>
+            Correo de soporte:
+          </div>
+          <div class="correo-display" style="background: white; padding: 12px; border-radius: 8px; border: 2px dashed #2e7d32; font-size: 1rem; font-weight: 600; color: #2e7d32;">
+            joacoxx2340@gmail.com
+          </div>
+        </div>
+        
+        <p style="color: #7f8c8d; margin-bottom: 20px;">
+          <i class="fas fa-info-circle" style="color: #3498db;"></i>
+          Se abrirá Gmail con los datos de tu reporte prellenados automáticamente.
+        </p>
+      </div>
+    `,
+    showCloseButton: true,
+    showCancelButton: true,
+    confirmButtonColor: '#2e7d32',
+    cancelButtonColor: '#e74c3c',
+    confirmButtonText: '<i class="fab fa-google"></i> Abrir Gmail',
+    cancelButtonText: '<i class="fas fa-times"></i> Cancelar',
+    width: 500,
+    background: '#ffffff',
+    customClass: {
+      popup: 'gmail-swal-popup',
+      title: 'gmail-swal-title',
+      htmlContainer: 'gmail-swal-html',
+      confirmButton: 'gmail-swal-confirm-btn',
+      cancelButton: 'gmail-swal-cancel-btn'
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      abrirGmail();
+    }
+  });
+}
+
+// Función para abrir Gmail directamente
+function abrirGmail() {
+  const nombre = document.getElementById("nombre").value || "Usuario";
+  const tipoProblema = document.getElementById("tipo").value;
+  const descripcionTexto = document.getElementById("descripcion").value || "Por favor describa su problema aquí...";
+
+  const asunto = `Problema con el Sistema Heliconias - ${tipoProblema}`;
+  const cuerpo = `Hola equipo de soporte de Heliconias,\n\nMi nombre es ${nombre}.\n\nTengo el siguiente problema:\n${descripcionTexto}\n\nPor favor contáctenme lo antes posible.\n\nSaludos,\n${nombre}`;
+
+  // Abrir Gmail directamente
+  window.open(
+    `https://mail.google.com/mail/?view=cm&fs=1&to=joacoxx2340@gmail.com&su=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`,
+    "_blank",
+  );
+}
+
+// Función para abrir WhatsApp inteligente (app o web)
+function abrirWhatsApp() {
+  const nombre = document.getElementById("nombre").value || "Usuario";
+  const tipoProblema = document.getElementById("tipo").value;
+  const descripcionTexto = document.getElementById("descripcion").value || "Tengo un problema con el sistema";
+
+  const mensaje = `Hola, soy ${nombre}. Tengo un problema con Heliconias:\n\n*Tipo de problema:* ${tipoProblema}\n*Descripción:* ${descripcionTexto}\n\nPor favor contáctenme lo antes posible.`;
+
+  // Número completamente oculto y seguro
+  const numeroSeguro = "573189427120";
+
+  // Detectar si es dispositivo móvil
+  const esMovil = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  if (esMovil) {
+    // Abrir aplicación de WhatsApp en móviles
+    window.open(
+      `https://api.whatsapp.com/send?phone=${numeroSeguro}&text=${encodeURIComponent(mensaje)}`,
+      "_blank",
+    );
+  } else {
+    // Abrir WhatsApp Web en desktop
+    window.open(
+      `https://web.whatsapp.com/send?phone=${numeroSeguro}&text=${encodeURIComponent(mensaje)}`,
+      "_blank",
+    );
+  }
+}
+
+// Asignar la función al botón de Gmail
+document.getElementById("btnGmail").addEventListener("click", function (e) {
+  e.preventDefault();
+  mostrarSweetAlertGmail();
+});
+
+// Asignar la función al botón de WhatsApp
+document.getElementById("btnWhatsapp").addEventListener("click", function (e) {
+  e.preventDefault();
+  abrirWhatsApp();
+});
+
+// Botón de ayuda del header con SweetAlert
+document.getElementById('help-btn').addEventListener('click', function(e) {
+  e.preventDefault();
+  Swal.fire({
+    title: '<div style="display: flex; align-items: center; gap: 10px; color: #2c3e50;"><i class="fas fa-life-ring" style="color: #3498db; font-size: 1.5rem;"></i><span>Centro de Ayuda - Soporte</span></div>',
+    html: `
+      <div style="text-align: left;">
+        <div style="background: linear-gradient(135deg, #3498db, #2c3e50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+          <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-info-circle"></i>
+            Estamos aquí para ayudarte
+          </h4>
+        </div>
+        
+        <div style="display: grid; gap: 15px; margin-bottom: 20px;">
+          <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+            <i class="fas fa-list-ol" style="color: #3498db; font-size: 1.2rem; margin-top: 2px;"></i>
+            <div>
+              <strong style="color: #2c3e50;">Paso 1:</strong>
+              <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Completa el formulario de soporte con todos los detalles de tu problema</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #27ae60;">
+            <i class="fas fa-flag" style="color: #27ae60; font-size: 1.2rem; margin-top: 2px;"></i>
+            <div>
+              <strong style="color: #2c3e50;">Paso 2:</strong>
+              <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Selecciona la prioridad adecuada para tu reporte</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #f39c12;">
+            <i class="fas fa-paperclip" style="color: #f39c12; font-size: 1.2rem; margin-top: 2px;"></i>
+            <div>
+              <strong style="color: #2c3e50;">Paso 3:</strong>
+              <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Adjunta archivos relevantes (capturas, documentos, etc.)</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #e74c3c;">
+            <i class="fas fa-paper-plane" style="color: #e74c3c; font-size: 1.2rem; margin-top: 2px;"></i>
+            <div>
+              <strong style="color: #2c3e50;">Paso 4:</strong>
+              <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Envía el formulario y recibe confirmación inmediata</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #9b59b6;">
+            <i class="fas fa-clock" style="color: #9b59b6; font-size: 1.2rem; margin-top: 2px;"></i>
+            <div>
+              <strong style="color: #2c3e50;">Paso 5:</strong>
+              <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Te contactaremos en un plazo máximo de 24 horas</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #ffeaa7, #fab1a0); padding: 15px; border-radius: 10px; border-left: 4px solid #e17055;">
+          <h5 style="margin: 0 0 8px 0; color: #2d3436; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-graduation-cap"></i>
+            Canales de Contacto
+          </h5>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #2d3436; display: flex; align-items: center; gap: 5px;">
+              <i class="fab fa-google" style="color: #ea4335;"></i>
+              Gmail
+            </span>
+            <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #2d3436; display: flex; align-items: center; gap: 5px;">
+              <i class="fab fa-whatsapp" style="color: #25d366;"></i>
+              WhatsApp
+            </span>
+          </div>
+        </div>
+      </div>
+    `,
+    showCloseButton: true,
+    confirmButtonColor: '#3498db',
+    confirmButtonText: '<i class="fas fa-check-circle"></i> Entendido',
+    width: 600,
+    background: '#ffffff',
+    customClass: {
+      popup: 'help-swal-popup',
+      title: 'help-swal-title',
+      htmlContainer: 'help-swal-html',
+      confirmButton: 'help-swal-confirm-btn'
+    }
+  });
+});
+
+// Botón de salir
+document.getElementById("logout-btn").addEventListener("click", function() {
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "¿Quieres cerrar sesión?",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#27ae60',
+    cancelButtonColor: '#e74c3c',
+    confirmButtonText: 'Sí, salir',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Mostrar mensaje de "Saliendo..."
+      Swal.fire({
+        title: 'Saliendo...',
+        text: "Cerrando sesión",
+        icon: 'info',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading()
+        }
+      }).then(() => {
+        // Redirigir a index.html después de mostrar el mensaje
+        window.location.href = 'index.html';
+      });
+    }
+  });
+});
+
+// Agregar estilos CSS para los SweetAlert
+const sweetAlertStyle = document.createElement('style');
+sweetAlertStyle.textContent = `
+  .gmail-swal-popup, .help-swal-popup {
+    border-radius: 15px;
+    border: 2px solid #e8f5e8;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+  
+  .gmail-swal-title, .help-swal-title {
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+  }
+  
+  .gmail-swal-html, .help-swal-html {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  .gmail-swal-confirm-btn, .help-swal-confirm-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-weight: 600 !important;
+    padding: 12px 30px !important;
+    border-radius: 8px !important;
+  }
+  
+  .gmail-swal-cancel-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-weight: 600 !important;
+    padding: 12px 30px !important;
+    border-radius: 8px !important;
+  }
+  
+  .swal2-close {
+    color: #7f8c8d !important;
+    font-size: 1.5rem !important;
+    transition: color 0.3s ease !important;
+  }
+  
+  .swal2-close:hover {
+    color: #e74c3c !important;
+  }
+`;
+document.head.appendChild(sweetAlertStyle);
     </script>
-</body>
+  </body>
 </html>
