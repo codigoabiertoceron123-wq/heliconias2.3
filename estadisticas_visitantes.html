@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas Generales de Visitantes - Parque Heliconias</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Incluir Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Inicializar Supabase
+        const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    </script>
+    <link rel="stylesheet" href="css/styless2.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="top-section">
+            <div class="logo">
+                <div class="logo-img">
+                    <i class="fas fa-leaf" style="
+                        display: block;
+                        width: 50px;
+                        height: 50px;
+                        background-image: url('img/logo.png');
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        font-size: 0;
+                        color: transparent;
+                    ">></i>
+                </div>
+                <h1>Heliconias Reports</h1>
+            </div>
+            <nav class="main-nav">
+                <a href="principal.html" class="nav-item active tooltip">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </a>
+                <a href="eventos.html" class="nav-item tooltip">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Eventos</span>
+                </a>
+                <a href="actividad.html" class="nav-item tooltip">
+                    <i class="fas fa-hiking"></i>
+                    <span>Actividades</span>
+                </a>
+                <a href="reportes.html" class="nav-item tooltip">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Reportes</span>
+                </a>
+                <a href="configuracion.html" class="nav-item tooltip">
+                    <i class="fas fa-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="top-bar">
+        <div class="system-date">
+            <i class="fas fa-clock"></i>
+            <span id="current-date-time">Cargando fecha y hora...</span>
+        </div>
+
+        <div class="user-actions">
+            <a href="soporte.html" class="btn btn-primary tooltip">
+                <i class="fas fa-headset"></i> Soporte
+            </a>
+
+            <button class="btn btn-primary tooltip" id="help-btn">
+                <i class="fas fa-question-circle"></i> Ayuda
+            </button>
+
+            <button class="btn btn-accent tooltip" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </button>
+        </div>
+    </div>
+
+    <main>
+        <div class="content-area">
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <h3><i class="fas fa-users"></i> Total de Visitantes</h3>
+                    <div class="stat-number" id="total-visitantes">0</div>
+                    <p class="stat-description">Visitantes registrados en total</p>
+                </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-calendar-alt"></i> Reservas Activas</h3>
+                    <div class="stat-number" id="total-reservas">0</div>
+                    <p class="stat-description">Reservas confirmadas</p>
+                </div>
+                <div class="stat-card">
+                    <h3><i class="fas fa-user-friends"></i> Participantes Promedio</h3>
+                    <div class="stat-number" id="participantes-promedio">0</div>
+                    <p class="stat-description">Por reserva</p>
+                </div>
+                
+            </div>
+
+            <div id="data-container">
+                <!-- Los datos se cargan dinámicamente aquí -->
+            </div>
+
+            <!-- EL MODAL SE CREARÁ DINÁMICAMENTE POR EL CÓDIGO QUE TE PASÉ -->
+            <!-- NO DEBES TENER NINGÚN MODAL EN EL HTML -->
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- ORDEN CORRECTO DE MÓDULOS -->
+    <script src="js/time-processor.js"></script>
+    <script src="js/data-processor.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/chart-manager.js"></script>
+    
+    <!-- EL UIManager MODERNO QUE TE PASÉ -->
+    <script src="js/ui-manager.js"></script>
+
+    <!-- Export Manager actualizado para trabajar con el nuevo modal -->
+    <script src="js/export-manager.js"></script>
+
+    <!-- App.js - DEBE IR AL FINAL -->
+    <script src="js/app.js"></script>
+
+    <!-- Script para actualizar fecha y hora -->
+    <script>
+        function actualizarFechaHora() {
+            const ahora = new Date();
+            const opciones = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const fechaHora = ahora.toLocaleDateString('es-ES', opciones);
+            document.getElementById('current-date-time').textContent = fechaHora;
+        }
+
+        // Actualizar cada segundo
+        setInterval(actualizarFechaHora, 1000);
+        actualizarFechaHora();
+
+        // Botones de ayuda y logout
+        document.getElementById('help-btn').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Ayuda del Sistema',
+                html: `
+                    <div style="text-align: left; padding: 10px;">
+                        <h4>📊 Análisis de Visitantes</h4>
+                        <p>• <strong>Haz clic en cualquier gráfica</strong> para verla en tamaño ampliado.</p>
+                        <p>• <strong>Usa los botones de categoría</strong> para cambiar el tipo de análisis.</p>
+                        <p>• <strong>Aplica filtros</strong> en la vista ampliada para datos específicos.</p>
+                        <p>• <strong>Descarga gráficas</strong> en PNG o Excel.</p>
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#10b981'
+            });
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            Swal.fire({
+                title: '¿Cerrar sesión?',
+                text: '¿Estás seguro de que quieres salir del sistema?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, salir',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigir al login
+                    window.location.href = 'index.html';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

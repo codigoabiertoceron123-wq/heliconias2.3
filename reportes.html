@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parque de las Heliconias - Panel de Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Incluir Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="css/reporte.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="top-section">
+            <div class="logo">
+                <div class="logo-img">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h1>Heliconias Reports</h1>
+            </div>
+            <!-- Navegación horizontal -->
+            <nav class="main-nav">
+                <a href="principal.html" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </a>
+                <a href="eventos.html" class="nav-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Eventos</span>
+                </a>
+                <a href="actividad.html" class="nav-item">
+                    <i class="fas fa-hiking"></i>
+                    <span>Actividades</span>
+                </a>
+                <a href="reportes.html" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Reportes</span>
+                </a>
+                <a href="configuracion.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="top-bar">
+        <div class="system-date">
+            <i class="fas fa-clock"></i>
+            <span id="current-date-time">Cargando fecha y hora...</span>
+        </div>
+
+        <div class="user-actions">
+            <a href="soporte.html" class="btn btn-primary">
+                <i class="fas fa-headset"></i> Soporte
+            </a>
+            <button class="btn btn-primary" id="help-main-btn">
+                <i class="fas fa-question-circle"></i> Ayuda
+            </button>
+            <button class="btn btn-accent" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </button>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <main>
+        <!-- Panel Principal -->
+        <div class="main-container" id="main-panel">
+            <div class="buttons-container">
+                <h2>Panel de Informes</h2>
+                <p>Selecciona una opción para comenzar a trabajar con los informes del parque</p>
+                <div class="primary-buttons">
+                    <button class="btn-primary-large" id="write-report-btn">
+                        <i class="fas fa-file-signature"></i>
+                        Escribir Informe
+                    </button>
+                    <button class="btn-primary-large" id="consult-report-btn">
+                        <i class="fas fa-search-plus"></i>
+                        Consultar Informe
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editor de Informes -->
+        <div class="editor-container" id="editor-panel">
+            <!-- El contenido se carga dinámicamente -->
+        </div>
+    </main>
+
+    <!-- Sidebar de historial - MEJORADO -->
+    <div class="history-sidebar" id="history-sidebar">
+        <div class="history-header">
+            <h3><i class="fas fa-history"></i> Historial de Informes</h3>
+            <button class="history-toggle" id="history-toggle" title="Ocultar historial">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+        
+        <div class="history-content">
+            <!-- Filtros y búsqueda -->
+            <div class="history-filters">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-reports" placeholder="Buscar reportes...">
+                </div>
+            </div>
+            
+            <!-- Tabs de estado -->
+            <div class="history-tabs">
+                <button class="history-tab active" data-tab="all">
+                    <i class="fas fa-list"></i> Todos
+                    <span class="tab-count" id="count-all">0</span>
+                </button>
+                <button class="history-tab" data-tab="borrador">
+                    <i class="fas fa-edit"></i> Borradores
+                    <span class="tab-count" id="count-borrador">0</span>
+                </button>
+                <button class="history-tab" data-tab="finalizado">
+                    <i class="fas fa-check-circle"></i> Finalizados
+                    <span class="tab-count" id="count-finalizado">0</span>
+                </button>
+            </div>
+            
+            <!-- Información de resumen -->
+            <div class="history-stats">
+                <div class="stat-item">
+                    <i class="fas fa-file-alt"></i>
+                    <div>
+                        <span class="stat-number" id="total-reports">0</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <span class="stat-number" id="recent-reports">0</span>
+                        <span class="stat-label">Últimos 7 días</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lista de reportes -->
+            <div class="reports-list-container">
+                <div class="reports-list-header">
+                    <h4><i class="fas fa-file"></i> Reportes</h4>
+                    <button class="btn-refresh" id="refresh-reports" title="Actualizar lista">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div class="reports-list" id="reports-list">
+                    <!-- Los reportes se cargan dinámicamente aquí -->
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Cargando reportes...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Acciones rápidas -->
+            <div class="history-actions">
+                <button class="btn-action-new" id="new-report-from-history">
+                    <i class="fas fa-plus-circle"></i> Nuevo Reporte
+                </button>
+                <button class="btn-action-help" id="help-history">
+                    <i class="fas fa-question-circle"></i> Ayuda
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Configuración de Supabase - CORREGIDO -->
+   <!-- Inicialización CORRECTA de Supabase -->
+<script>
+    (function() {
+        const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
+        
+        function initSupabase() {
+            if (typeof supabase !== 'undefined' && supabase.createClient) {
+                window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+                window.supabaseClient = window.supabase;
+                console.log('✅ Supabase inicializado correctamente');
+                return true;
+            }
+            return false;
+        }
+        
+        // Intentar inicializar inmediatamente
+        if (!initSupabase()) {
+            console.log('⏳ Esperando carga de Supabase...');
+            let attempts = 0;
+            const interval = setInterval(() => {
+                attempts++;
+                if (initSupabase()) {
+                    clearInterval(interval);
+                    console.log(`✅ Supabase inicializado después de ${attempts} intentos`);
+                } else if (attempts > 30) {
+                    clearInterval(interval);
+                    console.error('❌ Error: No se pudo inicializar Supabase');
+                    
+                    // Mostrar error en la interfaz
+                    const container = document.getElementById('data-container');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="no-data" style="color: #e74c3c;">
+                                <i class="fas fa-exclamation-triangle fa-3x"></i>
+                                <h3>Error de conexión con la base de datos</h3>
+                                <p>No se pudo conectar con Supabase. Por favor, verifica tu conexión a internet y recarga la página.</p>
+                                <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 15px;">
+                                    <i class="fas fa-sync-alt"></i> Recargar página
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            }, 200);
+        }
+    })();
+</script>
+    
+    <script src="js/reporte.js"></script>
+    <script src="js/editor-functions.js"></script>
+    <script src="js/table-functions.js"></script>
+    <script src="js/image-functions.js"></script>
+    <script src="js/graficas-functions.js"></script>
+    <script src="js/shared-functions.js"></script>
+    <script src="js/db-functions.js"></script>
+    
+    <!-- Script para inicializar funcionalidades del historial -->
+    <script>
+         document.addEventListener('DOMContentLoaded', function() {
+        // Event listeners para el historial
+        const refreshBtn = document.getElementById('refresh-reports');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', function() {
+                if (typeof loadReports === 'function') {
+                    loadReports();
+                    // Animación de refresco
+                    refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    setTimeout(() => {
+                        refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
+                    }, 1000);
+                }
+            });
+        }
+        
+        const newReportBtn = document.getElementById('new-report-from-history');
+        if (newReportBtn) {
+            newReportBtn.addEventListener('click', function() {
+                const writeReportBtn = document.getElementById('write-report-btn');
+                if (writeReportBtn) {
+                    writeReportBtn.click();
+                }
+            });
+        }
+        
+        const helpHistoryBtn = document.getElementById('help-history');
+        if (helpHistoryBtn) {
+            helpHistoryBtn.addEventListener('click', function() {
+                Swal.fire({
+                    title: '<div style="display: flex; align-items: center; gap: 10px; color: #2c3e50;"><i class="fas fa-history" style="color: #2e7d32; font-size: 1.5rem;"></i><span>Guía del Historial de Reportes</span></div>',
+                    html: `
+                        <div style="text-align: left;">
+                            <div style="background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                                <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-book-open"></i>
+                                    Todo lo que necesitas saber sobre el historial
+                                </h4>
+                            </div>
+                            
+                            <div style="display: grid; gap: 15px; margin-bottom: 20px;">
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #2e7d32;">
+                                    <i class="fas fa-filter" style="color: #2e7d32; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Filtrar Reportes</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Usa las pestañas para ver todos, borradores o reportes finalizados</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+                                    <i class="fas fa-search" style="color: #3498db; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Búsqueda Inteligente</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Escribe palabras clave para encontrar reportes específicos rápidamente</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #f39c12;">
+                                    <i class="fas fa-eye" style="color: #f39c12; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Vista Rápida</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Haz clic en cualquier reporte para ver una vista previa completa</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #9b59b6;">
+                                    <i class="fas fa-edit" style="color: #9b59b6; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Edición Rápida</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Usa los botones de acción para editar, ver o eliminar reportes</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                                    <i class="fas fa-chart-bar" style="color: #e74c3c; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Estadísticas en Tiempo Real</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Consulta los contadores de reportes por estado y actividad reciente</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 15px; border-radius: 10px; border-left: 4px solid #28a745;">
+                                <h5 style="margin: 0 0 10px 0; color: #155724; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-lightbulb"></i>
+                                    Tips y Mejores Prácticas
+                                </h5>
+                                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                    <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #155724; display: flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                                        Usa nombres descriptivos
+                                    </span>
+                                    <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #155724; display: flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-tags" style="color: #17a2b8;"></i>
+                                        Organiza por estado
+                                    </span>
+                                    <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #155724; display: flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-sync-alt" style="color: #007bff;"></i>
+                                        Actualiza frecuentemente
+                                    </span>
+                                    <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #155724; display: flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-trash-alt" style="color: #dc3545;"></i>
+                                        Limpia borradores viejos
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 20px; padding: 12px; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107;">
+                                <div style="display: flex; align-items: start; gap: 10px;">
+                                    <i class="fas fa-exclamation-triangle" style="color: #856404; font-size: 1.1rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #856404;">Nota Importante</strong>
+                                        <p style="margin: 5px 0 0 0; color: #856404; font-size: 0.9rem;">
+                                            Los reportes eliminados no pueden recuperarse. Asegúrate de exportar información importante antes de eliminar.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    showCloseButton: true,
+                    confirmButtonColor: '#2e7d32',
+                    confirmButtonText: '<i class="fas fa-check-circle"></i> ¡Entendido!',
+                    width: 650,
+                    background: '#ffffff',
+                    customClass: {
+                        popup: 'history-swal-popup',
+                        title: 'history-swal-title',
+                        htmlContainer: 'history-swal-html',
+                        confirmButton: 'history-swal-confirm-btn'
+                    }
+                });
+            });
+        }
+        
+        // Búsqueda de reportes con debounce para mejor performance
+        const searchInput = document.getElementById('search-reports');
+        if (searchInput) {
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+                    const reportItems = document.querySelectorAll('.report-item');
+                    let visibleCount = 0;
+                    
+                    reportItems.forEach(item => {
+                        const title = item.querySelector('.report-title h4')?.textContent.toLowerCase() || '';
+                        const content = item.querySelector('.report-preview')?.textContent.toLowerCase() || '';
+                        const status = item.querySelector('.report-status')?.textContent.toLowerCase() || '';
+                        
+                        if (title.includes(searchTerm) || content.includes(searchTerm) || status.includes(searchTerm)) {
+                            item.style.display = 'flex';
+                            item.style.animation = 'fadeIn 0.3s ease-out';
+                            visibleCount++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    // Mostrar mensaje si no hay resultados
+                    const noResultsMsg = document.getElementById('no-results-message');
+                    if (visibleCount === 0 && searchTerm !== '') {
+                        if (!noResultsMsg) {
+                            const resultsContainer = document.querySelector('.reports-list');
+                            const message = document.createElement('div');
+                            message.id = 'no-results-message';
+                            message.className = 'empty-state';
+                            message.innerHTML = `
+                                <i class="fas fa-search"></i>
+                                <h4>Sin resultados</h4>
+                                <p>No se encontraron reportes con "${searchTerm}"</p>
+                                <button class="btn-small" onclick="document.getElementById('search-reports').value = ''; document.getElementById('search-reports').dispatchEvent(new Event('input'));">
+                                    <i class="fas fa-times"></i> Limpiar búsqueda
+                                </button>
+                            `;
+                            resultsContainer.appendChild(message);
+                        }
+                    } else if (noResultsMsg) {
+                        noResultsMsg.remove();
+                    }
+                    
+                    // Actualizar contador de resultados
+                    updateSearchResultsCount(visibleCount, reportItems.length);
+                    
+                }, 300); // 300ms de debounce
+            });
+        }
+        
+        // Función para actualizar contador de resultados de búsqueda
+        function updateSearchResultsCount(visible, total) {
+            const searchCount = document.getElementById('search-results-count');
+            const searchTerm = document.getElementById('search-reports').value.trim();
+            
+            if (searchTerm === '') {
+                if (searchCount) searchCount.remove();
+                return;
+            }
+            
+            if (!searchCount) {
+                const searchBox = document.querySelector('.search-box');
+                const countElement = document.createElement('div');
+                countElement.id = 'search-results-count';
+                countElement.style.cssText = `
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: #2e7d32;
+                    color: white;
+                    padding: 2px 8px;
+                    border-radius: 10px;
+                    font-size: 11px;
+                    font-weight: 600;
+                `;
+                searchBox.appendChild(countElement);
+            }
+            
+            document.getElementById('search-results-count').textContent = `${visible}/${total}`;
+        }
+        
+        // Actualizar estadísticas del historial
+        function updateHistoryStats(reports) {
+            const total = reports.length;
+            const recent = reports.filter(report => {
+                const reportDate = new Date(report.fecha_modificacion || report.fecha_creacion);
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                return reportDate >= sevenDaysAgo;
+            }).length;
+            
+            // Actualizar contadores en stats
+            const totalElement = document.getElementById('total-reports');
+            const recentElement = document.getElementById('recent-reports');
+            
+            if (totalElement) totalElement.textContent = total;
+            if (recentElement) recentElement.textContent = recent;
+            
+            // Actualizar contadores en tabs
+            const allCount = total;
+            const borradorCount = reports.filter(r => r.estado === 'borrador').length;
+            const finalizadoCount = reports.filter(r => r.estado === 'finalizado').length;
+            
+            document.getElementById('count-all').textContent = allCount;
+            document.getElementById('count-borrador').textContent = borradorCount;
+            document.getElementById('count-finalizado').textContent = finalizadoCount;
+        }
+        
+        // Sobrescribir la función loadReports para incluir estadísticas
+        const originalLoadReports = window.loadReports;
+        if (originalLoadReports) {
+            window.loadReports = async function() {
+                const reports = await originalLoadReports();
+                updateHistoryStats(reports);
+                return reports;
+            };
+        }
+        
+        // Agregar CSS para animaciones de búsqueda
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(5px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .history-swal-popup {
+                border-radius: 15px !important;
+                overflow: hidden;
+            }
+            
+            .history-swal-title {
+                font-size: 1.5rem !important;
+                font-weight: 700 !important;
+            }
+            
+            .history-swal-html {
+                max-height: 70vh !important;
+                overflow-y: auto !important;
+                padding-right: 5px !important;
+            }
+            
+            .history-swal-confirm-btn {
+                font-weight: 600 !important;
+                padding: 10px 25px !important;
+                border-radius: 8px !important;
+            }
+            
+            #no-results-message {
+                animation: fadeIn 0.5s ease-out;
+            }
+            
+            #no-results-message i {
+                font-size: 2.5rem;
+                color: #bdc3c7;
+                margin-bottom: 10px;
+            }
+            
+            #no-results-message h4 {
+                color: #7f8c8d;
+                margin-bottom: 8px;
+            }
+            
+            #no-results-message .btn-small {
+                margin-top: 10px;
+                background: #f8f9fa;
+                color: #6c757d;
+                border: 1px solid #dee2e6;
+            }
+            
+            #no-results-message .btn-small:hover {
+                background: #e9ecef;
+                border-color: #ced4da;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Inicializar estadísticas al cargar la página
+        setTimeout(() => {
+            if (window.reports && Array.isArray(window.reports)) {
+                updateHistoryStats(window.reports);
+            }
+        }, 1000);
+    });
+    </script>
+</body>
+</html>

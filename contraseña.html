@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Heliconias Report — Recuperar Contraseña</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: #ffffff; /* FONDO BLANCO */
+      }
+
+      /* ELIMINAR EL FONDO CON IMAGEN */
+      body::before {
+        display: none; /* Oculta el fondo anterior */
+      }
+
+      .header {
+        background: linear-gradient(135deg, #ffffff, #ffffff);
+        color: #2e7d32;
+        padding: 15px 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 2px solid #e8f5e8;
+      }
+
+      .top-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .logo-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #e8f5e8;
+      }
+
+      .logo-img i {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-image: url("img/logo.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        font-size: 0;
+        color: transparent;
+      }
+
+      .logo h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      /* Navigation Styles */
+      .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 10px;
+    
+        gap: 15px;
+      }
+
+      .main-nav {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        color: #2e7d32;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background: transparent;
+        position: relative;
+        font-size: 0.95rem;
+        margin-right: 5px;
+      }
+
+      .nav-item:hover {
+        background: #f8fff8;
+      }
+
+      /* Línea debajo del texto */
+      .nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 10%;
+        width: 80%;
+        height: 2px;
+        background: linear-gradient(135deg, #2e7d32, #4caf50);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+        transform-origin: center;
+      }
+
+      .nav-item:hover::after {
+        transform: scaleX(1);
+      }
+
+      .btn {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+      }
+
+      .btn-primary {
+        background: white;
+        color: #2e7d32;
+        border: 1.5px solid #2e7d32;
+      }
+
+      .btn-primary:hover {
+        background: #2e7d32;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);
+      }
+
+        /* Botón de soporte - NUEVO */
+.btn-soporte {
+    background: white !important;
+    color: #2e7d32 !important;
+    border: 1.5px solid #2e7d32 !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.9rem !important;
+    box-shadow: 0 2px 4px rgba(46, 125, 50, 0.1) !important;
+}
+
+.btn-soporte:hover {
+    background: #2e7d32 !important;
+    color: white !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2) !important;
+}
+
+.btn-soporte:active {
+    transform: translateY(0) !important;
+}
+
+.btn-soporte i {
+    color: #2e7d32 !important;
+    transition: color 0.3s ease !important;
+}
+
+.btn-soporte:hover i {
+    color: white !important;
+}
+      .user-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      /* Main Container */
+      .main-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 20px;
+        min-height: calc(100vh - 150px);
+        background: #ffffff;
+      }
+
+      /* Password Box - BLANCO */
+      .password-box {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        width: 100%;
+        max-width: 500px;
+        margin-top: 20px;
+        border: 1px solid #e8f5e8;
+        animation: slideUp 0.5s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .password-box h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2e7d32;
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .form-step {
+        display: none;
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      .form-step.active {
+        display: block;
+      }
+
+      .password-box label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #34495e;
+      }
+
+      .password-box input {
+        width: 100%;
+        padding: 14px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #fafafa;
+      }
+
+      .password-box input:focus {
+        outline: none;
+        border-color: #2e7d32;
+        box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+        background: white;
+      }
+
+      .password-box input:hover {
+        border-color: #2e7d32;
+      }
+
+      .form-group {
+        position: relative;
+      }
+
+      .form-group .toggle-password {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #666;
+        transition: color 0.3s;
+        padding: 5px;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .form-group .toggle-password:hover {
+        color: #2e7d32;
+        background: rgba(46, 125, 50, 0.1);
+      }
+      
+      .botones {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+      }
+
+      .botones button {
+        flex: 1;
+        padding: 14px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #2e7d32, #2e7d32);
+        color: white;
+        box-shadow: 0 3px 8px rgba(46, 125, 50, 0.2);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        background: linear-gradient(135deg, #1b5e20, #2e7d32);
+      }
+
+      .btn-cancel {
+        background: #f5f5f5;
+        color: #666;
+        border: 2px solid #e0e0e0;
+      }
+
+      .btn-cancel:hover {
+        background: #eeeeee;
+        color: #333;
+        border-color: #bdbdbd;
+        transform: translateY(-2px);
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+      }
+
+      .login-link a {
+        color: #2e7d32;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 6px;
+        background: #f8fff8;
+      }
+
+      .login-link a:hover {
+        color: #1b5e20;
+        text-decoration: none;
+        background: #e8f5e8;
+        transform: translateY(-1px);
+      }
+
+      /* Progress Steps - MEJORADO */
+      .progress-steps {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        position: relative;
+        padding: 0 20px;
+      }
+
+      .progress-steps::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 10%;
+        right: 10%;
+        height: 3px;
+        background: #e8f5e8;
+        z-index: 1;
+        border-radius: 2px;
+      }
+
+      .progress-bar {
+        position: absolute;
+        top: 15px;
+        left: 10%;
+        height: 3px;
+        background: linear-gradient(90deg, #2e7d32, #4caf50);
+        z-index: 2;
+        transition: width 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        border-radius: 2px;
+      }
+
+      .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 3;
+      }
+
+      .step-number {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: white;
+        color: #666;
+        border: 3px solid #e8f5e8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-bottom: 8px;
+        transition: all 0.4s ease;
+        font-size: 14px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+
+      .step.active .step-number {
+        background: #2e7d32;
+        color: white;
+        border-color: #2e7d32;
+        transform: scale(1.1);
+        box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+      }
+
+      .step.completed .step-number {
+        background: #2e7d32;
+        color: white;
+        border-color: #2e7d32;
+      }
+
+      .step.completed .step-number::after {
+        content: '✓';
+        font-size: 16px;
+      }
+
+      .step-label {
+        font-size: 13px;
+        color: #7f8c8d;
+        text-align: center;
+        font-weight: 500;
+        transition: all 0.3s;
+        max-width: 80px;
+      }
+
+      .step.active .step-label {
+        color: #2e7d32;
+        font-weight: 600;
+        transform: translateY(2px);
+      }
+
+      .step.completed .step-label {
+        color: #2e7d32;
+      }
+
+      /* Password strength indicator */
+      .password-strength {
+        margin-top: -10px;
+        margin-bottom: 20px;
+        display: none;
+      }
+
+      .strength-bar {
+        height: 5px;
+        border-radius: 3px;
+        background: #eee;
+        margin-top: 5px;
+        overflow: hidden;
+      }
+
+      .strength-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+      }
+
+      .strength-text {
+        font-size: 12px;
+        color: #666;
+        margin-top: 3px;
+      }
+
+      /* SweetAlert X más grande */
+      .swal2-close {
+        font-size: 30px !important;
+        width: 44px !important;
+        height: 44px !important;
+        color: #dc3545 !important;
+        font-weight: bold !important;
+      }
+
+      .swal2-close:hover {
+        color: #bd2130 !important;
+        transform: rotate(90deg) scale(1.1);
+        transition: all 0.3s ease;
+      }
+
+      .swal2-close:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25) !important;
+      }
+
+      /* ESTILOS ESPECÍFICOS PARA LOS BOTONES DEL SWEETALERT DE NAVEGACIÓN */
+      .nav-swal-confirm-btn {
+        background: #3498db !important;
+        color: white !important;
+        border: none !important;
+      }
+      
+      .nav-swal-cancel-btn {
+        background: #9b59b6 !important;
+        color: white !important;
+        border: none !important;
+      }
+      
+      .nav-swal-confirm-btn:hover {
+        background: #2980b9 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3) !important;
+      }
+      
+      .nav-swal-cancel-btn:hover {
+        background: #8e44ad !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3) !important;
+      }
+      
+      .nav-swal-confirm-btn,
+      .nav-swal-cancel-btn {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        font-weight: 600 !important;
+        padding: 12px 24px !important;
+        border-radius: 8px !important;
+        font-size: 1rem !important;
+        min-width: 160px !important;
+        height: 48px !important;
+        margin: 0 5px !important;
+        flex: 1 !important;
+        transition: all 0.3s ease !important;
+      }
+      
+      .swal2-actions {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+      }
+      
+      .nav-swal-popup {
+        border-radius: 15px;
+        border: 2px solid #e8f5e8;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      }
+
+      /* Estilos personalizados para SweetAlert */
+      .swal2-popup {
+        background: white !important;
+        color: #2c3e50 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+      }
+
+      .swal2-title {
+        color: #2c3e50 !important;
+        font-size: 24px !important;
+        font-weight: 600 !important;
+      }
+
+      .swal2-html-container {
+        color: #2c3e50 !important;
+        font-size: 16px !important;
+      }
+
+      .swal2-confirm {
+        background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 12px 24px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+      }
+    </style>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
+      window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+      let usuarioValidado = null;
+      let currentStep = 1;
+    </script>
+</head>
+<body>
+    <!-- Header actualizado -->
+    <header class="header">
+      <div class="top-section">
+        <div class="logo">
+          <div class="logo-img">
+            <i class="fas fa-leaf"></i>
+          </div>
+          <h1>Heliconias Reports</h1>
+        </div>
+        
+        <div class="nav-container">
+          <!-- Navegación actualizada CON BOTÓN DE SOPORTE -->
+          <nav class="main-nav">
+            <a href="#" class="nav-item" id="nav-inicio">
+              <i class="fas fa-home"></i>
+              <span>Inicio</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-reservas">
+              <i class="fas fa-calendar-check"></i>
+              <span>Reservas</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-login">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Login</span>
+            </a>
+            <!-- NUEVO BOTÓN DE SOPORTE -->
+            <a href="#" class="nav-item btn-soporte" id="nav-soporte">
+              <i class="fas fa-headset"></i>
+              <span>Soporte</span>
+            </a>
+          </nav>
+          
+          <!-- Ayuda -->
+          <div class="user-actions">
+            <button class="btn btn-primary" id="help-btn">
+              <i class="fas fa-question-circle"></i> Ayuda
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-container">
+        <section class="password-box">
+            <h2>Cambiar Contraseña</h2>
+
+            <!-- Progress Steps -->
+            <div class="progress-steps">
+                <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Validar Usuario</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Nueva Contraseña</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Completado</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Validar Usuario -->
+            <form id="step1Form" class="form-step active">
+                <div>
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+                </div>
+
+                <div>
+                    <label for="correo">Correo Electrónico *</label>
+                    <input type="email" id="correo" name="correo" placeholder="tu.correo@ejemplo.com" required>
+                </div>
+
+                <div>
+                    <label for="documento">Documento *</label>
+                    <input type="text" id="documento" name="documento" placeholder="Número de documento" required>
+                </div>
+
+                <div class="botones">
+                    <button type="submit" class="btn-primary">
+                      <i class="fas fa-user-check"></i> Validar Usuario
+                    </button>
+                    <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">
+                      <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </form>
+
+            <!-- Step 2: Nueva Contraseña -->
+            <form id="step2Form" class="form-step">
+                <div class="form-group">
+                    <label for="nuevaContrasena">Nueva Contraseña *</label>
+                    <input type="password" id="nuevaContrasena" name="nuevaContrasena" placeholder="Crea una nueva contraseña" required>
+                    <i class="fa-solid fa-eye toggle-password" data-target="nuevaContrasena"></i>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmarContrasena">Confirmar Contraseña *</label>
+                    <input type="password" id="confirmarContrasena" name="confirmarContrasena" placeholder="Repite la nueva contraseña" required>
+                    <i class="fa-solid fa-eye toggle-password" data-target="confirmarContrasena"></i>
+                </div>
+
+                <div class="botones">
+                    <button type="submit" class="btn-primary">
+                      <i class="fas fa-key"></i> Cambiar Contraseña
+                    </button>
+                    <button type="button" class="btn-cancel" onclick="resetForm()">
+                      <i class="fas fa-arrow-left"></i> Volver
+                    </button>
+                </div>
+            </form>
+
+            <p class="login-link">
+                <a href="index.html">
+                  <i class="fas fa-sign-in-alt"></i>
+                  Volver al Inicio de Sesión
+                </a>
+            </p>
+        </section>
+    </main>
+
+    <script>
+      // Función para mostrar SweetAlert de navegación
+      function mostrarOpcionesNavegacion(titulo, url) {
+        Swal.fire({
+          title: `<div style="display: flex; align-items: center; gap: 10px; color: #2c3e50;"><i class="fas fa-external-link-alt" style="color: #2e7d32; font-size: 1.5rem;"></i><span style="font-size: 1.5rem;">${titulo}</span></div>`,
+          html: `
+            <div style="text-align: center;">
+              <div style="background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <i class="fas fa-route"></i>
+                  ¿Cómo quieres abrir esta página?
+                </h4>
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 15px; margin: 20px 0;">
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #3498db;">
+                  <i class="fas fa-window-maximize" style="color: #3498db; font-size: 1.5rem;"></i>
+                  <div style="text-align: left;">
+                    <h5 style="margin: 0 0 5px 0; color: #2c3e50;">Misma pestaña</h5>
+                    <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">Reemplaza la página actual</p>
+                  </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #9b59b6;">
+                  <i class="fas fa-plus-square" style="color: #9b59b6; font-size: 1.5rem;"></i>
+                  <div style="text-align: left;">
+                    <h5 style="margin: 0 0 5px 0; color: #2c3e50;">Nueva pestaña</h5>
+                    <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">Abre en una pestaña nueva</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          showCloseButton: true,
+          showCancelButton: true,
+          confirmButtonColor: '#3498db',
+          cancelButtonColor: '#9b59b6',
+          confirmButtonText: '<i class="fas fa-window-maximize"></i> Misma pestaña',
+          cancelButtonText: '<i class="fas fa-plus-square"></i> Nueva pestaña',
+          width: 500,
+          background: '#ffffff',
+          customClass: {
+            popup: 'nav-swal-popup',
+            title: 'nav-swal-title',
+            htmlContainer: 'nav-swal-html',
+            confirmButton: 'nav-swal-confirm-btn',
+            cancelButton: 'nav-swal-cancel-btn'
+          },
+          buttonsStyling: false,
+          showClass: {
+            popup: 'animate__animated animate__fadeInUp'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = url;
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            window.open(url, '_blank');
+          }
+        });
+      }
+
+      // Navegación actualizada
+      document.getElementById('nav-inicio').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Inicio - Parque Heliconias', 'https://parque-heliconias-khaki.vercel.app/index.html');
+      });
+
+      document.getElementById('nav-reservas').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Reservas - Parque Heliconias', 'https://parqueheliconias-app.onrender.com/');
+      });
+
+      document.getElementById('nav-login').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Login - Parque Heliconias', 'https://codigoabiertoceron123-wq.github.io/heliconias2.2/');
+      });
+
+      // Botón de soporte
+      document.getElementById('nav-soporte').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Soporte - Heliconias Reports', 'soporte2.html');
+      });
+
+      // Botón de ayuda
+      document.getElementById('help-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+          title: 'Ayuda - Cambiar Contraseña',
+          html: `
+            <div style="text-align: left;">
+              <div style="background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                  <i class="fas fa-key"></i>
+                  Recuperación de Contraseña
+                </h4>
+              </div>
+              
+              <p style="margin-bottom: 20px; color: #2c3e50; line-height: 1.6;">
+                Sigue estos pasos para recuperar tu contraseña:
+              </p>
+
+              <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3498db;">
+                <h5 style="margin: 0 0 15px 0; color: #2c3e50;">
+                  Paso 1: Validación
+                </h5>
+                <div style="display: grid; gap: 10px;">
+                  <div style="display: flex; align-items: start; gap: 10px;">
+                    <i class="fas fa-user-check" style="color: #3498db; margin-top: 2px;"></i>
+                    <span style="color: #2c3e50;">Ingresa tu nombre completo</span>
+                  </div>
+                  <div style="display: flex; align-items: start; gap: 10px;">
+                    <i class="fas fa-envelope" style="color: #3498db; margin-top: 2px;"></i>
+                    <span style="color: #2c3e50;">Proporciona tu correo electrónico</span>
+                  </div>
+                  <div style="display: flex; align-items: start; gap: 10px;">
+                    <i class="fas fa-id-card" style="color: #3498db; margin-top: 2px;"></i>
+                    <span style="color: #2c3e50;">Ingresa tu número de documento</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="background: linear-gradient(135deg, #ffeaa7, #fab1a0); padding: 15px; border-radius: 10px; border-left: 4px solid #e17055;">
+                <h5 style="margin: 0 0 10px 0; color: #2d3436;">
+                  Recomendaciones de seguridad
+                </h5>
+                
+                <div style="color: #2d3436; font-size: 0.9rem;">
+                  <p style="margin: 5px 0; display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-shield-alt" style="color: #27ae60;"></i>
+                    Crea una contraseña de al menos 6 caracteres
+                  </p>
+                  <p style="margin: 5px 0; display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-lock" style="color: #27ae60;"></i>
+                    Usa combinación de letras, números y símbolos
+                  </p>
+                  <p style="margin: 5px 0; display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-sync-alt" style="color: #27ae60;"></i>
+                    Cambia tu contraseña regularmente
+                  </p>
+                </div>
+              </div>
+            </div>
+          `,
+          showCloseButton: true,
+          confirmButtonColor: '#27ae60',
+          confirmButtonText: '<i class="fas fa-check-circle"></i> Entendido',
+          width: 600,
+          background: '#ffffff',
+          customClass: {
+            popup: 'swal2-popup',
+            confirmButton: 'help-swal-confirm-btn'
+          }
+        });
+      });
+
+      // Actualizar progress bar
+      function updateProgressBar() {
+        const progress = ((currentStep - 1) / 2) * 100;
+        const progressBar = document.getElementById('progressBar');
+        progressBar.style.width = progress + '%';
+        
+        // Actualizar steps
+        document.getElementById('step1').className = `step ${currentStep >= 1 ? 'active' : ''}`;
+        document.getElementById('step2').className = `step ${currentStep >= 2 ? 'active' : ''}`;
+        document.getElementById('step3').className = `step ${currentStep >= 3 ? 'completed' : ''}`;
+      }
+
+      // Cambiar step
+      function goToStep(step) {
+        currentStep = step;
+        updateProgressBar();
+        
+        // Ocultar todos los forms
+        document.querySelectorAll('.form-step').forEach(form => {
+          form.classList.remove('active');
+        });
+        
+        // Mostrar el form actual con animación
+        setTimeout(() => {
+          if (step === 1) {
+            document.getElementById('step1Form').classList.add('active');
+          } else if (step === 2) {
+            document.getElementById('step2Form').classList.add('active');
+          }
+        }, 200);
+      }
+
+      // Resetear formulario
+      function resetForm() {
+        usuarioValidado = null;
+        currentStep = 1;
+        updateProgressBar();
+        goToStep(1);
+        document.getElementById('step1Form').reset();
+        document.getElementById('step2Form').reset();
+      }
+
+      // Step 1: Validar Usuario
+      document.getElementById('step1Form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const nombre = document.getElementById('nombre').value;
+        const correo = document.getElementById('correo').value;
+        const documento = document.getElementById('documento').value;
+
+        const loadingAlert = Swal.fire({
+          title: '<div style="color: #27ae60; font-size: 22px; font-weight: 600;">VALIDANDO USUARIO</div>',
+          html: '<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">Verificando tus datos, por favor espera...</div>',
+          icon: 'info',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          background: 'white',
+          didOpen: () => { Swal.showLoading(); }
+        });
+
+        try {
+          console.log('🔍 Validando usuario...');
+          
+          // Buscar usuario en la tabla
+          const { data: usuarios, error } = await supabase
+            .from('usuarios')
+            .select('*')
+            .eq('nombre', nombre)
+            .eq('correo', correo)
+            .eq('documento', documento)
+            .single();
+
+          if (error || !usuarios) {
+            throw new Error('No se encontró un usuario con los datos proporcionados. Verifica nombre, correo y documento.');
+          }
+
+          usuarioValidado = usuarios;
+          console.log('✅ Usuario validado:', usuarioValidado);
+
+          await Swal.close();
+
+          // Mostrar éxito y avanzar al siguiente paso
+          await Swal.fire({
+            title: '<div style="color: #27ae60; font-size: 24px; font-weight: 600;">USUARIO VALIDADO</div>',
+            html: `<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">
+                   Usuario encontrado: <strong>${usuarioValidado.nombre}</strong><br>
+                   Ahora puedes establecer tu nueva contraseña.
+                   </div>`,
+            icon: 'success',
+            confirmButtonText: '<i class="fas fa-key"></i> Continuar',
+            background: 'white'
+          });
+
+          // Avanzar al paso 2
+          currentStep = 2;
+          goToStep(2);
+
+        } catch (error) {
+          await Swal.close();
+          console.error('❌ Error validando usuario:', error);
+          
+          Swal.fire({
+            title: '<div style="color: #e74c3c; font-size: 24px; font-weight: 600;">ERROR</div>',
+            html: `<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">${error.message}</div>`,
+            icon: 'error',
+            confirmButtonText: '<i class="fas fa-redo"></i> Intentar de nuevo',
+            background: 'white'
+          });
+        }
+      });
+
+      // Step 2: Cambiar Contraseña
+      document.getElementById('step2Form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const nuevaContrasena = document.getElementById('nuevaContrasena').value;
+        const confirmarContrasena = document.getElementById('confirmarContrasena').value;
+
+        // Validar que las contraseñas coincidan
+        if (nuevaContrasena !== confirmarContrasena) {
+          Swal.fire({
+            title: 'Error',
+            text: 'Las contraseñas no coinciden',
+            icon: 'error',
+            confirmButtonText: 'Entendido'
+          });
+          return;
+        }
+
+        // Validar longitud mínima
+        if (nuevaContrasena.length < 6) {
+          Swal.fire({
+            title: 'Error',
+            text: 'La contraseña debe tener al menos 6 caracteres',
+            icon: 'error',
+            confirmButtonText: 'Entendido'
+          });
+          return;
+        }
+
+        const loadingAlert = Swal.fire({
+          title: '<div style="color: #27ae60; font-size: 22px; font-weight: 600;">CAMBIANDO CONTRASEÑA</div>',
+          html: '<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">Actualizando tu contraseña, por favor espera...</div>',
+          icon: 'info',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          background: 'white',
+          didOpen: () => { Swal.showLoading(); }
+        });
+
+        try {
+          console.log('🔄 Cambiando contraseña...');
+
+          // 1. Actualizar contraseña en la tabla usuarios
+          const { error: updateError } = await supabase
+            .from('usuarios')
+            .update({ 
+              contrasena: nuevaContrasena,
+              ultimo_login: new Date().toISOString()
+            })
+            .eq('id_usuario', usuarioValidado.id_usuario);
+
+          if (updateError) {
+            throw new Error('Error al actualizar la contraseña: ' + updateError.message);
+          }
+
+          // 2. Actualizar contraseña en Supabase Auth
+          const { error: authError } = await supabase.auth.updateUser({
+            password: nuevaContrasena
+          });
+
+          if (authError) {
+            console.log('⚠️ No se pudo actualizar en Auth, pero se actualizó en la tabla:', authError.message);
+            // Continuamos aunque falle Auth, porque la tabla sí se actualizó
+          }
+
+          await Swal.close();
+
+          // Mostrar éxito final
+          await Swal.fire({
+            title: '<div style="color: #27ae60; font-size: 24px; font-weight: 600;">¡CONTRASEÑA ACTUALIZADA!</div>',
+            html: `<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">
+                   <p>Tu contraseña ha sido cambiada exitosamente.</p>
+                   <div style="background: #e8f6f3; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                       <strong>Resumen:</strong><br>
+                       👤 Usuario: <strong>${usuarioValidado.nombre}</strong><br>
+                       📧 Correo: <strong>${usuarioValidado.correo}</strong><br>
+                       🔑 Contraseña: <strong>Actualizada</strong>
+                   </div>
+                   <p>Se ha enviado una notificación a tu correo electrónico.</p>
+                   </div>`,
+            icon: 'success',
+            confirmButtonText: '<i class="fas fa-check-circle"></i> Iniciar Sesión',
+            background: 'white'
+          });
+
+          // Redirigir al login
+          window.location.href = 'index.html';
+
+        } catch (error) {
+          await Swal.close();
+          console.error('❌ Error cambiando contraseña:', error);
+          
+          Swal.fire({
+            title: '<div style="color: #e74c3c; font-size: 24px; font-weight: 600;">ERROR</div>',
+            html: `<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">${error.message}</div>`,
+            icon: 'error',
+            confirmButtonText: '<i class="fas fa-redo"></i> Intentar de nuevo',
+            background: 'white'
+          });
+        }
+      });
+
+      // Validar contraseñas en tiempo real
+      document.getElementById('confirmarContrasena').addEventListener('input', function() {
+        const nuevaContrasena = document.getElementById('nuevaContrasena').value;
+        const confirmar = this.value;
+        
+        if (confirmar && nuevaContrasena !== confirmar) {
+          this.style.borderColor = '#e74c3c';
+          this.style.boxShadow = '0 0 0 2px rgba(231, 76, 60, 0.2)';
+        } else {
+          this.style.borderColor = '#27ae60';
+          this.style.boxShadow = '0 0 0 2px rgba(39, 174, 96, 0.2)';
+        }
+      });
+
+      // Inicializar progress bar
+      updateProgressBar();
+
+      // Funcionalidad de mostrar/ocultar contraseña
+      document.querySelectorAll('.toggle-password').forEach(icon => {
+        icon.addEventListener('click', function() {
+          const inputId = this.getAttribute('data-target');
+          const input = document.getElementById(inputId);
+
+          if (input.type === "password") {
+            input.type = "text";
+            this.classList.remove("fa-eye");
+            this.classList.add("fa-eye-slash");
+          } else {
+            input.type = "password";
+            this.classList.remove("fa-eye-slash");
+            this.classList.add("fa-eye");
+          }
+        });
+      });
+
+      // Efectos de hover en inputs
+      document.querySelectorAll('.password-box input').forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.style.transform = 'translateY(-2px)';
+        });
+        
+        input.addEventListener('blur', function() {
+          this.parentElement.style.transform = 'translateY(0)';
+        });
+      });
+
+      // Inicializar con animación
+      window.addEventListener('load', function() {
+        document.querySelector('.password-box').style.animation = 'slideUp 0.5s ease-out';
+      });
+    </script>
+</body>
+</html>

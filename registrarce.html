@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Heliconias Report — Registrarse</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="css/regis.css">
+    
+    
+    <style>
+
+        /* Botón de soporte - NUEVO */
+.btn-soporte {
+    background: white !important;
+    color: #2e7d32 !important;
+    border: 1.5px solid #2e7d32 !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.9rem !important;
+    box-shadow: 0 2px 4px rgba(46, 125, 50, 0.1) !important;
+}
+
+.btn-soporte:hover {
+    background: #2e7d32 !important;
+    color: white !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2) !important;
+}
+
+.btn-soporte:active {
+    transform: translateY(0) !important;
+}
+
+.btn-soporte i {
+    color: #2e7d32 !important;
+    transition: color 0.3s ease !important;
+}
+
+.btn-soporte:hover i {
+    color: white !important;
+}
+        /* RESET Y ESTILOS BASE */
+        
+         .logo {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .logo-img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #e8f5e8;
+      }
+
+      .logo-img i {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-image: url("img/logo.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        font-size: 0;
+        color: transparent;
+      }
+
+      .logo h1 {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0;
+        color: #2e7d32;
+      }
+       
+        .btn-help {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(46, 125, 50, 0.2);
+        }
+        
+        .btn-help:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+            background: linear-gradient(135deg, #43a047 0%, #1b5e20 100%);
+        }
+        
+        .btn-help:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-help i {
+            font-size: 1.1rem;
+        }
+        
+        /* TOOLTIP (opcional, puedes quitar si no lo quieres) */
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+        
+        .tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+        }
+        
+        /* CONTENIDO PRINCIPAL */
+        .main-container {
+            padding: 3rem 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .register-box {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .register-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #2e7d32, #4caf50, #81c784);
+        }
+        
+        .register-box h2 {
+            text-align: center;
+            color: #2e7d32;
+            font-size: 2.2rem;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .register-box h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #2e7d32, #4caf50);
+            border-radius: 2px;
+        }
+        
+        /* FORMULARIO MEJORADO - UNA COLUMNA */
+        #registerForm {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #444;
+            font-size: 0.95rem;
+        }
+        
+        .required::after {
+            content: ' *';
+            color: #e53935;
+        }
+        
+        /* CAMPOS DE TEXTO Y SELECT */
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            color: #333;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4caf50;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #bdbdbd;
+        }
+        
+        /* CONTENEDOR DE CONTRASEÑA CON BOTÓN */
+        .password-container {
+            position: relative;
+        }
+        
+        /* ESPACIO PARA EL BOTÓN DEL OJO */
+        .password-container input {
+            width: 100%;
+            padding-right: 50px;
+            padding-left: 1.2rem;
+        }
+        
+        /* BOTÓN DEL OJO - POSICIÓN PERFECTA */
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #757575;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 2;
+            border-radius: 50%;
+        }
+        
+        .toggle-password:hover {
+            color: #2e7d32;
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .toggle-password:active {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        /* BOTONES PRINCIPALES */
+        .botones {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        button[type="submit"],
+        button[type="button"] {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-register {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+        }
+        
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn-cancel:hover {
+            background: #eeeeee;
+            color: #333;
+            border-color: #bdbdbd;
+            transform: translateY(-2px);
+        }
+        
+        /* LINK DE LOGIN */
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+            color: #666;
+        }
+        
+        .login-link a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .login-link a:hover {
+            color: #1b5e20;
+            text-decoration: underline;
+        }
+        
+        /* ESTILOS PARA SELECT */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23757575' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 3rem;
+        }
+        
+        /* ========== RESPONSIVE MEJORADO ========== */
+        
+        /* PANTALLAS MEDIANAS (791px - 992px) */
+        @media (max-width: 992px) {
+            .main-container {
+                max-width: 700px;
+                padding: 2.5rem 1.5rem;
+            }
+            
+            .register-box {
+                padding: 2rem;
+            }
+            
+            .register-box h2 {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+            
+            #registerForm {
+                gap: 1.5rem;
+            }
+            
+            .password-container input {
+                padding-right: 48px;
+                padding-left: 1rem;
+            }
+            
+            .toggle-password {
+                right: 10px;
+                width: 38px;
+                height: 38px;
+            }
+        }
+        
+        /* TABLETS (601px - 790px) */
+        @media (max-width: 790px) {
+            .header {
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+            
+            .logo-img {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .nav-container {
+                gap: 1rem;
+            }
+            
+            .nav-item span {
+                display: none;
+            }
+            
+            .nav-item {
+                padding: 0.5rem;
+            }
+            
+            .btn-help span {
+                display: none;
+            }
+            
+            .btn-help {
+                padding: 0.6rem;
+            }
+            
+            .main-container {
+                padding: 2rem 1.2rem;
+                max-width: 600px;
+            }
+            
+            .register-box {
+                padding: 1.8rem;
+            }
+            
+            .register-box h2 {
+                font-size: 1.8rem;
+                margin-bottom: 1.8rem;
+            }
+            
+            .form-group input,
+            .form-group select {
+                padding: 0.85rem 1rem;
+                font-size: 0.95rem;
+            }
+            
+            .password-container input {
+                padding-right: 46px;
+                padding-left: 1rem;
+            }
+            
+            .toggle-password {
+                right: 10px;
+                width: 36px;
+                height: 36px;
+                font-size: 1.1rem;
+            }
+            
+            .botones {
+                flex-direction: row;
+                gap: 0.8rem;
+            }
+        }
+        
+        /* MÓVILES GRANDES (501px - 600px) */
+        @media (max-width: 600px) {
+            .header {
+                padding: 0.8rem 1rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.4rem;
+            }
+            
+            .logo-img {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .logo-img i {
+                font-size: 22px;
+            }
+            
+            .nav-container {
+                gap: 0.8rem;
+            }
+            
+            .nav-item i {
+                font-size: 1.1rem;
+            }
+            
+            .btn-help i {
+                font-size: 1.1rem;
+            }
+            
+            .main-container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .register-box {
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+            
+            .register-box h2 {
+                font-size: 1.6rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            #registerForm {
+                gap: 1.2rem;
+            }
+            
+            .form-group label {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+            
+            .form-group input,
+            .form-group select {
+                padding: 0.8rem 0.9rem;
+                font-size: 0.95rem;
+                border-radius: 8px;
+            }
+            
+            .password-container input {
+                padding-right: 44px;
+                padding-left: 0.9rem;
+            }
+            
+            .toggle-password {
+                right: 8px;
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .botones {
+                flex-direction: column;
+                gap: 0.8rem;
+                margin: 1.2rem 0;
+            }
+            
+            button[type="submit"],
+            button[type="button"] {
+                padding: 0.9rem 1.2rem;
+                font-size: 0.95rem;
+            }
+        }
+        
+        /* MÓVILES PEQUEÑOS (400px - 500px) */
+        @media (max-width: 500px) {
+            .logo {
+                gap: 0.8rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+            
+            .logo-img {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .logo-img i {
+                font-size: 20px;
+            }
+            
+            .nav-container {
+                gap: 0.6rem;
+            }
+            
+            .nav-item {
+                padding: 0.4rem;
+            }
+            
+            .nav-item i {
+                font-size: 1rem;
+            }
+            
+            .btn-help {
+                padding: 0.5rem;
+            }
+            
+            .btn-help i {
+                font-size: 1rem;
+            }
+            
+            .main-container {
+                padding: 1.2rem 0.8rem;
+            }
+            
+            .register-box {
+                padding: 1.2rem;
+                border-radius: 14px;
+            }
+            
+            .register-box h2 {
+                font-size: 1.4rem;
+                margin-bottom: 1.2rem;
+                padding-bottom: 10px;
+            }
+            
+            #registerForm {
+                gap: 1rem;
+            }
+            
+            .form-group label {
+                font-size: 0.85rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .form-group input,
+            .form-group select {
+                padding: 0.75rem 0.8rem;
+                font-size: 0.9rem;
+                border-radius: 7px;
+            }
+            
+            .password-container input {
+                padding-right: 40px;
+                padding-left: 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .toggle-password {
+                right: 6px;
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+                padding: 6px;
+            }
+            
+            select {
+                padding-right: 2.5rem;
+                background-position: right 0.8rem center;
+            }
+            
+            .botones {
+                gap: 0.6rem;
+                margin: 1rem 0;
+            }
+            
+            button[type="submit"],
+            button[type="button"] {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+                border-radius: 8px;
+            }
+            
+            .login-link {
+                margin-top: 1.2rem;
+                padding-top: 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* MÓVILES MUY PEQUEÑOS (hasta 399px) */
+        @media (max-width: 399px) {
+            .logo h1 {
+                font-size: 1.1rem;
+            }
+            
+            .logo-img {
+                width: 38px;
+                height: 38px;
+            }
+            
+            .logo-img i {
+                font-size: 18px;
+            }
+            
+            .nav-container {
+                gap: 0.5rem;
+            }
+            
+            .main-container {
+                padding: 1rem 0.6rem;
+            }
+            
+            .register-box {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+            
+            .register-box h2 {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+            
+            #registerForm {
+                gap: 0.8rem;
+            }
+            
+            .form-group input,
+            .form-group select {
+                padding: 0.7rem 0.7rem;
+                font-size: 0.85rem;
+            }
+            
+            .password-container input {
+                padding-right: 38px;
+                padding-left: 0.7rem;
+                font-size: 0.85rem;
+            }
+            
+            .toggle-password {
+                right: 5px;
+                width: 30px;
+                height: 30px;
+                font-size: 0.85rem;
+            }
+            
+            button[type="submit"],
+            button[type="button"] {
+                padding: 0.7rem 0.9rem;
+                font-size: 0.85rem;
+            }
+            
+            .login-link {
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* ESTILOS PARA PLACEHOLDERS */
+        ::placeholder {
+            color: #999;
+            opacity: 1;
+        }
+        
+        :-ms-input-placeholder {
+            color: #999;
+        }
+        
+        ::-ms-input-placeholder {
+            color: #999;
+        }
+        
+        /* SCROLLBAR PERSONALIZADA */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c8e6c9;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4caf50;
+        }
+        
+        /* ESTILO PARA CAMPOS OPCIONALES */
+        .optional {
+            font-weight: normal;
+            color: #666;
+        }
+        
+        .optional::before {
+            content: '(Opcional) ';
+            font-size: 0.85em;
+            color: #888;
+        }
+        
+        /* SweetAlert X más grande */
+        .swal2-close {
+            font-size: 30px !important;
+            width: 44px !important;
+            height: 44px !important;
+            color: #dc3545 !important;
+            font-weight: bold !important;
+        }
+
+        .swal2-close:hover {
+            color: #bd2130 !important;
+            transform: rotate(90deg) scale(1.1);
+            transition: all 0.3s ease;
+        }
+
+        .swal2-close:focus {
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25) !important;
+        }
+        
+        /* ESTILOS ESPECÍFICOS PARA LOS BOTONES DEL SWEETALERT DE NAVEGACIÓN */
+        .nav-swal-confirm-btn {
+            background: #3498db !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .nav-swal-cancel-btn {
+            background: #9b59b6 !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .nav-swal-confirm-btn:hover {
+            background: #2980b9 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3) !important;
+        }
+        
+        .nav-swal-cancel-btn:hover {
+            background: #8e44ad !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3) !important;
+        }
+        
+        .nav-swal-confirm-btn,
+        .nav-swal-cancel-btn {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            font-weight: 600 !important;
+            padding: 12px 24px !important;
+            border-radius: 8px !important;
+            font-size: 1rem !important;
+            min-width: 160px !important;
+            height: 48px !important;
+            margin: 0 5px !important;
+            flex: 1 !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .swal2-actions {
+            display: flex !important;
+            justify-content: center !important;
+            gap: 10px !important;
+            width: 100% !important;
+        }
+        
+        .nav-swal-popup {
+            border-radius: 15px;
+            border: 2px solid #e8f5e8;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Navegación compacta */
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            color: #2e7d32;
+            text-decoration: none;
+            border-radius: 8px;
+            position: relative;
+            background: transparent;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            margin-right: 5px;
+        }
+
+        .nav-item:hover {
+            background: #f8fff8;
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: center;
+        }
+
+        .nav-item:hover::after {
+            transform: scaleX(1);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #2e7d32;
+            border: 1.5px solid #2e7d32;
+        }
+
+        .btn-primary:hover {
+            background: #2e7d32;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);
+        }
+
+        /* Botón de soporte - NUEVO */
+        .btn-soporte {
+            background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-soporte:hover {
+            background: linear-gradient(135deg, #f57c00 0%, #e64a19 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(255, 87, 34, 0.2);
+        }
+    </style>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+<body>
+    <!-- Header actualizado -->
+    <header class="header">
+      <div class="top-section">
+        <div class="logo">
+          <div class="logo-img">
+            <i class="fas fa-leaf"></i>
+          </div>
+          <h1>Heliconias Reports</h1>
+        </div>
+        
+        <div class="nav-container">
+          <!-- Navegación actualizada CON BOTÓN DE SOPORTE -->
+          <nav class="main-nav">
+            <a href="#" class="nav-item" id="nav-inicio">
+              <i class="fas fa-home"></i>
+              <span>Inicio</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-reservas">
+              <i class="fas fa-calendar-check"></i>
+              <span>Reservas</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-login">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Login</span>
+            </a>
+            <!-- NUEVO BOTÓN DE SOPORTE -->
+            <a href="#" class="nav-item btn-soporte" id="nav-soporte">
+              <i class="fas fa-headset"></i>
+              <span>Soporte</span>
+            </a>
+          </nav>
+          
+          <!-- Ayuda -->
+          <div class="user-actions">
+            <button class="btn btn-primary" id="help-btn">
+              <i class="fas fa-question-circle"></i> Ayuda
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-container">
+        <section class="register-box animate__animated animate__fadeInUp">
+            <h2>Crear Cuenta</h2>
+            <form id="registerForm">
+                <!-- Nombre -->
+                <div class="form-group">
+                    <label for="nombre" class="required">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+                </div>
+
+                <!-- Apellido -->
+                <div class="form-group">
+                    <label for="apellido" class="required">Apellido</label>
+                    <input type="text" id="apellido" name="apellido" placeholder="Ingresa tu apellido" required>
+                </div>
+
+                <!-- Correo -->
+                <div class="form-group">
+                    <label for="correo" class="required">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <!-- Documento -->
+                <div class="form-group">
+                    <label for="documento" class="required">Número de Documento</label>
+                    <input type="text" id="documento" name="documento" placeholder="Ingresa tu número de documento" required>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="form-group">
+                    <label for="telefono" class="optional">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" placeholder="Ingresa tu teléfono (opcional)">
+                </div>
+
+                <!-- Género -->
+                <div class="form-group">
+                    <label for="id_genero" class="required">Género</label>
+                    <select id="id_genero" name="id_genero" required>
+                        <option value="" disabled selected>Selecciona tu género</option>
+                    </select>
+                </div>
+
+                <!-- Institución -->
+                <div class="form-group">
+                    <label for="id_instituciones" class="optional">Institución</label>
+                    <select id="id_instituciones" name="id_instituciones">
+                        <option value="" selected>Selecciona una institución (opcional)</option>
+                    </select>
+                </div>
+
+                <!-- Fecha de Nacimiento -->
+                <div class="form-group">
+                    <label for="fecha_nacimiento" class="optional">Fecha de Nacimiento</label>
+                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+                </div>
+
+                <!-- Contraseña -->
+                <div class="form-group">
+                    <label for="contrasena" class="required">Contraseña</label>
+                    <div class="password-container">
+                        <input type="password" id="contrasena" name="contrasena" placeholder="Crea una contraseña segura" required>
+                        <button type="button" class="toggle-password" data-target="contrasena" aria-label="Mostrar/ocultar contraseña">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Confirmar Contraseña -->
+                <div class="form-group">
+                    <label for="confirmar_contrasena" class="required">Confirmar Contraseña</label>
+                    <div class="password-container">
+                        <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" placeholder="Repite tu contraseña" required>
+                        <button type="button" class="toggle-password" data-target="confirmar_contrasena" aria-label="Mostrar/ocultar contraseña">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="botones">
+                    <button type="submit" class="btn-register">
+                        <i class="fas fa-user-plus"></i>
+                        Registrarse
+                    </button>
+                    <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                </div>
+
+                <p class="login-link">
+                    <a href="index.html">
+                        <i class="fas fa-sign-in-alt"></i>
+                        ¿Ya tienes cuenta? Inicia sesión aquí
+                    </a>
+                </p>
+            </form>
+        </section>
+    </main>
+
+    <script>
+    // Configuración de Supabase
+    const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
+    window.supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Función para cargar los géneros desde la base de datos
+    async function cargarGeneros() {
+        try {
+            console.log('🔄 Cargando géneros...');
+            
+            const { data, error } = await supabase
+                .from('genero')
+                .select('*')
+                .order('id_genero');
+
+            if (error) {
+                console.error('❌ Error al cargar géneros:', error);
+                const selectGenero = document.getElementById('id_genero');
+                if (selectGenero) {
+                    selectGenero.innerHTML = '<option value="" disabled selected>Error al cargar géneros</option>';
+                }
+                return;
+            }
+
+            console.log('✅ Géneros cargados:', data);
+
+            const selectGenero = document.getElementById('id_genero');
+            if (!selectGenero) {
+                console.error('❌ No se encontró el select con id "id_genero"');
+                return;
+            }
+            
+            selectGenero.innerHTML = '<option value="" disabled selected>Selecciona tu género</option>';
+            
+            data.forEach(genero => {
+                const option = document.createElement('option');
+                option.value = genero.id_genero;
+                option.textContent = genero.genero;
+                selectGenero.appendChild(option);
+            });
+            
+        } catch (err) {
+            console.error('❌ Error inesperado al cargar géneros:', err);
+            const selectGenero = document.getElementById('id_genero');
+            if (selectGenero) {
+                selectGenero.innerHTML = '<option value="" disabled selected>Error al cargar géneros</option>';
+            }
+        }
+    }
+
+    // Función para cargar las instituciones desde la base de datos
+    async function cargarInstituciones() {
+        try {
+            console.log('🔄 Cargando instituciones...');
+            
+            const { data, error } = await supabase
+                .from('instituciones')
+                .select('id_institucion, nombre_institucion')
+                .order('nombre_institucion');
+
+            if (error) {
+                console.error('❌ Error al cargar instituciones:', error);
+                const selectInstitucion = document.getElementById('id_instituciones');
+                if (selectInstitucion) {
+                    selectInstitucion.innerHTML = '<option value="" selected>Error al cargar instituciones</option>';
+                }
+                return;
+            }
+
+            console.log('✅ Instituciones cargadas:', data);
+
+            const selectInstitucion = document.getElementById('id_instituciones');
+            if (!selectInstitucion) {
+                console.error('❌ No se encontró el select con id "id_instituciones"');
+                return;
+            }
+            
+            selectInstitucion.innerHTML = '<option value="" selected>Selecciona una institución (opcional)</option>';
+            
+            data.forEach(institucion => {
+                const option = document.createElement('option');
+                option.value = institucion.id_institucion;
+                option.textContent = institucion.nombre_institucion;
+                selectInstitucion.appendChild(option);
+            });
+            
+        } catch (err) {
+            console.error('❌ Error inesperado al cargar instituciones:', err);
+            const selectInstitucion = document.getElementById('id_instituciones');
+            if (selectInstitucion) {
+                selectInstitucion.innerHTML = '<option value="" selected>Error al cargar instituciones</option>';
+            }
+        }
+    }
+
+    // Función para mostrar/ocultar contraseña
+    function setupPasswordToggle() {
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const passwordInput = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+    }
+
+    // Función para mostrar SweetAlert de ayuda con el nuevo estilo
+    function setupHelpButton() {
+        const helpBtn = document.getElementById('help-btn');
+        if (helpBtn) {
+            helpBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: '<div style="display: flex; align-items: center; gap: 10px; color: #2c3e50;"><i class="fas fa-life-ring" style="color: #3498db; font-size: 1.5rem;"></i><span>Centro de Ayuda - Registro</span></div>',
+                    html: `
+                        <div style="text-align: left;">
+                            <div style="background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                                <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-info-circle"></i>
+                                    Información sobre el proceso de registro
+                                </h4>
+                            </div>
+                            
+                            <div style="display: grid; gap: 15px; margin-bottom: 20px;">
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+                                    <i class="fas fa-user-plus" style="color: #3498db; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Paso 1: Información personal</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Completa tus datos personales (nombre, apellido, documento)</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #27ae60;">
+                                    <i class="fas fa-envelope" style="color: #27ae60; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Paso 2: Correo electrónico</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Ingresa un correo válido para confirmar tu cuenta</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #f39c12;">
+                                    <i class="fas fa-lock" style="color: #f39c12; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Paso 3: Contraseña segura</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Crea una contraseña de al menos 6 caracteres</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                                    <i class="fas fa-check-double" style="color: #e74c3c; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Paso 4: Confirmar contraseña</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Repite tu contraseña para verificar que coincida</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #9b59b6;">
+                                    <i class="fas fa-mail-bulk" style="color: #9b59b6; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Paso 5: Confirmación por correo</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Revisa tu correo y confirma tu cuenta para activarla</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #ffeaa7, #fab1a0); padding: 15px; border-radius: 10px; border-left: 4px solid #e17055; margin-bottom: 15px;">
+                                <h5 style="margin: 0 0 8px 0; color: #2d3436; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-shield-alt"></i>
+                                    Seguridad de tu información
+                                </h5>
+                                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                    <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #2d3436; display: flex; align-items: center; gap: 5px;">
+                                        <i class="fas fa-key" style="color: #3498db;"></i>
+                                        Encriptación SSL
+                                    </span>
+                                    <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #2d3436; display: flex; align-items: center; gap: 5px;">
+                                        <i class="fas fa-user-shield" style="color: #27ae60;"></i>
+                                        Privacidad garantizada
+                                    </span>
+                                    <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #2d3436; display: flex; align-items: center; gap: 5px;">
+                                        <i class="fas fa-database" style="color: #f39c12;"></i>
+                                        Base de datos segura
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #a29bfe, #6c5ce7); padding: 15px; border-radius: 10px; border-left: 4px solid #5f27cd;">
+                                <h5 style="margin: 0 0 8px 0; color: white; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    Beneficios de registrarte
+                                </h5>
+                                <div style="color: white; font-size: 0.9rem;">
+                                    <p style="margin: 5px 0; display: flex; align-items: center; gap: 5px;">
+                                        <i class="fas fa-check-circle" style="font-size: 0.8rem;"></i>
+                                        Acceso completo al sistema Heliconias Reports
+                                    </p>
+                                    <p style="margin: 5px 0; display: flex; align-items: center; gap: 5px;">
+                                        <i class="fas fa-check-circle" style="font-size: 0.8rem;"></i>
+                                        Gestión de reportes y seguimiento
+                                    </p>
+                                    <p style="margin: 5px 0; display: flex; align-items: center; gap: 5px;">
+                                        <i class="fas fa-check-circle" style="font-size: 0.8rem;"></i>
+                                        Soporte técnico prioritario
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    showCloseButton: true,
+                    confirmButtonColor: '#2e7d32',
+                    confirmButtonText: '<i class="fas fa-check-circle"></i> Entendido',
+                    width: 600,
+                    background: '#ffffff',
+                    customClass: {
+                        popup: 'help-swal-popup',
+                        title: 'help-swal-title',
+                        htmlContainer: 'help-swal-html',
+                        confirmButton: 'help-swal-confirm-btn'
+                    }
+                });
+            });
+        }
+    }
+
+    // Función para inicializar toda la aplicación
+    async function inicializarApp() {
+        console.log('🚀 Inicializando aplicación...');
+        
+        await Promise.all([
+            cargarGeneros(),
+            cargarInstituciones()
+        ]);
+        
+        setupPasswordToggle();
+        setupHelpButton();
+        
+        const form = document.getElementById('registerForm');
+        if (form) {
+            form.addEventListener('submit', manejarRegistro);
+            console.log('✅ Event listener del formulario configurado');
+        } else {
+            console.error('❌ No se encontró el formulario con ID registerForm');
+        }
+    }
+
+    // Función para manejar el registro (mantener igual que antes)
+    async function manejarRegistro(e) {
+        e.preventDefault();
+
+        const nombre = document.getElementById('nombre').value.trim();
+        const apellido = document.getElementById('apellido').value.trim();
+        const correo = document.getElementById('correo').value.trim();
+        const documento = document.getElementById('documento').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const id_genero = document.getElementById('id_genero').value;
+        const id_instituciones = document.getElementById('id_instituciones').value;
+        const fechaNacimiento = document.getElementById('fecha_nacimiento').value;
+        const contrasena = document.getElementById('contrasena').value;
+        const confirmarContrasena = document.getElementById('confirmar_contrasena').value;
+
+        // Validaciones básicas
+        if (!nombre || !apellido || !correo || !documento || !contrasena || !confirmarContrasena || !id_genero) {
+            Swal.fire({
+                title: 'Campos requeridos',
+                text: 'Por favor completa todos los campos obligatorios',
+                icon: 'warning',
+                confirmButtonText: 'Entendido'
+            });
+            return;
+        }
+
+        if (contrasena !== confirmarContrasena) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Las contraseñas no coinciden',
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
+            return;
+        }
+
+        if (contrasena.length < 6) {
+            Swal.fire({
+                title: 'Error',
+                text: 'La contraseña debe tener al menos 6 caracteres',
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
+            return;
+        }
+
+        const loadingAlert = Swal.fire({
+            title: 'Creando cuenta...',
+            text: 'Por favor espera mientras creamos tu cuenta',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); }
+        });
+
+        try {
+            // Verificar si el correo o documento ya existen
+            console.log('🔍 Verificando si el usuario ya existe...');
+            
+            const { data: usuariosExistentes, error: checkError } = await supabase
+                .from('usuarios')
+                .select('correo, documento')
+                .or(`correo.eq.${correo},documento.eq.${documento}`);
+
+            if (checkError) {
+                console.error('Error al verificar usuario:', checkError);
+            }
+
+            if (usuariosExistentes && usuariosExistentes.length > 0) {
+                const existeCorreo = usuariosExistentes.some(u => u.correo === correo);
+                const existeDocumento = usuariosExistentes.some(u => u.documento === documento);
+                
+                if (existeCorreo) {
+                    throw new Error('Este correo electrónico ya está registrado');
+                } else if (existeDocumento) {
+                    throw new Error('Este documento ya está registrado en el sistema');
+                }
+            }
+
+            // Crear usuario en Supabase Auth
+            console.log('🛠️ Creando usuario en Auth...');
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+                email: correo,
+                password: contrasena,
+                options: {
+                    data: {
+                        nombre: nombre,
+                        apellido: apellido,
+                        documento: documento
+                    },
+                    emailRedirectTo: window.location.origin + '/index.html'
+                }
+            });
+
+            if (authError) {
+                console.log('❌ Error en Auth:', authError);
+                
+                if (authError.message.includes('already registered') || authError.message.includes('User already registered')) {
+                    throw new Error('Este correo electrónico ya está registrado en el sistema de autenticación');
+                } else if (authError.message.includes('invalid email')) {
+                    throw new Error('El correo electrónico no es válido');
+                } else if (authError.message.includes('password')) {
+                    throw new Error('La contraseña no cumple con los requisitos de seguridad');
+                } else {
+                    throw new Error('Error al crear la cuenta: ' + authError.message);
+                }
+            }
+
+            // Insertar usuario en la tabla usuarios
+            console.log('💾 Insertando en tabla usuarios...');
+            const userData = {
+                nombre: nombre,
+                apellido: apellido,
+                correo: correo,
+                documento: documento,
+                contrasena: contrasena,
+                telefono: telefono || null,
+                id_genero: id_genero ? parseInt(id_genero) : null,
+                id_instituciones: id_instituciones ? parseInt(id_instituciones) : null,
+                fecha_nacimiento: fechaNacimiento || null,
+                id_rol: 2,
+                email_confirmado: false,
+                usuario_activo: true,
+                fecha_registro: new Date().toISOString(),
+                ultima_actualizacion: new Date().toISOString()
+            };
+
+            if (authData && authData.user) {
+                userData.auth_id = authData.user.id;
+            }
+
+            const { data: dbData, error: userError } = await supabase
+                .from('usuarios')
+                .insert([userData])
+                .select();
+
+            if (userError) {
+                console.log('❌ Error en tabla usuarios:', userError);
+                
+                if (userError.code === '23505') {
+                    if (userError.message.includes('correo')) {
+                        throw new Error('Este correo electrónico ya está registrado');
+                    } else if (userError.message.includes('documento')) {
+                        throw new Error('Este documento ya está registrado');
+                    } else if (userError.message.includes('auth_id')) {
+                        throw new Error('Error de autenticación: ID duplicado');
+                    }
+                }
+                
+                throw new Error('Error al guardar los datos: ' + userError.message);
+            }
+
+            await loadingAlert.close();
+
+            // Mostrar mensaje de éxito
+            if (authData.user && !authData.user.email_confirmed_at) {
+                await Swal.fire({
+                    title: '¡Cuenta creada! 📧',
+                    html: `
+                        <div style="text-align: left;">
+                            <p>Tu cuenta ha sido creada exitosamente.</p>
+                            <div style="background: #e8f6f3; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                                <strong>¡Confirmación requerida!</strong><br><br>
+                                📨 Hemos enviado un enlace de activación a:<br>
+                                <strong>${correo}</strong><br><br>
+                                <strong>Por favor:</strong>
+                                <ul style="text-align: left; margin: 10px 0;">
+                                    <li>Revisa tu bandeja de entrada</li>
+                                    <li>Busca en la carpeta de SPAM</li>
+                                    <li>Haz clic en "Confirmar mi email"</li>
+                                    <li>Serás redirigido para iniciar sesión</li>
+                                </ul>
+                            </div>
+                            <p><small>¿No recibiste el correo? <a href="#" onclick="reenviarConfirmacion('${correo}')">Reenviar confirmación</a></small></p>
+                        </div>
+                    `,
+                    icon: 'success',
+                    confirmButtonText: 'Entendido'
+                });
+            } else {
+                await Swal.fire({
+                    title: '¡Cuenta creada!',
+                    text: 'Tu cuenta ha sido creada exitosamente. Ya puedes iniciar sesión.',
+                    icon: 'success',
+                    confirmButtonText: 'Iniciar Sesión'
+                }).then(() => {
+                    window.location.href = 'index.html';
+                });
+                return;
+            }
+
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 5000);
+
+        } catch (error) {
+            await loadingAlert.close();
+            console.error('❌ Error completo:', error);
+            
+            Swal.fire({
+                title: 'Error',
+                text: error.message,
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
+        }
+    }
+
+    // Función para reenviar confirmación
+    window.reenviarConfirmacion = async function(email) {
+        try {
+            const { error } = await supabase.auth.resend({
+                type: 'signup',
+                email: email,
+                options: {
+                    emailRedirectTo: window.location.origin + '/index.html'
+                }
+            });
+
+            if (error) throw error;
+
+            Swal.fire({
+                title: '📨 Correo reenviado',
+                text: 'Hemos enviado nuevamente el enlace de confirmación a tu correo.',
+                icon: 'success',
+                confirmButtonText: 'Gracias'
+            });
+        } catch (error) {
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo reenviar el correo: ' + error.message,
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
+        }
+    };
+
+    // Inicializar la aplicación cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', inicializarApp);
+
+    // Función para mostrar SweetAlert de navegación
+    function mostrarOpcionesNavegacion(titulo, url) {
+        Swal.fire({
+            title: `<div style="display: flex; align-items: center; gap: 10px; color: #2c3e50;"><i class="fas fa-external-link-alt" style="color: #2e7d32; font-size: 1.5rem;"></i><span style="font-size: 1.5rem;">${titulo}</span></div>`,
+            html: `
+                <div style="text-align: center;">
+                    <div style="background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-route"></i>
+                            ¿Cómo quieres abrir esta página?
+                        </h4>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin: 20px 0;">
+                        <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #3498db;">
+                            <i class="fas fa-window-maximize" style="color: #3498db; font-size: 1.5rem;"></i>
+                            <div style="text-align: left;">
+                                <h5 style="margin: 0 0 5px 0; color: #2c3e50;">Misma pestaña</h5>
+                                <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">Reemplaza la página actual</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #9b59b6;">
+                            <i class="fas fa-plus-square" style="color: #9b59b6; font-size: 1.5rem;"></i>
+                            <div style="text-align: left;">
+                                <h5 style="margin: 0 0 5px 0; color: #2c3e50;">Nueva pestaña</h5>
+                                <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">Abre en una pestaña nueva</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            showCloseButton: true,
+            showCancelButton: true,
+            confirmButtonColor: '#3498db',
+            cancelButtonColor: '#9b59b6',
+            confirmButtonText: '<i class="fas fa-window-maximize"></i> Misma pestaña',
+            cancelButtonText: '<i class="fas fa-plus-square"></i> Nueva pestaña',
+            width: 500,
+            background: '#ffffff',
+            customClass: {
+                popup: 'nav-swal-popup',
+                title: 'nav-swal-title',
+                htmlContainer: 'nav-swal-html',
+                confirmButton: 'nav-swal-confirm-btn',
+                cancelButton: 'nav-swal-cancel-btn'
+            },
+            buttonsStyling: false,
+            showClass: {
+                popup: 'animate__animated animate__fadeInUp'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                window.open(url, '_blank');
+            }
+        });
+    }
+
+    // Navegación actualizada
+    document.getElementById('nav-inicio').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Inicio - Parque Heliconias', 'https://parque-heliconias-khaki.vercel.app/index.html');
+    });
+
+    document.getElementById('nav-reservas').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Reservas - Parque Heliconias', 'https://parqueheliconias-app.onrender.com/');
+    });
+
+    document.getElementById('nav-login').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Login - Parque Heliconias', 'https://codigoabiertoceron123-wq.github.io/heliconias2.2/');
+    });
+
+    // NUEVO: Botón de soporte
+    document.getElementById('nav-soporte').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Soporte - Heliconias Reports', 'soporte2.html');
+    });
+
+    </script>
+</body>
+</html>

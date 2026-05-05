@@ -1,0 +1,237 @@
+ * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+            url("img/fongo.JPG");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -1;
+        
+        /* Borroso */
+        filter: blur(5px); /* ajusta el valor para más o menos desenfoque */
+    }
+
+      /* Header Styles */
+      .header {
+        background: linear-gradient(135deg, #ffffff, #ffffff);
+        color: #2e7d32;
+        padding: 15px 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .top-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .logo {
+        display: flex;           /* Activar flexbox */
+        align-items: center;     /* Centrar verticalmente el contenido */
+        gap: 15px;               /* Espacio entre logo y título */
+    }
+
+    .logo-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo-img i {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-image: url("img/logo.png"); /* Tu logo real */
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        font-size: 0; /* Oculta el ícono de fontawesome */
+        color: transparent;
+    }
+
+    .logo h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+      /* Main Container */
+      .main-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 20px;
+        min-height: calc(100vh - 150px);
+      }
+
+      /* Register Box */
+      .register-box {
+        background: rgba(255, 255, 255, 0.902);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        padding: 40px;
+        width: 100%;
+        max-width: 600px;
+        margin-top: 20px;
+      }
+
+      .register-box h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2e7d32;
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .register-box label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #34495e;
+      }
+
+      .register-box input,
+      .register-box select {
+        width: 100%;
+        padding: 14px;
+        margin-bottom: 5px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      .register-box input:focus,
+      .register-box select:focus {
+        outline: none;
+        border-color: #27ae60;
+        box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+      }
+
+      .botones {
+        margin-top: 25px;
+        display: flex;
+        gap: 15px;
+      }
+
+      .botones button {
+        flex: 1;
+        padding: 14px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .btn-register {
+        background: linear-gradient(135deg, #2e7d32, #2e7d32);
+        color: white;
+      }
+
+      .btn-cancel {
+        background: #c05757;
+        color: white;
+      }
+
+      .botones button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .login-link a {
+        color: #2e7d32;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .login-link a:hover {
+        color: #219653;
+        text-decoration: underline;
+      }
+
+      /* Estilos para SweetAlert */
+      .swal2-popup {
+        background: white !important;
+        color: #2c3e50 !important;
+        border-radius: 12px !important;
+      }
+
+      .swal2-confirm {
+        background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+        border: none !important;
+        border-radius: 8px !important;
+      }
+
+      .password-container {
+            position: relative;
+       }
+
+      .password-container input {
+            width: 100%;
+            padding-right: 44px;
+       }
+
+       .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(10%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #555;
+       }

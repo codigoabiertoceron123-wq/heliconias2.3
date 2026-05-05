@@ -1,0 +1,790 @@
+// js/edad-system.js - VERSIÓN COMPLETA Y FUNCIONAL
+(function() {
+    'use strict';
+    
+    // =============================================
+    // VARIABLES PRIVADAS - NO CONFLICTOS
+    // =============================================
+    let chartBarEdad, chartPieEdad, chartAmpliadoEdad;
+    let tipoActualEdad = "edad";
+    let datosSimuladosEdad = {};
+    let datosOriginalesEdad = {};
+    let datosFecha = {};
+    let datosMes = {};
+    let datosAnio = {};
+    let chartFechaBar, chartFechaPie, chartMesBar, chartMesPie, chartAnioBar, chartAnioPie;
+
+    // Agregar junto con las otras variables
+    let datosFechaInteligente = {};
+    let datosMesInteligente = {};
+    let datosAnioInteligente = {};
+
+    // Datos para vistas combinadas
+    let datosFechaCombinado = {};
+    let datosMesCombinado = {};
+    let datosAnioCombinado = {};
+
+    // Paletas de colores específicas para edad
+    const coloresPorEdad = {
+        '0-17': '#27ae60', '18-25': '#3498db', '26-35': '#f39c12',
+        '36-50': '#e67e22', '51-65': '#9b59b6', '66+': '#e74c3c'
+    };
+
+    // Paletas de colores para fecha, mes y año
+    const coloresPorTiempo = {
+        fecha: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#34495e', '#e67e22'],
+        mes: ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6', '#1abc9c', '#d35400', '#27ae60', '#8e44ad', '#16a085', '#c0392b', '#2980b9'],
+        anio: ['#3498db', '#e67e22', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c']
+    };
+
+    // =============================================
+    // FUNCIONES PRIVADAS
+    // =============================================
+
+    function calcularEdad(fechaNacimiento) {
+        try {
+            const nacimiento = new Date(fechaNacimiento);
+            const hoy = new Date();
+            
+            if (isNaN(nacimiento.getTime())) {
+                return null;
+            }
+            
+            let edad = hoy.getFullYear() - nacimiento.getFullYear();
+            const mes = hoy.getMonth() - nacimiento.getMonth();
+            
+            if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+                edad--;
+            }
+            
+            return edad >= 0 ? edad : null;
+        } catch (error) {
+            console.error('Error calculando edad:', error);
+            return null;
+        }
+    }
+
+    function clasificarEdad(edad) {
+        if (edad <= 17) return '0-17';
+        if (edad <= 25) return '18-25';
+        if (edad <= 35) return '26-35';
+        if (edad <= 50) return '36-50';
+        if (edad <= 65) return '51-65';
+        return '66+';
+    }
+
+    async function cargarDatosEdades() {
+        try {
+            mostrarLoadingEdad('Cargando datos de edad...');
+
+            console.log('Consultando datos de edades...');
+            
+            const { data: participantes, error } = await supabase
+                .from('participantes_reserva')
+                .select(`
+                    fecha_nacimiento,
+                    fecha_visita,
+                    id_genero,
+                    nombre,
+                    apellido,
+                    genero!inner(genero)
+                `)
+                .not('fecha_nacimiento', 'is', null);
+
+            if (error) throw error;
+
+            if (participantes && participantes.length > 0) {
+                procesarDatosEdades(participantes);
+                mostrarDatosEdad();
+            } else {
+                mostrarSinDatosEdad();
+            }
+
+            cerrarLoadingEdad();
+            
+        } catch (error) {
+            console.error('Error cargando edades:', error);
+            cerrarLoadingEdad();
+            mostrarErrorEdad(error.message);
+        }
+    }
+
+    function procesarDatosEdades(participantes) {
+        const conteoEdades = {
+            '0-17': 0, '18-25': 0, '26-35': 0, 
+            '36-50': 0, '51-65': 0, '66+': 0
+        };
+
+        const edadesIndividuales = [];
+        let sumaEdades = 0;
+        let totalConEdad = 0;
+
+        participantes.forEach(participante => {
+            const fechaNacimiento = participante.fecha_nacimiento;
+            if (fechaNacimiento) {
+                const edad = calcularEdad(fechaNacimiento);
+                if (edad !== null && edad >= 0 && edad <= 120) {
+                    const categoria = clasificarEdad(edad);
+                    conteoEdades[categoria]++;
+                    edadesIndividuales.push(edad);
+                    sumaEdades += edad;
+                    totalConEdad++;
+                }
+            }
+        });
+
+        const edadPromedio = totalConEdad > 0 ? Math.round(sumaEdades / totalConEdad) : 0;
+        const edadMinima = edadesIndividuales.length > 0 ? Math.min(...edadesIndividuales) : 0;
+        const edadMaxima = edadesIndividuales.length > 0 ? Math.max(...edadesIndividuales) : 0;
+
+        // Actualizar estadísticas
+        document.getElementById('total-visitantes').textContent = totalConEdad.toLocaleString();
+        document.getElementById('edad-promedio').textContent = edadPromedio + ' años';
+        document.getElementById('total-grupos').textContent = Object.values(conteoEdades).filter(val => val > 0).length;
+
+        datosSimuladosEdad = {
+            edad: {
+                labels: Object.keys(conteoEdades),
+                values: Object.values(conteoEdades)
+            },
+            estadisticas: {
+                total: totalConEdad,
+                promedio: edadPromedio,
+                minima: edadMinima,
+                maxima: edadMaxima
+            },
+            datosOriginales: participantes
+        };
+
+        datosOriginalesEdad = JSON.parse(JSON.stringify(datosSimuladosEdad));
+    }
+
+    function mostrarDatosEdad() {
+        const container = document.getElementById('data-container');
+        const stats = datosSimuladosEdad.estadisticas;
+        
+        container.innerHTML = `
+            <div class="chart-controls">
+                <div class="chart-header">
+                    <h3 style="margin: 0; display: flex; align-items: center; gap: 6px">
+                        <i class="fas fa-user"></i> Estadísticas por Edad
+                        <span style="background: #27ae60; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin-left: 10px;">
+                            ${stats.total} participantes
+                        </span>
+                    </h3>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="download-btn" onclick="window.EdadSystem.descargarGraficoPrincipal()">
+                            <i class="fas fa-download"></i> Descargar Gráfico
+                        </button>
+                        <button class="download-btn" onclick="window.EdadSystem.mostrarFiltrosAvanzados()" style="background: linear-gradient(135deg, #e67e22, #f39c12);">
+                            <i class="fas fa-filter"></i> Filtros Avanzados
+                        </button>
+                    </div>
+                </div>
+                <!-- Filtros Avanzados (ocultos inicialmente) -->
+                <div id="filtros-avanzados-edad" style="display: none; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <h4 style="margin: 0 0 12px 0; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-filter"></i> Filtros Avanzados
+                    </h4>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <div class="filtro-grupo">
+                            <label for="filtro-fecha-inicial"><i class="fas fa-calendar-alt"></i> Fecha Inicial:</label>
+                            <input type="date" id="filtro-fecha-inicial">
+                        </div>
+                        <div class="filtro-grupo">
+                            <label for="filtro-fecha-final"><i class="fas fa-calendar-alt"></i> Fecha Final:</label>
+                            <input type="date" id="filtro-fecha-final">
+                        </div>
+                        <div class="filtro-grupo">
+                            <label for="filtro-rango-edad"><i class="fas fa-user"></i> Rango de Edad:</label>
+                            <select id="filtro-rango-edad">
+                                <option value="todos">Todos los rangos</option>
+                                <option value="0-17">0-17 años</option>
+                                <option value="18-25">18-25 años</option>
+                                <option value="26-35">26-35 años</option>
+                                <option value="36-50">36-50 años</option>
+                                <option value="51-65">51-65 años</option>
+                                <option value="66+">66+ años</option>
+                            </select>
+                        </div>
+                        <div class="filtro-grupo">
+                            <button class="btn btn-primary" onclick="window.EdadSystem.aplicarFiltros()" style="margin-top: 22px;">
+                                <i class="fas fa-check"></i> Aplicar Filtros
+                            </button>
+                            <button class="btn" onclick="window.EdadSystem.limpiarFiltros()" style="margin-top: 22px; background: #95a5a6; color: white;">
+                                <i class="fas fa-times"></i> Limpiar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card" onclick="window.EdadSystem.abrirModalEdad('bar')">
+                    <div class="chart-card-header">
+                        <div class="chart-card-title">
+                            <i class="fas fa-chart-bar"></i> Distribución por Edad - Barras
+                        </div>
+                        <div class="chart-card-badge">Haz clic para ampliar</div>
+                    </div>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="chartBarEdad"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card" onclick="window.EdadSystem.abrirModalEdad('pie')">
+                    <div class="chart-card-header">
+                        <div class="chart-card-title">
+                            <i class="fas fa-chart-pie"></i> Distribución por Edad - Circular
+                        </div>
+                        <div class="chart-card-badge">Haz clic para ampliar</div>
+                    </div>
+                    <div class="chart-canvas-wrap pie-chart-container">
+                        <canvas id="chartPieEdad"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-table">
+                <div class="chart-header">
+                    <h3 style="margin: 0; display: flex; align-items: center; gap: 6px">
+                        <i class="fas fa-table"></i> Detalle por Grupos de Edad
+                    </h3>
+                    <button class="download-btn" onclick="window.EdadSystem.descargarExcel()">
+                        <i class="fas fa-file-excel"></i> Exportar Excel
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="table" style="min-width: 700px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th style="min-width: 120px;">Grupo de Edad</th>
+                                <th style="min-width: 100px;">Rango</th>
+                                <th style="width: 120px;">Total Visitantes</th>
+                                <th style="width: 100px;">Porcentaje</th>
+                                <th style="min-width: 150px;">Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-edad-body">
+                            ${generarFilasTablaEdad()}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        // Agregar estilos para los filtros
+        agregarEstilosFiltros();
+        mostrarGraficasEdad();
+    }
+
+    // Función principal para cargar datos de tiempo
+    async function cargarDatosTiempo(tipo) {
+        try {
+            mostrarLoadingEdad(`Cargando datos por ${tipo}...`);
+
+            console.log(`📊 Cargando datos para: ${tipo}`);
+            
+            const { data: participantes, error } = await supabase
+                .from('participantes_reserva')
+                .select('fecha_visita, fecha_nacimiento')
+                .not('fecha_visita', 'is', null);
+
+            if (error) throw error;
+
+            if (participantes && participantes.length > 0) {
+                procesarDatosTiempo(participantes, tipo);
+                mostrarInterfazTiempo(tipo);
+            } else {
+                mostrarSinDatosTiempo(tipo);
+            }
+
+            cerrarLoadingEdad();
+            
+        } catch (error) {
+            console.error(`Error cargando datos de ${tipo}:`, error);
+            cerrarLoadingEdad();
+            mostrarErrorEdad(`Error al cargar datos de ${tipo}: ` + error.message);
+        }
+    }
+
+    function mostrarOcultarFiltros() {
+        const container = document.getElementById('data-container');
+        // Crear contenedor de filtros si no existe
+        if (!document.getElementById('filtros-combinados')) {
+            const filtrosHTML = `
+                <div id="filtros-combinados" style="display: none; margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 1px solid #e9ecef;">
+                    <h4 style="margin: 0 0 15px 0; display: flex; align-items: center; gap: 8px; color: #2c3e50;">
+                        <i class="fas fa-filter"></i> Filtros Combinados
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label style="font-weight: 600; margin-bottom: 5px; display: block; font-size: 0.9rem;">
+                                <i class="fas fa-calendar-alt"></i> Fecha Inicial
+                            </label>
+                            <input type="date" id="filtro-fecha-inicial" class="form-control" style="padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 600; margin-bottom: 5px; display: block; font-size: 0.9rem;">
+                                <i class="fas fa-calendar-alt"></i> Fecha Final
+                            </label>
+                            <input type="date" id="filtro-fecha-final" class="form-control" style="padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 600; margin-bottom: 5px; display: block; font-size: 0.9rem;">
+                                <i class="fas fa-user"></i> Rango de Edad
+                            </label>
+                            <select id="filtro-rango-edad" class="form-control" style="padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd;">
+                                <option value="todos">Todos los rangos</option>
+                                <option value="0-17">0-17 años</option>
+                                <option value="18-25">18-25 años</option>
+                                <option value="26-35">26-35 años</option>
+                                <option value="36-50">36-50 años</option>
+                                <option value="51-65">51-65 años</option>
+                                <option value="66+">66+ años</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="window.EdadSystem.aplicarFiltrosCombinados()">
+                            <i class="fas fa-check"></i> Aplicar Filtros
+                        </button>
+                        <button class="btn btn-secondary" onclick="window.EdadSystem.limpiarFiltrosCombinados()">
+                            <i class="fas fa-times"></i> Limpiar Filtros
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Insertar al inicio del contenedor
+            container.insertAdjacentHTML('afterbegin', filtrosHTML);
+        }
+
+        const filtrosDiv = document.getElementById('filtros-combinados');
+        if (filtrosDiv.style.display === 'none') {
+            filtrosDiv.style.display = 'block';
+            // Establecer fechas por defecto (último año)
+            const ahora = new Date();
+            const haceUnAnio = new Date();
+            haceUnAnio.setFullYear(ahora.getFullYear() - 1);
+            
+            document.getElementById('filtro-fecha-inicial').value = haceUnAnio.toISOString().split('T')[0];
+            document.getElementById('filtro-fecha-final').value = ahora.toISOString().split('T')[0];
+        } else {
+            filtrosDiv.style.display = 'none';
+        }
+    }
+
+    // Procesar datos por tiempo
+    function procesarDatosTiempo(participantes, tipo) {
+        const conteo = {};
+        const ahora = new Date();
+        
+        participantes.forEach(participante => {
+            if (participante.fecha_visita) {
+                const fecha = new Date(participante.fecha_visita);
+                let clave = '';
+                
+                switch(tipo) {
+                    case 'fecha':
+                        // Formato: YYYY-MM-DD
+                        clave = fecha.toISOString().split('T')[0];
+                        break;
+                    case 'mes':
+                        // Formato: YYYY-MM (Enero 2024)
+                        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                        clave = `${meses[fecha.getMonth()]} ${fecha.getFullYear()}`;
+                        break;
+                    case 'anio':
+                        // Formato: YYYY
+                        clave = fecha.getFullYear().toString();
+                        break;
+                }
+                
+                conteo[clave] = (conteo[clave] || 0) + 1;
+            }
+        });
+
+        // Ordenar datos
+        let labels, values;
+        
+        switch(tipo) {
+            case 'fecha':
+                // Ordenar fechas cronológicamente
+                labels = Object.keys(conteo).sort((a, b) => new Date(a) - new Date(b));
+                // Tomar las últimas 10 fechas (más recientes)
+                labels = labels.slice(-10);
+                break;
+            case 'mes':
+                // Ordenar meses cronológicamente
+                labels = Object.keys(conteo).sort((a, b) => {
+                    const [mesA, añoA] = a.split(' ');
+                    const [mesB, añoB] = b.split(' ');
+                    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                    return new Date(añoA, meses.indexOf(mesA)) - new Date(añoB, meses.indexOf(mesB));
+                });
+                break;
+            case 'anio':
+                // Ordenar años cronológicamente
+                labels = Object.keys(conteo).sort((a, b) => parseInt(a) - parseInt(b));
+                break;
+        }
+        
+        values = labels.map(label => conteo[label]);
+
+        // Guardar datos
+        const datosTiempo = {
+            labels: labels,
+            values: values,
+            total: values.reduce((a, b) => a + b, 0)
+        };
+
+        switch(tipo) {
+            case 'fecha': datosFecha = datosTiempo; break;
+            case 'mes': datosMes = datosTiempo; break;
+            case 'anio': datosAnio = datosTiempo; break;
+        }
+
+        console.log(`✅ Datos ${tipo} procesados:`, datosTiempo);
+    }
+
+    // Mostrar interfaz para fecha, mes o año
+    function mostrarInterfazTiempo(tipo) {
+        const container = document.getElementById('data-container');
+        const datos = getDatosTiempo(tipo);
+        const titulo = getTituloTiempo(tipo);
+        const icono = getIconoTiempo(tipo);
+
+        container.innerHTML = `
+            <div class="chart-controls">
+                <div class="chart-header">
+                    <h3 style="margin: 0; display: flex; align-items: center; gap: 6px">
+                        ${icono} ${titulo}
+                        <span style="background: #27ae60; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin-left: 10px;">
+                            ${datos.total} visitantes
+                        </span>
+                    </h3>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="download-btn" onclick="window.EdadSystem.descargarGraficoPrincipalTiempo('${tipo}')">
+                            <i class="fas fa-download"></i> Descargar Gráfico
+                        </button>
+                        <button class="btn" onclick="window.EdadSystem.mostrarOcultarFiltros()" style="background: linear-gradient(135deg, #e67e22, #f39c12); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer;">
+                            <i class="fas fa-filter"></i> Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card" onclick="window.EdadSystem.abrirModalTiempo('${tipo}', 'bar')">
+                    <div class="chart-card-header">
+                        <div class="chart-card-title">
+                            <i class="fas fa-chart-bar"></i> ${titulo} - Barras
+                        </div>
+                        <div class="chart-card-badge">Haz clic para ampliar</div>
+                    </div>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="chart${tipo.charAt(0).toUpperCase() + tipo.slice(1)}Bar"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card" onclick="window.EdadSystem.abrirModalTiempo('${tipo}', 'pie')">
+                    <div class="chart-card-header">
+                        <div class="chart-card-title">
+                            <i class="fas fa-chart-pie"></i> ${titulo} - Circular
+                        </div>
+                        <div class="chart-card-badge">Haz clic para ampliar</div>
+                    </div>
+                    <div class="chart-canvas-wrap pie-chart-container">
+                        <canvas id="chart${tipo.charAt(0).toUpperCase() + tipo.slice(1)}Pie"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-table">
+                <div class="chart-header">
+                    <h3 style="margin: 0; display: flex; align-items: center; gap: 6px">
+                        <i class="fas fa-table"></i> Detalle por ${titulo.split(' ')[1]}
+                    </h3>
+                    <button class="download-btn" onclick="window.EdadSystem.descargarExcelTiempo('${tipo}')">
+                        <i class="fas fa-file-excel"></i> Exportar Excel
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="table" style="min-width: 700px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th style="min-width: 150px;">${titulo.split(' ')[1]}</th>
+                                <th style="width: 120px;">Total Visitantes</th>
+                                <th style="width: 100px;">Porcentaje</th>
+                                <th style="min-width: 100px;">Tendencia</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-${tipo}-body">
+                            ${generarFilasTablaTiempo(datos, tipo)}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        mostrarGraficasTiempo(tipo);
+    }
+
+    // =============================================
+    // FUNCIONES DE FILTRADO COMBINADO
+    // =============================================
+
+    async function aplicarFiltrosCombinados() {
+        try {
+            const fechaInicial = document.getElementById('filtro-fecha-inicial').value;
+            const fechaFinal = document.getElementById('filtro-fecha-final').value;
+            const rangoEdad = document.getElementById('filtro-rango-edad').value;
+
+            // Validar fechas
+            if (!fechaInicial || !fechaFinal) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Fechas requeridas',
+                    text: 'Por favor selecciona ambas fechas'
+                });
+                return;
+            }
+
+            if (fechaInicial > fechaFinal) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Fechas inválidas',
+                    text: 'La fecha inicial no puede ser mayor que la fecha final'
+                });
+                return;
+            }
+
+            mostrarLoadingEdad('Aplicando filtros...');
+
+            // Determinar qué tipo de reporte estamos viendo
+            const tipoReporte = obtenerTipoReporteActual();
+            
+            if (tipoReporte === 'edad') {
+                // Para reporte de edad
+                await aplicarFiltrosEdadCombinado(fechaInicial, fechaFinal, rangoEdad);
+            } else {
+                // Para reporte de tiempo (fecha/mes/año)
+                await aplicarFiltrosTiempoCombinado(fechaInicial, fechaFinal, rangoEdad, tipoReporte);
+            }
+
+            cerrarLoadingEdad();
+            
+        } catch (error) {
+            console.error('Error aplicando filtros combinados:', error);
+            cerrarLoadingEdad();
+            mostrarErrorEdad('Error al aplicar los filtros: ' + error.message);
+        }
+    }
+
+    async function aplicarFiltrosEdadCombinado(fechaInicial, fechaFinal, rangoEdad) {
+        try {
+            let query = supabase
+                .from('participantes_reserva')
+                .select(`
+                    fecha_nacimiento,
+                    fecha_visita,
+                    id_genero,
+                    nombre,
+                    apellido,
+                    genero!inner(genero)
+                `)
+                .not('fecha_nacimiento', 'is', null)
+                .gte('fecha_visita', fechaInicial + 'T00:00:00')
+                .lte('fecha_visita', fechaFinal + 'T23:59:59');
+
+            const { data: participantesFiltrados, error } = await query;
+
+            if (error) throw error;
+
+            if (participantesFiltrados && participantesFiltrados.length > 0) {
+                let participantesProcesados = participantesFiltrados;
+
+                // Aplicar filtro adicional por rango de edad si no es "todos"
+                if (rangoEdad !== 'todos') {
+                    participantesProcesados = participantesFiltrados.filter(participante => {
+                        const edad = calcularEdad(participante.fecha_nacimiento);
+                        if (edad === null) return false;
+                        
+                        const categoria = clasificarEdad(edad);
+                        return categoria === rangoEdad;
+                    });
+                }
+
+                if (participantesProcesados.length > 0) {
+                    procesarDatosEdades(participantesProcesados);
+                    mostrarDatosEdad();
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Filtros aplicados',
+                        text: `Se encontraron ${participantesProcesados.length} participantes`,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    mostrarMensajeNoHayDatos(rangoEdad);
+                }
+            } else {
+                mostrarMensajeNoHayDatos();
+            }
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async function aplicarFiltrosTiempoCombinado(fechaInicial, fechaFinal, rangoEdad, tipoTiempo) {
+        try {
+            let query = supabase
+                .from('participantes_reserva')
+                .select(`
+                    fecha_nacimiento,
+                    fecha_visita
+                `)
+                .not('fecha_visita', 'is', null)
+                .gte('fecha_visita', fechaInicial + 'T00:00:00')
+                .lte('fecha_visita', fechaFinal + 'T23:59:59');
+
+            // Solo incluir participantes con fecha de nacimiento si se filtra por edad
+            if (rangoEdad !== 'todos') {
+                query = query.not('fecha_nacimiento', 'is', null);
+            }
+
+            const { data: participantesFiltrados, error } = await query;
+
+            if (error) throw error;
+
+            if (participantesFiltrados && participantesFiltrados.length > 0) {
+                // Procesar datos para vista inteligente
+                procesarDatosTiempoInteligente(participantesFiltrados, tipoTiempo, rangoEdad);
+                mostrarInterfazTiempoInteligente(tipoTiempo, rangoEdad);
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Filtros aplicados',
+                    text: `Se encontraron ${participantesFiltrados.length} visitas`,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                mostrarMensajeNoHayDatos(rangoEdad);
+            }
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    function mostrarMensajeNoHayDatos(rangoEdad = '') {
+        let mensaje = 'No hay datos disponibles para los filtros seleccionados';
+        if (rangoEdad && rangoEdad !== 'todos') {
+            mensaje = `No hay participantes con edad ${rangoEdad} en las fechas seleccionadas`;
+        }
+        
+        Swal.fire({
+            icon: 'info',
+            title: 'Sin datos',
+            text: mensaje,
+            confirmButtonColor: '#3498db'
+        });
+    }
+
+    // =============================================
+    // FUNCIÓN FALTANTE - GRÁFICA AMPLIADA PARA TIEMPO
+    // =============================================
+
+    function crearGraficaAmpliadaTiempo(tipo, tipoGrafica) {
+        const ctx = document.getElementById("chartAmpliadoEdad");
+        if (!ctx) return;
+
+        // Destruir gráfica anterior si existe
+        if (chartAmpliadoEdad) {
+            chartAmpliadoEdad.destroy();
+        }
+
+        const datos = getDatosTiempo(tipo);
+        const colors = generarColoresTiempo(tipo, datos.labels.length);
+        const total = datos.values.reduce((a, b) => a + b, 0);
+
+        // Configurar según el tipo de gráfica
+        const chartType = tipoGrafica === "bar" ? "bar" : "doughnut";
+
+        chartAmpliadoEdad = new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: datos.labels,
+                datasets: [{
+                    label: "Cantidad de Visitantes",
+                    data: datos.values,
+                    backgroundColor: colors,
+                    borderColor: colors.map(color => darkenColor(color, 0.2)),
+                    borderWidth: 2,
+                    borderRadius: chartType === "bar" ? 8 : 0,
+                    barThickness: chartType === "bar" ? 35 : undefined,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: chartType === "bar" ? 'top' : 'right',
+                        labels: {
+                            padding: 15,
+                            usePointStyle: true,
+                            font: { size: 12 }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: `${getTituloTiempo(tipo)} - Vista Ampliada`,
+                        font: { size: 18, weight: 'bold' },
+                        padding: 20
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 14 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed.y || context.parsed;
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value} visitantes (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                scales: chartType === "bar" ? {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.1)' },
+                        title: {
+                            display: true,
+                            text: 'Cantidad de Visitantes',
+                            font: { weight: 'bold', size: 14 }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        title: {
+                            display: true,
+                            text: getTituloTiempo(tipo).split(' ')[2] || 'Período',
+                            font: { weight: 'bold', size: 14 }
+                        }
+                    }
+                } : {},
+                cutout: chartType === "bar" ? '0%' : '50%'
+            },
+        });
+    }

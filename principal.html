@@ -1,0 +1,1330 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Parque de las Heliconias - Panel de Control</title>
+
+        <!-- CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+        />
+
+        
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+            
+            body::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: white;
+                z-index: -1;
+            }
+            /* Header Styles */
+            .header {
+                background: linear-gradient(135deg, #ffffff, #ffffff);
+                color: #2e7d32;
+                padding: 15px 30px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            .top-section {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+
+            .logo {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .logo-img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .logo-img i {
+                display: block;
+                width: 100%;
+                height: 100%;
+                background-image: url("img/logo.png");
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                font-size: 0; 
+                color: transparent;
+            }
+
+            .logo h1 {
+                font-size: 24px;
+                font-weight: 700;
+                margin: 0;
+            }
+            
+            .top-bar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                margin-bottom: 10px;
+                margin-top: 15px; 
+            }
+
+            .system-date {
+                display: flex;
+                margin-left: 20px;
+                align-items: center;
+                gap: 10px;
+                font-weight: 500;
+                color: #000000;
+                background: rgba(255, 255, 255, 0.15);
+                padding: 10px 18px;
+                border-radius: 25px;
+                backdrop-filter: blur(6px);
+                -webkit-backdrop-filter: blur(6px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+                font-size: 15px;
+                letter-spacing: 0.5px;
+            }
+
+            /* Navigation Styles */
+            .nav-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 10px;
+                border-top: 1px solid rgba(255,255,255,0.3);
+            }
+
+            .main-nav {
+                display: flex;
+                gap: 5px;
+                left: 50px;
+            }
+
+            .nav-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 20px;
+                color: #2e7d32;
+                text-decoration: none;
+                border-radius: 6px;
+                position: relative;
+                background: transparent;
+                transition: all 0.3s ease;
+            }
+
+            .nav-item::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 10%;
+                width: 80%;
+                height: 2px;
+                background: linear-gradient(135deg, #2e7d32, #4caf50);
+                transform: scaleX(0);
+                transition: transform 0.3s ease;
+                transform-origin: center;
+            }
+
+            .nav-item:hover::after {
+                transform: scaleX(1);
+            }
+
+            .user-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px; 
+            }
+
+            .btn {
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: 500;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: all 0.3s ease;
+                position: relative;
+                left: -20px;
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, #2e7d32, #4caf50);
+                color: white;
+            }
+
+            .btn-accent {
+                background: linear-gradient(135deg, #e74c3c, #fe5926); 
+                color: white;
+            }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+            /* Main Content Styles */
+            .main-content {
+                padding: 30px;
+            }
+
+            .titulo {
+                background: white;
+                padding: 25px 30px;
+                margin-bottom: 25px;
+                font-size: 1.5rem;
+                color: #2c3e50;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                border-left: 5px solid #2e7d32;
+            }
+
+            .titulo i {
+                color: #2e7d32;
+                margin-right: 10px;
+            }
+
+            /* Content Grid */
+            .content {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+            }
+
+            .content-section {
+                background: white;
+                border-radius: 12px;
+                padding: 25px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease;
+                border-top: 4px solid #2e7d32;
+            }
+
+            .content-section:hover {
+                transform: translateY(-5px);
+            }
+
+            .section-title {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 20px;
+                color: #2c3e50;
+                font-size: 1.2rem;
+            }
+
+            .stat-icon {
+                color: #2e7d32;
+                font-size: 1.4rem;
+            }
+
+            .stat-number {
+                font-size: 3rem;
+                font-weight: bold;
+                color: #2e7d32;
+                text-align: center;
+                margin: 20px 0;
+            }
+
+            .stats-container {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .stat-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px;
+                background: #f8f9fa;
+                border-radius: 8px;
+                border-left: 4px solid #2e7d32;
+            }
+
+            .stat-label {
+                font-weight: 500;
+                color: #2c3e50;
+            }
+
+            .stat-value {
+                font-weight: bold;
+                color: #2e7d32;
+                font-size: 1.2rem;
+            }
+
+            .no-data {
+                text-align: center;
+                color: #7f8c8d;
+                font-style: italic;
+                padding: 20px;
+            }
+
+            .section-actions {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .btn-details {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 20px;
+                background: linear-gradient(135deg, #2e7d32, #4caf50);
+                color: white;
+                text-decoration: none;
+                border-radius: 6px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+            .btn-details:hover {
+                background: #2e7d32;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+            }
+
+            .btn-details:disabled {
+                background: #bdc3c7;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
+            }
+
+            /* Responsive */
+            @media (max-width: 1024px) {
+                .nav-container {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                
+                .main-nav {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .header {
+                    padding: 15px;
+                }
+                
+                .top-section {
+                    flex-direction: column;
+                    gap: 15px;
+                    text-align: center;
+                }
+                
+                .content {
+                    grid-template-columns: 1fr;
+                    padding: 15px;
+                }
+                
+                .main-content {
+                    padding: 15px;
+                }
+                
+                .user-actions {
+                    flex-wrap: wrap;
+                    justify-content: flex-end;
+                    gap: 10px;
+                }
+                
+                .nav-item {
+                    padding: 8px 12px;
+                    font-size: 0.9rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header class="header">
+            <div class="top-section">
+                <div class="logo">
+                    <div class="logo-img">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h1>Heliconias Reports</h1>
+                </div>
+                <!-- Navegación horizontal -->
+                <nav class="main-nav">
+                    <a href="principal.html" class="nav-item active tooltip">
+                        <i class="fas fa-home"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="eventos.html" class="nav-item tooltip">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Eventos</span>
+                    </a>
+                    <a href="actividad.html" class="nav-item tooltip">
+                        <i class="fas fa-hiking"></i>
+                        <span>Actividades</span>
+                    </a>
+                    <a href="reportes.html" class="nav-item tooltip">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reportes</span>
+                    </a>
+                    <a href="configuracion.html" class="nav-item tooltip">
+                        <i class="fas fa-cog"></i>
+                        <span>Configuración</span>
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <div class="top-bar">
+            <div class="system-date">
+                <i class="fas fa-clock"></i>
+                <span id="current-date-time">Cargando fecha y hora...</span>
+            </div>
+
+            <div class="user-actions">
+                <a href="soporte.html" class="btn btn-primary tooltip" placeholder="soporte">
+                    <i class="fas fa-headset"></i> Soporte
+                </a>
+
+                <button class="btn btn-primary tooltip" id="help-btn">
+                    <i class="fas fa-question-circle"></i> Ayuda
+                </button>
+
+                <button class="btn btn-accent tooltip" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </div>
+        <main class="main-content">
+            <h2 class="titulo">
+                <i class="fas fa-chart-pie"></i>Resumen Financiero y Estadísticas de Visitantes
+            </h2>
+
+            <!-- Contenido -->
+            <div class="content">
+                <!-- Total de Visitantes -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-users stat-icon"></i>Total de visitantes
+                    </h2>
+                    <div class="stat-number" id="total-visitantes">Cargando...</div>
+                    <div class="section-actions">
+                        <a href="estadisticas_visitantes.html" class="btn-details">
+                            <i class="fas fa-chart-pie"></i> Ver Estadísticas 
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Por Género -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-venus-mars stat-icon"></i>Por género
+                    </h2>
+                    <div class="stats-container" id="genero-stats-container">
+                        <div class="no-data">Cargando géneros...</div>
+                    </div>
+                    <div class="section-actions">
+                        <a href="estadisticas_genero.html" class="btn-details">
+                            <i class="fas fa-chart-pie"></i> Ver Detalles
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Por Edad -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-child stat-icon"></i>Por edad
+                    </h2>
+                    <div class="stats-container" id="edad-stats-container">
+                        <div class="no-data">Cargando edades...</div>
+                    </div>
+                    <div class="section-actions">
+                        <a href="estadisticas_edad.html" class="btn-details">
+                            <i class="fas fa-chart-bar"></i> Ver Detalles
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Por Nacionalidad -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-flag stat-icon"></i>Por nacionalidad
+                    </h2>
+                    <div class="stats-container" id="nacionalidad-stats-container">
+                        <div class="no-data">Cargando nacionalidades...</div>
+                    </div>
+                    <div class="section-actions">
+                        <a href="estadisticas_nacionalidad.html" class="btn-details">
+                            <i class="fas fa-chart-bar"></i> Ver Detalles
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Por Ciudad -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-city stat-icon"></i>Por ciudad
+                    </h2>
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-label">Bogotá</span>
+                            <span class="stat-value" id="ciudad-bogota">Sin datos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Medellín</span>
+                            <span class="stat-value" id="ciudad-medellin">Sin datos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Cali</span>
+                            <span class="stat-value" id="ciudad-cali">Sin datos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Otras</span>
+                            <span class="stat-value" id="ciudad-otras">Sin datos</span>
+                        </div>
+                    </div>
+                    <div class="section-actions">
+                        <a href="estadisticas_ciudad.html" class="btn-details"> 
+                            <i class="fas fa-map-marked-alt"></i> Ver Detalles
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Por Institución -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-school stat-icon"></i>Por institución
+                    </h2>
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-label">Universidad del Valle</span>
+                            <span class="stat-value" id="institucion-univalle">Sin datos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Universidad Nacional</span>
+                            <span class="stat-value" id="institucion-nacional">Sin datos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Universidad de los Andes</span>
+                            <span class="stat-value" id="institucion-andes">Sin datos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Otras Instituciones</span>
+                            <span class="stat-value" id="institucion-otras">Sin datos</span>
+                        </div>
+                    </div>
+                    <div class="section-actions">
+                        <a href="estadisticas_institucion.html" class="btn-details">
+                            <i class="fas fa-university"></i> Ver Detalles
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Gestión Financiera -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-dollar-sign stat-icon"></i>Gestión Financiera
+                    </h2>
+                    <p class="no-data">Módulo en desarrollo</p>
+                    <div class="section-actions">
+                        <button class="btn-details" disabled>
+                            <i class="fas fa-chart-line"></i> Ver Detalles🔐
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Supabase JS -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        
+        <script>
+            // Inicializar Supabase - Versión corregida SIN declaración duplicada
+            if (!window.supabaseClient) {
+                const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
+                window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            }
+            const sb = window.supabaseClient; // Usar 'sb' en lugar de 'supabase' para evitar conflictos
+
+            // Función para actualizar fecha y hora
+            function updateDateTime() {
+                const now = new Date();
+                const dateTimeString = now.toLocaleString("es-ES", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true,
+                });
+
+                const dateTimeElement = document.getElementById("current-date-time");
+                if (dateTimeElement) {
+                    dateTimeElement.textContent = dateTimeString;
+                }
+            }
+
+            // Función para calcular edad a partir de fecha de nacimiento
+            function calcularEdad(fechaNacimiento) {
+                if (!fechaNacimiento) return null;
+                
+                const hoy = new Date();
+                const nacimiento = new Date(fechaNacimiento);
+                
+                let edad = hoy.getFullYear() - nacimiento.getFullYear();
+                const mes = hoy.getMonth() - nacimiento.getMonth();
+                
+                if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+                    edad--;
+                }
+                
+                return edad;
+            }
+
+            // Función para clasificar por edad
+            function clasificarEdad(edad) {
+                if (edad < 18) return 'menores';
+                if (edad <= 60) return 'adultos';
+                return 'mayores';
+            }
+
+            // Función para obtener datos de visitantes desde Supabase
+            async function cargarDatosVisitantes() {
+                try {
+                    console.log('Iniciando carga de datos de visitantes...');
+                    
+                    const { data: visitantesData, error: visitantesError } = await sb
+                        .from('participantes_reserva')
+                        .select('id_participante');
+                    
+                    console.log('Datos obtenidos de visitantes:', visitantesData);
+                    
+                    if (visitantesError) {
+                        console.error('Error al cargar visitantes:', visitantesError);
+                        document.getElementById('total-visitantes').textContent = 'Error en BD';
+                        return;
+                    }
+                    
+                    const totalVisitantes = visitantesData ? visitantesData.length : 0;
+                    document.getElementById('total-visitantes').textContent = totalVisitantes.toLocaleString();
+                    
+                    console.log('Total de visitantes:', totalVisitantes);
+                    
+                } catch (error) {
+                    console.error('Error al cargar datos de visitantes:', error);
+                    document.getElementById('total-visitantes').textContent = 'Error';
+                }
+            }
+
+            // Función para cargar datos de género dinámicamente
+            async function cargarDatosGenero() {
+                try {
+                    console.log('=== CARGANDO DATOS DE GÉNERO DINÁMICAMENTE ===');
+                    
+                    const { data: participantes, error } = await sb
+                        .from('participantes_reserva')
+                        .select('id_genero')
+                        .not('id_genero', 'is', null);
+
+                    if (error) {
+                        console.error('Error al cargar datos de género:', error);
+                        mostrarErrorGenero();
+                        return;
+                    }
+
+                    console.log('Datos de género obtenidos:', participantes);
+
+                    const conteoGeneros = {};
+                    
+                    participantes.forEach(participante => {
+                        const idGenero = participante.id_genero;
+                        if (idGenero) {
+                            conteoGeneros[idGenero] = (conteoGeneros[idGenero] || 0) + 1;
+                        }
+                    });
+
+                    console.log('Conteo por ID de género:', conteoGeneros);
+
+                    const nombresGenero = {
+                        1: 'Masculino',
+                        2: 'Femenino',
+                        3: 'No binario',
+                        4: 'Prefiero no decir',
+                        5: 'Otro'
+                    };
+
+                    generarInterfazGeneros(conteoGeneros, nombresGenero);
+
+                } catch (error) {
+                    console.error('Error crítico en cargarDatosGenero:', error);
+                    mostrarErrorGenero();
+                }
+            }
+
+            // Función para generar la interfaz de géneros dinámicamente
+            function generarInterfazGeneros(conteoGeneros, nombresGenero) {
+                const statsContainer = document.getElementById('genero-stats-container');
+                
+                statsContainer.innerHTML = '';
+
+                if (Object.keys(conteoGeneros).length === 0) {
+                    statsContainer.innerHTML = '<div class="no-data">No hay datos de género</div>';
+                    return;
+                }
+
+                const generosOrdenados = Object.keys(conteoGeneros).sort((a, b) => {
+                    return conteoGeneros[b] - conteoGeneros[a];
+                });
+
+                generosOrdenados.forEach(idGenero => {
+                    const cantidad = conteoGeneros[idGenero];
+                    const nombre = nombresGenero[idGenero] || `Género ${idGenero}`;
+                    
+                    const statItem = document.createElement('div');
+                    statItem.className = 'stat-item';
+                    statItem.innerHTML = `
+                        <span class="stat-label">${nombre}</span>
+                        <span class="stat-value">${cantidad.toLocaleString()}</span>
+                    `;
+                    
+                    statsContainer.appendChild(statItem);
+                });
+
+                console.log('✅ Interfaz de géneros generada dinámicamente');
+            }
+
+            // Función para cargar datos de edad dinámicamente
+            async function cargarDatosEdad() {
+                try {
+                    console.log('=== CARGANDO DATOS DE EDAD DINÁMICAMENTE ===');
+                    
+                    const { data: participantes, error } = await sb
+                        .from('participantes_reserva')
+                        .select('fecha_nacimiento')
+                        .not('fecha_nacimiento', 'is', null);
+
+                    if (error) {
+                        console.error('Error al cargar datos de edad:', error);
+                        mostrarErrorEdad();
+                        return;
+                    }
+
+                    console.log('Datos de edad obtenidos:', participantes);
+
+                    const conteoEdades = {
+                        menores: 0,
+                        adultos: 0,
+                        mayores: 0
+                    };
+
+                    participantes.forEach(participante => {
+                        const fechaNacimiento = participante.fecha_nacimiento;
+                        if (fechaNacimiento) {
+                            const edad = calcularEdad(fechaNacimiento);
+                            if (edad !== null) {
+                                const categoria = clasificarEdad(edad);
+                                conteoEdades[categoria]++;
+                            }
+                        }
+                    });
+
+                    console.log('Conteo por categoría de edad:', conteoEdades);
+
+                    generarInterfazEdades(conteoEdades);
+
+                } catch (error) {
+                    console.error('Error crítico en cargarDatosEdad:', error);
+                    mostrarErrorEdad();
+                }
+            }
+
+            // Función para generar la interfaz de edades dinámicamente
+            function generarInterfazEdades(conteoEdades) {
+                const statsContainer = document.getElementById('edad-stats-container');
+                
+                statsContainer.innerHTML = '';
+
+                if (conteoEdades.menores === 0 && conteoEdades.adultos === 0 && conteoEdades.mayores === 0) {
+                    statsContainer.innerHTML = '<div class="no-data">No hay datos de edad</div>';
+                    return;
+                }
+
+                const categorias = [
+                    { key: 'menores', label: 'Menores de 18' },
+                    { key: 'adultos', label: '18 - 60 años' },
+                    { key: 'mayores', label: 'Mayores de 60' }
+                ];
+
+                categorias.forEach(categoria => {
+                    const cantidad = conteoEdades[categoria.key];
+                    
+                    const statItem = document.createElement('div');
+                    statItem.className = 'stat-item';
+                    statItem.innerHTML = `
+                        <span class="stat-label">${categoria.label}</span>
+                        <span class="stat-value">${cantidad.toLocaleString()}</span>
+                    `;
+                    
+                    statsContainer.appendChild(statItem);
+                });
+
+                console.log('✅ Interfaz de edades generada dinámicamente');
+            }
+
+            // Función para cargar datos de nacionalidad
+            async function cargarDatosNacionalidad() {
+                try {
+                    console.log('=== CARGANDO DATOS DE NACIONALIDAD - COLOMBIA vs OTROS ===');
+                    
+                    const { data: participantes, error: errorParticipantes } = await sb
+                        .from('participantes_reserva')
+                        .select('id_ciudad')
+                        .not('id_ciudad', 'is', null);
+
+                    if (errorParticipantes) {
+                        console.error('Error al obtener participantes:', errorParticipantes);
+                        mostrarErrorNacionalidad();
+                        return;
+                    }
+
+                    console.log('Participantes con ciudades:', participantes);
+
+                    if (!participantes || participantes.length === 0) {
+                        mostrarSinDatosNacionalidad();
+                        return;
+                    }
+
+                    const idsCiudadesUnicos = [...new Set(participantes.map(p => p.id_ciudad))];
+                    console.log('IDs de ciudades únicos:', idsCiudadesUnicos);
+
+                    const { data: ciudades, error: errorCiudades } = await sb
+                        .from('ciudades')
+                        .select(`
+                            id, 
+                            pais_id,
+                            pais (
+                                id,
+                                pais
+                            )
+                        `)
+                        .in('id', idsCiudadesUnicos);
+
+                    if (errorCiudades) {
+                        console.error('Error al obtener ciudades:', errorCiudades);
+                        mostrarErrorNacionalidad();
+                        return;
+                    }
+
+                    console.log('Ciudades obtenidas con países:', ciudades);
+
+                    const conteoPaises = {};
+                    let sinPaisCount = 0;
+
+                    participantes.forEach(participante => {
+                        const ciudad = ciudades.find(c => c.id === participante.id_ciudad);
+                        
+                        if (ciudad && ciudad.pais && ciudad.pais.pais) {
+                            const nombrePais = ciudad.pais.pais;
+                            conteoPaises[nombrePais] = (conteoPaises[nombrePais] || 0) + 1;
+                        } else {
+                            sinPaisCount++;
+                        }
+                    });
+
+                    console.log('Conteo completo por país:', conteoPaises);
+                    console.log('Sin país:', sinPaisCount);
+
+                    let colombiaCount = 0;
+                    let otrosPaisesCount = 0;
+
+                    Object.keys(conteoPaises).forEach(nombrePais => {
+                        if (nombrePais.toLowerCase().includes('colombia')) {
+                            colombiaCount += conteoPaises[nombrePais];
+                        } else {
+                            otrosPaisesCount += conteoPaises[nombrePais];
+                        }
+                    });
+
+                    otrosPaisesCount += sinPaisCount;
+
+                    const conteoFinal = {
+                        'Colombia': colombiaCount,
+                        'Otros países': otrosPaisesCount
+                    };
+
+                    console.log('Conteo final:', conteoFinal);
+                    generarInterfazNacionalidades(conteoFinal);
+
+                } catch (error) {
+                    console.error('Error en cargarDatosNacionalidad:', error);
+                    mostrarErrorNacionalidad();
+                }
+            }
+
+            // Función para generar la interfaz de nacionalidades
+            function generarInterfazNacionalidades(conteoNacionalidades) {
+                const statsContainer = document.getElementById('nacionalidad-stats-container');
+                
+                statsContainer.innerHTML = '';
+
+                const categorias = [
+                    { label: 'Colombia', value: conteoNacionalidades['Colombia'] || 0 },
+                    { label: 'Otros países', value: conteoNacionalidades['Otros países'] || 0 }
+                ];
+
+                categorias.forEach(categoria => {
+                    const statItem = document.createElement('div');
+                    statItem.className = 'stat-item';
+                    statItem.innerHTML = `
+                        <span class="stat-label">${categoria.label}</span>
+                        <span class="stat-value">${categoria.value.toLocaleString()}</span>
+                    `;
+                    
+                    statsContainer.appendChild(statItem);
+                });
+
+                console.log('✅ Interfaz de nacionalidades generada');
+            }
+
+            // Función para cargar datos de ciudades
+            async function cargarDatosCiudad() {
+                try {
+                    console.log('=== CARGANDO DATOS DE CIUDAD ===');
+                    
+                    const { data: participantes, error: errorParticipantes } = await sb
+                        .from('participantes_reserva')
+                        .select('id_ciudad')
+                        .not('id_ciudad', 'is', null);
+
+                    if (errorParticipantes) {
+                        console.error('Error al obtener participantes:', errorParticipantes);
+                        mostrarErrorCiudad();
+                        return;
+                    }
+
+                    console.log('Participantes con ciudades:', participantes);
+
+                    if (!participantes || participantes.length === 0) {
+                        mostrarSinDatosCiudad();
+                        return;
+                    }
+
+                    const idsCiudadesUnicos = [...new Set(participantes.map(p => p.id_ciudad))];
+                    console.log('IDs de ciudades únicos:', idsCiudadesUnicos);
+
+                    const { data: ciudades, error: errorCiudades } = await sb
+                        .from('ciudades')
+                        .select('id, nombre')
+                        .in('id', idsCiudadesUnicos);
+
+                    if (errorCiudades) {
+                        console.error('Error al obtener ciudades:', errorCiudades);
+                        mostrarErrorCiudad();
+                        return;
+                    }
+
+                    console.log('Ciudades obtenidas:', ciudades);
+
+                    const conteoCiudades = {};
+                    let sinCiudadCount = 0;
+
+                    participantes.forEach(participante => {
+                        const ciudad = ciudades.find(c => c.id === participante.id_ciudad);
+                        
+                        if (ciudad && ciudad.nombre) {
+                            const nombreCiudad = ciudad.nombre;
+                            conteoCiudades[nombreCiudad] = (conteoCiudades[nombreCiudad] || 0) + 1;
+                        } else {
+                            sinCiudadCount++;
+                        }
+                    });
+
+                    console.log('Conteo completo por ciudad:', conteoCiudades);
+                    console.log('Sin ciudad:', sinCiudadCount);
+
+                    let bogotaCount = 0;
+                    let medellinCount = 0;
+                    let caliCount = 0;
+                    let otrasCiudadesCount = 0;
+
+                    Object.keys(conteoCiudades).forEach(nombreCiudad => {
+                        const cantidad = conteoCiudades[nombreCiudad];
+                        
+                        if (nombreCiudad.toLowerCase().includes('bogotá') || nombreCiudad.toLowerCase().includes('bogota')) {
+                            bogotaCount += cantidad;
+                        } else if (nombreCiudad.toLowerCase().includes('medellín') || nombreCiudad.toLowerCase().includes('medellin')) {
+                            medellinCount += cantidad;
+                        } else if (nombreCiudad.toLowerCase().includes('cali')) {
+                            caliCount += cantidad;
+                        } else {
+                            otrasCiudadesCount += cantidad;
+                        }
+                    });
+
+                    otrasCiudadesCount += sinCiudadCount;
+
+                    console.log('Conteo final ciudades:', {
+                        'Bogotá': bogotaCount,
+                        'Medellín': medellinCount,
+                        'Cali': caliCount,
+                        'Otras': otrasCiudadesCount
+                    });
+
+                    actualizarInterfazCiudades(bogotaCount, medellinCount, caliCount, otrasCiudadesCount);
+
+                } catch (error) {
+                    console.error('Error en cargarDatosCiudad:', error);
+                    mostrarErrorCiudad();
+                }
+            }
+
+            // Función para actualizar la interfaz de ciudades
+            function actualizarInterfazCiudades(bogota, medellin, cali, otras) {
+                document.getElementById('ciudad-bogota').textContent = bogota.toLocaleString();
+                document.getElementById('ciudad-medellin').textContent = medellin.toLocaleString();
+                document.getElementById('ciudad-cali').textContent = cali.toLocaleString();
+                document.getElementById('ciudad-otras').textContent = otras.toLocaleString();
+
+                console.log('✅ Interfaz de ciudades actualizada');
+            }
+
+            // Función para actualizar la interfaz de instituciones
+            function actualizarInterfazInstituciones(univalle, nacional, andes, otras) {
+                try {
+                    console.log('Actualizando interfaz instituciones:', { univalle, nacional, andes, otras });
+                    
+                    document.getElementById('institucion-univalle').textContent = univalle.toLocaleString();
+                    document.getElementById('institucion-nacional').textContent = nacional.toLocaleString();
+                    document.getElementById('institucion-andes').textContent = andes.toLocaleString();
+                    document.getElementById('institucion-otras').textContent = otras.toLocaleString();
+
+                    console.log('✅ Interfaz de instituciones actualizada');
+                } catch (error) {
+                    console.error('Error al actualizar interfaz instituciones:', error);
+                }
+            }
+
+            // Función para mostrar sin datos en institución
+            function mostrarSinDatosInstitucion() {
+                try {
+                    document.getElementById('institucion-univalle').textContent = '0';
+                    document.getElementById('institucion-nacional').textContent = '0';
+                    document.getElementById('institucion-andes').textContent = '0';
+                    document.getElementById('institucion-otras').textContent = '0';
+                } catch (error) {
+                    console.error('Error en mostrarSinDatosInstitucion:', error);
+                }
+            }
+
+            // Función para mostrar error en la sección de institución
+            function mostrarErrorInstitucion() {
+                try {
+                    document.getElementById('institucion-univalle').textContent = 'Error';
+                    document.getElementById('institucion-nacional').textContent = 'Error';
+                    document.getElementById('institucion-andes').textContent = 'Error';
+                    document.getElementById('institucion-otras').textContent = 'Error';
+                } catch (error) {
+                    console.error('Error en mostrarErrorInstitucion:', error);
+                }
+            }
+
+            // Función para cargar datos de instituciones
+            async function cargarDatosInstitucion() {
+                try {
+                    console.log('=== CARGANDO DATOS DE INSTITUCIÓN ===');
+                    
+                    const { data: participantes, error: errorParticipantes } = await sb
+                        .from('participantes_reserva')
+                        .select('id_institucion')
+                        .not('id_institucion', 'is', null);
+
+                    if (errorParticipantes) {
+                        console.error('Error al obtener participantes:', errorParticipantes);
+                        mostrarErrorInstitucion();
+                        return;
+                    }
+
+                    console.log('Participantes con instituciones:', participantes);
+
+                    if (!participantes || participantes.length === 0) {
+                        mostrarSinDatosInstitucion();
+                        return;
+                    }
+
+                    const idsInstitucionesUnicos = [...new Set(participantes.map(p => p.id_institucion))];
+                    console.log('IDs de instituciones únicos:', idsInstitucionesUnicos);
+
+                    const { data: instituciones, error: errorInstituciones } = await sb
+                        .from('instituciones')
+                        .select('id_institucion, nombre_institucion')
+                        .order('nombre_institucion');
+
+                    if (errorInstituciones) {
+                        console.error('Error al obtener instituciones:', errorInstituciones);
+                        mostrarErrorInstitucion();
+                        return;
+                    }
+
+                    const todasLasInstituciones = instituciones || [];
+                    console.log('Todas las instituciones obtenidas:', todasLasInstituciones);
+
+                    const conteoInstituciones = {};
+                    let sinInstitucionCount = 0;
+
+                    participantes.forEach(participante => {
+                        const institucion = todasLasInstituciones.find(i => i.id_institucion === participante.id_institucion);
+                        
+                        if (institucion && institucion.nombre_institucion) {
+                            const nombreInstitucion = institucion.nombre_institucion;
+                            conteoInstituciones[nombreInstitucion] = (conteoInstituciones[nombreInstitucion] || 0) + 1;
+                        } else {
+                            sinInstitucionCount++;
+                        }
+                    });
+
+                    console.log('Conteo completo por institución:', conteoInstituciones);
+                    console.log('Sin institución:', sinInstitucionCount);
+
+                    let univalleCount = 0;
+                    let nacionalCount = 0;
+                    let andesCount = 0;
+                    let otrasInstitucionesCount = 0;
+
+                    Object.keys(conteoInstituciones).forEach(nombreInstitucion => {
+                        const cantidad = conteoInstituciones[nombreInstitucion];
+                        const nombreLower = nombreInstitucion.toLowerCase();
+                        
+                        if (nombreLower.includes('universidad del valle') || nombreLower.includes('univalle')) {
+                            univalleCount += cantidad;
+                        } else if (nombreLower.includes('universidad nacional') || nombreLower.includes('nacional de colombia')) {
+                            nacionalCount += cantidad;
+                        } else if (nombreLower.includes('universidad de los andes') || nombreLower.includes('uniandes')) {
+                            andesCount += cantidad;
+                        } else {
+                            otrasInstitucionesCount += cantidad;
+                        }
+                    });
+
+                    otrasInstitucionesCount += sinInstitucionCount;
+
+                    console.log('Conteo final instituciones:', {
+                        'Universidad del Valle': univalleCount,
+                        'Universidad Nacional': nacionalCount,
+                        'Universidad de los Andes': andesCount,
+                        'Otras': otrasInstitucionesCount
+                    });
+
+                    actualizarInterfazInstituciones(univalleCount, nacionalCount, andesCount, otrasInstitucionesCount);
+
+                } catch (error) {
+                    console.error('Error en cargarDatosInstitucion:', error);
+                    mostrarErrorInstitucion();
+                }
+            }
+
+            // Funciones de manejo de errores y estados
+            function mostrarSinDatosNacionalidad() {
+                const statsContainer = document.getElementById('nacionalidad-stats-container');
+                statsContainer.innerHTML = '<div class="no-data">No hay datos de nacionalidad</div>';
+            }
+
+            function mostrarErrorNacionalidad() {
+                const statsContainer = document.getElementById('nacionalidad-stats-container');
+                statsContainer.innerHTML = '<div class="no-data">Error al cargar datos de nacionalidad</div>';
+            }
+
+            function mostrarSinDatosCiudad() {
+                document.getElementById('ciudad-bogota').textContent = '0';
+                document.getElementById('ciudad-medellin').textContent = '0';
+                document.getElementById('ciudad-cali').textContent = '0';
+                document.getElementById('ciudad-otras').textContent = '0';
+            }
+
+            function mostrarErrorCiudad() {
+                document.getElementById('ciudad-bogota').textContent = 'Error';
+                document.getElementById('ciudad-medellin').textContent = 'Error';
+                document.getElementById('ciudad-cali').textContent = 'Error';
+                document.getElementById('ciudad-otras').textContent = 'Error';
+            }
+
+            function mostrarErrorGenero() {
+                const statsContainer = document.getElementById('genero-stats-container');
+                statsContainer.innerHTML = '<div class="no-data">Error al cargar datos de género</div>';
+            }
+
+            function mostrarErrorEdad() {
+                const statsContainer = document.getElementById('edad-stats-container');
+                statsContainer.innerHTML = '<div class="no-data">Error al cargar datos de edad</div>';
+            }
+
+            // Función para cargar todos los datos
+            async function cargarTodosLosDatos() {
+                try {
+                    console.log('🚀 Iniciando carga de todos los datos...');
+                    
+                    await cargarDatosVisitantes();
+                    await cargarDatosGenero();
+                    await cargarDatosEdad();
+                    await cargarDatosNacionalidad();
+                    await cargarDatosCiudad();
+                    await cargarDatosInstitucion();
+                    
+                    console.log('✅ Todos los datos cargados exitosamente');
+                    
+                } catch (error) {
+                    console.error('❌ Error al cargar todos los datos:', error);
+                }
+            }
+
+            // Inicializar fecha y hora
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+
+            // Cargar datos cuando la página esté lista
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('📄 DOM cargado, iniciando carga de datos...');
+                cargarTodosLosDatos();
+            });
+
+            // Botón de ayuda del panel principal
+            document.getElementById("help-btn").addEventListener("click", function () {
+                Swal.fire({
+                    title: '<div style="display: flex; align-items: center; gap: 10px; color: #2c3e50;"><i class="fas fa-chart-pie" style="color: #3498db; font-size: 1.5rem;"></i><span>Centro de Ayuda - Panel Principal</span></div>',
+                    html: `
+                        <div style="text-align: left;">
+                            <div style="background: linear-gradient(135deg, #3498db, #2c3e50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                                <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-info-circle"></i>
+                                    ¿Qué hace esta interfaz?
+                                </h4>
+                            </div>
+                            
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db; margin-bottom: 20px;">
+                                <p style="margin: 0 0 10px 0; color: #2c3e50; font-size: 0.95rem;">
+                                    <i class="fas fa-seedling" style="color: #27ae60; margin-right: 8px;"></i>
+                                    En este apartado encontrarás información y tus reportes importantes para tus informes. 
+                                    También podrás ver detalladamente el parque con sus datos del pasado y presente.
+                                </p>
+                                <p style="margin: 0; color: #2c3e50; font-size: 0.95rem;">
+                                    <i class="fas fa-heart" style="color: #e74c3c; margin-right: 8px;"></i>
+                                    Esperamos que sea de tu agrado.
+                                </p>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #27ae60, #229954); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                                <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-star"></i>
+                                    Funcionalidades Principales
+                                </h4>
+                            </div>
+                            
+                            <div style="display: grid; gap: 15px; margin-bottom: 20px;">
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+                                    <i class="fas fa-chart-bar" style="color: #3498db; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Visualización de Datos</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Consulta información detallada y estadísticas en tiempo real del parque</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                                    <i class="fas fa-history" style="color: #e74c3c; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Reportes Históricos</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Accede a datos del pasado y presente para análisis comparativos</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #f39c12;">
+                                    <i class="fas fa-file-alt" style="color: #f39c12; font-size: 1.2rem; margin-top: 2px;"></i>
+                                    <div>
+                                        <strong style="color: #2c3e50;">Informes Importantes</strong>
+                                        <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Genera y visualiza tus reportes con información clave del parque</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    showCloseButton: true,
+                    confirmButtonColor: '#3498db',
+                    confirmButtonText: '<i class="fas fa-check-circle"></i> Entendido',
+                    width: 650,
+                    background: '#ffffff'
+                });
+            });
+
+            // Botón de salir - Ahora con confirmación
+            document.getElementById("logout-btn").addEventListener("click", function() {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¿Quieres cerrar sesión?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#27ae60',
+                    cancelButtonColor: '#e74c3c',
+                    confirmButtonText: 'Sí, salir',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Saliendo...',
+                            text: "Cerrando sesión",
+                            icon: 'info',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        }).then(() => {
+                            window.location.href = 'index.html';
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

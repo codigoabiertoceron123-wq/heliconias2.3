@@ -1,0 +1,999 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Heliconias Report — Inicio de sesión</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: #ffffff; /* FONDO BLANCO */
+      }
+
+      /* ELIMINAR EL FONDO CON IMAGEN */
+      body::before {
+        display: none; /* Oculta el fondo anterior */
+      }
+
+      /* Header Styles */
+      .header {
+        background: linear-gradient(135deg, #ffffff, #ffffff);
+        color: #2e7d32;
+        padding: 15px 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 2px solid #e8f5e8; /* Línea verde clara para separación */
+      }
+
+      .top-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .logo-img {
+        width: 50px;
+        height: 50px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #e8f5e8;
+      }
+
+      .logo-img i {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        background-image: url("img/logo.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: transparent;
+        font-size: 0;
+      }
+
+      .logo h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      /* Navigation Styles */
+      .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 10px;
+        
+        gap: 15px;
+      }
+
+      .main-nav {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        color: #2e7d32;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background: transparent;
+        position: relative;
+        font-size: 0.95rem;
+        margin-right: 5px;
+      }
+
+      .nav-item:hover {
+        background: #f8fff8;
+      }
+
+      /* Línea debajo del texto */
+      .nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 10%;
+        width: 80%;
+        height: 2px;
+        background: linear-gradient(135deg, #2e7d32, #4caf50);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+        transform-origin: center;
+      }
+
+      .nav-item:hover::after {
+        transform: scaleX(1);
+      }
+
+      .btn {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+      }
+
+      .btn-primary {
+        background: white;
+        color: #2e7d32;
+        border: 1.5px solid #2e7d32;
+      }
+
+      .btn-primary:hover {
+        background: #2e7d32;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);
+      }
+
+       /* Botón de soporte - NUEVO */
+.btn-soporte {
+    background: white !important;
+    color: #2e7d32 !important;
+    border: 1.5px solid #2e7d32 !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.9rem !important;
+    box-shadow: 0 2px 4px rgba(46, 125, 50, 0.1) !important;
+}
+
+.btn-soporte:hover {
+    background: #2e7d32 !important;
+    color: white !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2) !important;
+}
+
+.btn-soporte:active {
+    transform: translateY(0) !important;
+}
+
+.btn-soporte i {
+    color: #2e7d32 !important;
+    transition: color 0.3s ease !important;
+}
+
+.btn-soporte:hover i {
+    color: white !important;
+}
+
+      .user-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      /* Main Container */
+      .main-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 20px;
+        min-height: calc(100vh - 150px);
+        background: #ffffff;
+      }
+
+      /* Login Box - BLANCO */
+      .login-box {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        width: 100%;
+        max-width: 450px;
+        margin-top: 20px;
+        border: 1px solid #e8f5e8;
+      }
+
+      .login-box h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2e7d32;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .login-box fieldset {
+        border: none;
+        padding: 0;
+      }
+
+      .login-box label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #34495e;
+      }
+
+      .login-box input {
+        width: 100%;
+        padding: 14px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+        background: #fafafa;
+      }
+
+      .login-box input:focus {
+        outline: none;
+        border-color: #4caf50;
+        box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+        background: white;
+      }
+
+      .password-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .password-container input {
+        width: 100%;
+        padding-right: 40px;
+      }
+      
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-90%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #555;
+      }
+
+      .toggle-password:hover {
+        color: #000;
+      }
+
+      .botones {
+        margin-top: 25px;
+      }
+
+      .botones button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #2e7d32, #2e7d32);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .botones button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+      }
+
+      .forgot-password {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .forgot-password a {
+        color: #2e7d32;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .forgot-password a:hover {
+        color: #2e7d32;
+        text-decoration: underline;
+      }
+
+      /* Tooltip Styles */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: #2c3e50;
+        color: white;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px 12px;
+        position: absolute;
+        z-index: 1000;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 14px;
+        font-weight: normal;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      }
+
+      .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #2c3e50 transparent transparent transparent;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      /* Tooltip para campos de entrada */
+      .input-tooltip {
+        position: relative;
+        width: 100%;
+      }
+
+      .input-tooltip .tooltiptext {
+        width: 250px;
+        bottom: 100%;
+        left: 0;
+        transform: none;
+      }
+
+      .input-tooltip .tooltiptext::after {
+        left: 20px;
+      }
+
+      /* Estilos personalizados para SweetAlert */
+      .swal2-container .swal2-popup {
+        background: white !important;
+        color: #2c3e50 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+      }
+
+      .swal2-title {
+        color: #2c3e50 !important;
+        font-size: 24px !important;
+        font-weight: 600 !important;
+      }
+
+      .swal2-html-container {
+        color: #2c3e50 !important;
+        font-size: 16px !important;
+      }
+
+      .swal2-confirm {
+        background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 12px 24px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+      }
+
+      /* Estilo específico para el loading */
+      .swal2-loading .swal2-title {
+        color: #27ae60 !important;
+        font-size: 22px !important;
+      }
+
+      /* SweetAlert X más grande */
+      .swal2-close {
+        font-size: 30px !important;
+        width: 44px !important;
+        height: 44px !important;
+        color: #dc3545 !important;
+        font-weight: bold !important;
+      }
+
+      .swal2-close:hover {
+        color: #bd2130 !important;
+        transform: rotate(90deg) scale(1.1);
+        transition: all 0.3s ease;
+      }
+
+      .swal2-close:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25) !important;
+      }
+
+      /* ESTILOS ESPECÍFICOS PARA LOS BOTONES DEL SWEETALERT DE NAVEGACIÓN */
+      .nav-swal-confirm-btn {
+        background: #3498db !important;
+        color: white !important;
+        border: none !important;
+      }
+      
+      .nav-swal-cancel-btn {
+        background: #9b59b6 !important;
+        color: white !important;
+        border: none !important;
+      }
+      
+      .nav-swal-confirm-btn:hover {
+        background: #2980b9 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3) !important;
+      }
+      
+      .nav-swal-cancel-btn:hover {
+        background: #8e44ad !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3) !important;
+      }
+      
+      .nav-swal-confirm-btn,
+      .nav-swal-cancel-btn {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        font-weight: 600 !important;
+        padding: 12px 24px !important;
+        border-radius: 8px !important;
+        font-size: 1rem !important;
+        min-width: 160px !important;
+        height: 48px !important;
+        margin: 0 5px !important;
+        flex: 1 !important;
+        transition: all 0.3s ease !important;
+      }
+      
+      .swal2-actions {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+      }
+      
+      .nav-swal-popup {
+        border-radius: 15px;
+        border: 2px solid #e8f5e8;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      }
+    </style>
+
+    
+  </head>
+  <body>
+     <!-- Header actualizado -->
+    <header class="header">
+      <div class="top-section">
+        <div class="logo">
+          <div class="logo-img">
+            <i class="fas fa-leaf"></i>
+          </div>
+          <h1>Heliconias Reports</h1>
+        </div>
+        
+        <div class="nav-container">
+          <!-- Navegación actualizada CON BOTÓN DE SOPORTE -->
+          <nav class="main-nav">
+            <a href="#" class="nav-item" id="nav-inicio">
+              <i class="fas fa-home"></i>
+              <span>Inicio</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-reservas">
+              <i class="fas fa-calendar-check"></i>
+              <span>Reservas</span>
+            </a>
+            <a href="#" class="nav-item" id="nav-login">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Login</span>
+            </a>
+            <!-- NUEVO BOTÓN DE SOPORTE -->
+            <a href="#" class="nav-item btn-soporte" id="nav-soporte">
+              <i class="fas fa-headset"></i>
+              <span>Soporte</span>
+            </a>
+          </nav>
+          
+          <!-- Ayuda -->
+          <div class="user-actions">
+            <button class="btn btn-primary" id="help-btn">
+              <i class="fas fa-question-circle"></i> Ayuda
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+    <main class="main-container">
+      <section class="login-box">
+        <h2>Inicio de sesión</h2>
+        <form id="loginForm">
+          <fieldset>
+            <div class="input-tooltip">
+              <label for="nombre" class="tooltip">
+                Usuario (Correo)
+                <span class="tooltiptext">Ingresa tu correo registrado en el sistema</span>
+              </label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                placeholder="Tu nombre de usuario"
+                required
+                class="tooltip"
+                title="Ejemplo: juan.perez o usuario123"
+              />
+            </div>
+
+            <div class="input-tooltip">
+              <label for="documento" class="tooltip">
+                Contraseña
+                <span class="tooltiptext">Ingresa tu contraseña de acceso al sistema</span>
+              </label>
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="documento"
+                  name="documento"
+                  placeholder="Tu contraseña"
+                  required
+                  class="tooltip"
+                  title="Ingresa la contraseña que configuraste"
+                />
+                <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+              </div>
+            </div>
+
+            <div class="botones">
+              <button type="submit" class="tooltip" title="Haz clic para iniciar sesión en el sistema">
+                Iniciar sesión
+              </button>
+            </div>
+
+            <p class="forgot-password">
+              <a href="contraseña.html" class="tooltip" title="Recuperar acceso si olvidaste tu documento">
+                ¿Olvidaste tu Contraseña?
+              </a>
+              <br>
+              <a href="registrarce.html" class="tooltip" style="margin-top: 10px; display: inline-block;" title="Crear una nueva cuenta en el sistema">
+                ¿No tienes cuenta? Regístrate aquí
+              </a>
+            </p>
+          </fieldset>
+        </form>
+      </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      
+      const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
+
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
+      window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    </script>
+    <script>
+      // Función para mostrar SweetAlert de navegación
+      function mostrarOpcionesNavegacion(titulo, url) {
+        Swal.fire({
+          title: `<div style="display: flex; align-items: center; gap: 10px; color: #2c3e50;"><i class="fas fa-external-link-alt" style="color: #2e7d32; font-size: 1.5rem;"></i><span style="font-size: 1.5rem;">${titulo}</span></div>`,
+          html: `
+            <div style="text-align: center;">
+              <div style="background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <i class="fas fa-route"></i>
+                  ¿Cómo quieres abrir esta página?
+                </h4>
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 15px; margin: 20px 0;">
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #3498db;">
+                  <i class="fas fa-window-maximize" style="color: #3498db; font-size: 1.5rem;"></i>
+                  <div style="text-align: left;">
+                    <h5 style="margin: 0 0 5px 0; color: #2c3e50;">Misma pestaña</h5>
+                    <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">Reemplaza la página actual</p>
+                  </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #9b59b6;">
+                  <i class="fas fa-plus-square" style="color: #9b59b6; font-size: 1.5rem;"></i>
+                  <div style="text-align: left;">
+                    <h5 style="margin: 0 0 5px 0; color: #2c3e50;">Nueva pestaña</h5>
+                    <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">Abre en una pestaña nueva</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          showCloseButton: true,
+          showCancelButton: true,
+          confirmButtonColor: '#3498db',
+          cancelButtonColor: '#9b59b6',
+          confirmButtonText: '<i class="fas fa-window-maximize"></i> Misma pestaña',
+          cancelButtonText: '<i class="fas fa-plus-square"></i> Nueva pestaña',
+          width: 500,
+          background: '#ffffff',
+          customClass: {
+            popup: 'nav-swal-popup',
+            title: 'nav-swal-title',
+            htmlContainer: 'nav-swal-html',
+            confirmButton: 'nav-swal-confirm-btn',
+            cancelButton: 'nav-swal-cancel-btn'
+          },
+          buttonsStyling: false,
+          showClass: {
+            popup: 'animate__animated animate__fadeInUp'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = url;
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            window.open(url, '_blank');
+          }
+        });
+      }
+
+      // Navegación actualizada
+      document.getElementById('nav-inicio').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Inicio - Parque Heliconias', 'https://parque-heliconias-khaki.vercel.app/index.html');
+      });
+
+      document.getElementById('nav-reservas').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Reservas - Parque Heliconias', 'https://parqueheliconias-app.onrender.com/');
+      });
+
+      document.getElementById('nav-login').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Login - Parque Heliconias', 'https://codigoabiertoceron123-wq.github.io/heliconias2.2/');
+      });
+
+      // NUEVO: Botón de soporte
+      document.getElementById('nav-soporte').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarOpcionesNavegacion('Soporte - Heliconias Reports', 'soporte2.html');
+      });
+
+      // Botón de ayuda del header con SweetAlert
+      document.getElementById('help-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+          title: 'Heliconias Reports - Ayuda',
+          html: `
+            <div style="text-align: left;">
+              <div style="background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="margin: 0;">
+                  Bienvenido a Heliconias Reports
+                </h4>
+              </div>
+              
+              <p style="margin-bottom: 20px; color: #2c3e50; line-height: 1.6;">
+                Nuestra plataforma está diseñada para ofrecerte informes detallados y análisis completos sobre el cultivo y producción de heliconias.
+              </p>
+
+              <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #27ae60;">
+                <h5 style="margin: 0 0 15px 0; color: #2c3e50;">
+                  Características principales
+                </h5>
+                <div style="display: grid; gap: 10px;">
+                  <div style="display: flex; align-items: start; gap: 10px;">
+                    <i class="fas fa-check-circle" style="color: #27ae60; margin-top: 2px;"></i>
+                    <span style="color: #2c3e50;">Gestión de inventarios de heliconias</span>
+                  </div>
+                  <div style="display: flex; align-items: start; gap: 10px;">
+                    <i class="fas fa-check-circle" style="color: #27ae60; margin-top: 2px;"></i>
+                    <span style="color: #2c3e50;">Seguimiento de producción y cosechas</span>
+                  </div>
+                  <div style="display: flex; align-items: start; gap: 10px;">
+                    <i class="fas fa-check-circle" style="color: #27ae60; margin-top: 2px;"></i>
+                    <span style="color: #2c3e50;">Análisis de rendimiento por variedad</span>
+                  </div>
+                  <div style="display: flex; align-items: start; gap: 10px;">
+                    <i class="fas fa-check-circle" style="color: #27ae60; margin-top: 2px;"></i>
+                    <span style="color: #2c3e50;">Reportes personalizados para toma de decisiones</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="background: linear-gradient(135deg, #ffeaa7, #fab1a0); padding: 15px; border-radius: 10px; border-left: 4px solid #e17055;">
+                <h5 style="margin: 0 0 10px 0; color: #2d3436;">
+                  ¿Necesitas ayuda?
+                </h5>
+                
+                <p style="margin: 0; color: #2d3436; line-height: 1.5;">
+                  También puedes contactar a nuestro equipo de soporte a través de la sección de contacto en la parte superior de la página.
+                </p>
+              </div>
+            </div>
+          `,
+          showCloseButton: true,
+          confirmButtonColor: '#27ae60',
+          confirmButtonText: '<i class="fas fa-check-circle"></i> Entendido',
+          width: 600,
+          background: '#ffffff',
+          customClass: {
+            popup: 'swal2-popup',
+            confirmButton: 'help-swal-confirm-btn'
+          },
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          }
+        });
+      });
+
+      // Función para crear/sincronizar todos los usuarios en Supabase Auth
+      async function crearUsuariosEnAuth() {
+        const loadingAlert = Swal.fire({
+          title: '<div style="color: #3498db; font-size: 22px; font-weight: 600;">CREANDO USUARIOS</div>',
+          html: '<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">Sincronizando usuarios con el sistema de autenticación...</div>',
+          icon: 'info',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          background: 'white',
+          didOpen: () => { Swal.showLoading(); }
+        });
+
+        try {
+          console.log('📋 OBteniendo usuarios de la tabla...');
+          
+          // Obtener todos los usuarios de tu tabla
+          const { data: usuarios, error } = await supabase
+            .from('usuarios')
+            .select('*');
+          
+          if (error) throw error;
+          
+          console.log(`📊 Encontrados ${usuarios.length} usuarios`);
+          
+          let usuariosCreados = 0;
+          let usuariosExistentes = 0;
+          let errores = 0;
+          
+          for (const usuario of usuarios) {
+            if (usuario.correo && usuario.contrasena) {
+              console.log(`🛠️ Procesando: ${usuario.correo}`);
+              
+              try {
+                const { data, error } = await supabase.auth.signUp({
+                  email: usuario.correo,
+                  password: usuario.contrasena,
+                  options: {
+                    data: {
+                      nombre: usuario.nombre,
+                      id_usuario: usuario.id_usuario,
+                      documento: usuario.documento
+                    }
+                  }
+                });
+                
+                if (error) {
+                  if (error.message.includes('already registered')) {
+                    console.log(`✅ ${usuario.correo} - Ya existe en Auth`);
+                    usuariosExistentes++;
+                  } else {
+                    console.log(`❌ ${usuario.correo} - Error:`, error.message);
+                    errores++;
+                  }
+                } else {
+                  console.log(`✅ ${usuario.correo} - Creado exitosamente`);
+                  usuariosCreados++;
+                }
+              } catch (userError) {
+                console.log(`⚠️ ${usuario.correo} - Error:`, userError.message);
+                errores++;
+              }
+              
+              // Esperar entre registros
+              await new Promise(resolve => setTimeout(resolve, 300));
+            }
+          }
+          
+          await Swal.close();
+          
+          // Mostrar resumen
+          await Swal.fire({
+            title: '<div style="color: #27ae60; font-size: 24px; font-weight: 600;">PROCESO COMPLETADO</div>',
+            html: `
+              <div style="text-align: left; color: #2c3e50; font-size: 14px;">
+                <strong>Resumen de la sincronización:</strong><br><br>
+                <div style="background: #e8f6f3; padding: 10px; border-radius: 5px;">
+                  <strong>✅ Usuarios creados:</strong> ${usuariosCreados}<br>
+                  <strong>🔵 Usuarios existentes:</strong> ${usuariosExistentes}<br>
+                  <strong>❌ Errores:</strong> ${errores}<br>
+                  <strong>📊 Total procesados:</strong> ${usuarios.length}
+                </div>
+                <br>
+                <small>Ahora puedes usar el login con Supabase Auth</small>
+              </div>
+            `,
+            icon: 'success',
+            confirmButtonText: '<i class="fas fa-check"></i> Entendido',
+            background: 'white',
+            width: '500px'
+          });
+          
+          console.log(`🎉 Proceso completado: ${usuariosCreados} creados, ${usuariosExistentes} existentes, ${errores} errores`);
+          
+        } catch (error) {
+          await Swal.close();
+          console.error('❌ Error general:', error);
+          await Swal.fire({
+            title: '<div style="color: #e74c3c; font-size: 24px; font-weight: 600;">ERROR</div>',
+            html: `<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">Error: ${error.message}</div>`,
+            icon: 'error',
+            confirmButtonText: '<i class="fas fa-check"></i> Entendido',
+            background: 'white'
+          });
+        }
+      }
+
+      // Código de login FINAL con Supabase Auth
+      document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const correo = document.getElementById('nombre').value;
+        const contrasena = document.getElementById('documento').value;
+        
+        console.log('🔐 INICIANDO SESIÓN CON AUTH:');
+        console.log('Correo:', correo);
+        console.log('Contraseña:', contrasena);
+        
+        const loadingAlert = Swal.fire({
+          title: '<div style="color: #27ae60; font-size: 22px; font-weight: 600;">INICIANDO SESIÓN</div>',
+          html: '<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">Validando tus credenciales, por favor espera...</div>',
+          icon: 'info',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          background: 'white',
+          didOpen: () => { Swal.showLoading(); }
+        });
+        
+        try {
+          console.log('📡 AUTENTICANDO CON SUPABASE AUTH...');
+          
+          // ✅ Login simple y directo con Auth
+          const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+            email: correo,
+            password: contrasena
+          });
+
+          console.log('📊 RESULTADO AUTH:', authData);
+          console.log('ERROR AUTH:', authError);
+
+          if (authError) {
+            console.log('❌ ERROR EN AUTH:', authError.message);
+            throw authError;
+          }
+
+          // ✅ LOGIN EXITOSO
+          console.log('✅ LOGIN EXITOSO CON AUTH:', authData.user);
+          
+          // Obtener información adicional de tu tabla usuarios
+          const { data: usuarioInfo, error: errorInfo } = await supabase
+            .from('usuarios')
+            .select('*')
+            .eq('correo', correo)
+            .single();
+
+          console.log('📋 INFORMACIÓN ADICIONAL:', usuarioInfo);
+
+          // Actualizar último login en tu tabla
+          if (usuarioInfo) {
+            await supabase
+              .from('usuarios')
+              .update({ ultimo_login: new Date().toISOString() })
+              .eq('id_usuario', usuarioInfo.id_usuario);
+          }
+
+          await Swal.close();
+          
+          // Mostrar mensaje de bienvenida
+          await Swal.fire({
+            title: '<div style="color: #27ae60; font-size: 24px; font-weight: 600;">¡BIENVENIDO!</div>',
+            html: `<div style="color: #2c3e50; font-size: 18px; margin-top: 10px;">
+                   Hola <strong>${usuarioInfo ? usuarioInfo.nombre : authData.user.email}</strong>, 
+                   has iniciado sesión correctamente.
+                   </div>`,
+            icon: 'success',
+            confirmButtonText: '<i class="fas fa-check-circle"></i> Continuar',
+            background: 'white',
+            showConfirmButton: true
+          });
+
+          // ✅ Redirigir a la página principal
+          console.log('🔄 Redirigiendo a principal.html...');
+          setTimeout(() => {
+            window.location.href = 'principal.html';
+          }, 1000);
+          
+        } catch (error) {
+          console.error('❌ ERROR EN LOGIN:', error);
+          await Swal.close();
+          
+          let mensajeError = 'Error al iniciar sesión.';
+          
+          if (error.message.includes('Invalid login credentials')) {
+            mensajeError = 'Correo electrónico o contraseña incorrectos.';
+          } else if (error.message.includes('Email not confirmed')) {
+            mensajeError = 'Por favor confirma tu correo electrónico antes de iniciar sesión.';
+          } else if (error.message.includes('Too many requests')) {
+            mensajeError = 'Demasiados intentos fallidos. Por favor espera unos minutos.';
+          }
+          
+          await Swal.fire({
+            title: '<div style="color: #e74c3c; font-size: 24px; font-weight: 600;">ERROR</div>',
+            html: `<div style="color: #2c3e50; font-size: 16px; margin-top: 10px;">${mensajeError}</div>`,
+            icon: 'error',
+            confirmButtonText: '<i class="fas fa-redo"></i> Intentar de nuevo',
+            background: 'white'
+          });
+        }
+      });
+
+      document.getElementById("togglePassword").addEventListener("click", function () {
+        const input = document.getElementById("documento");
+
+        if (input.type === "password") {
+          input.type = "text";
+          this.classList.remove("fa-eye");
+          this.classList.add("fa-eye-slash");
+        } else {
+          input.type = "password";
+          this.classList.remove("fa-eye-slash");
+          this.classList.add("fa-eye");
+        }
+      });
+    </script>
+  </body>
+</html>

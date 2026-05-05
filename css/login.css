@@ -1,0 +1,372 @@
+body {
+  margin: 0;
+  height: 100vh;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fondo con imagen y desenfoque */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  /* Nivel de desenfoque */
+  z-index: -1;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #ffffff;
+  color: #195b35;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+/* Logo y título */
+.sidebar .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.sidebar .logo-img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.sidebar .logo h1 {
+  font-size: 1.4rem;
+  color: #195b35;
+  margin: 0;
+}
+
+.sidebar .logo-img img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Contenedor del menú */
+.menu-container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Elementos del menú */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #195b35;
+  transition: color 0.3s, transform 0.2s;
+  font-size: 18px;
+  border-radius: 12px;
+}
+
+.menu-item i {
+  font-size: 18px;
+}
+
+.menu-item:hover {
+  color: #2e7d32;
+  transform: scale(1.05);
+}
+
+.menu-item.active {
+  color: #2e7d32;
+}
+
+.menu-item:hover i,
+.menu-item:hover span {
+  color: white;
+  /* Letra e ícono blanco */
+}
+
+/* Botón de modo oscuro */
+#dark-mode-toggle {
+  margin-left: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  color: #fff;
+}
+
+#dark-mode-toggle:hover {
+  color: #2e7d32;
+}
+
+
+.menu-container {
+  width: 100%;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.menu-item i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+  color: #195b35;
+}
+
+.menu-item span {
+  font-size: 1rem;
+  color: #195b35;
+}
+
+.menu-item:hover {
+  background-color: #2e7d32;
+}
+
+.menu-item.active {
+  background-color: #2e7d32;
+}
+
+.menu-item.active i,
+.menu-item.active span {
+  color: white;
+}
+
+.fa-moon,
+.modo {
+  position: relative;
+  top: -3px;
+}
+
+/* Formularios */
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0 15px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Botones */
+.botones {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+button {
+  background-color: #195b35;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #2e7d32;
+}
+
+fieldset {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  /* más visible */
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 70px);
+  /* altura restante debajo del nav */
+  margin-top: 30px;
+  /* evita superponerse al nav */
+}
+
+/* Login Box */
+.login-box {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(15px);
+  padding: 40px 45px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  margin-top: 90px;
+  animation: fadeIn 1s ease forwards;
+}
+
+.login-box h2 {
+  color: #ffffff;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 38px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.forgot-password a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+
+.password-container input {
+  padding-right: 40px;
+  box-sizing: border-box;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 2px);
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #195b35;
+  font-size: 18px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-box {
+  animation: fadeIn 1s ease forwards;
+}
+
+@media (max-width: 1024px) {
+  nav ul {
+    margin-left: 200px;
+    /* reduce el margen */
+    gap: 15px;
+  }
+
+  nav ul li a {
+    font-size: 18px;
+  }
+}
+
+/* 📱 Ajuste para celulares */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  nav ul {
+    margin-left: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  nav ul li a {
+    font-size: 16px;
+  }
+
+  .logo {
+    height: 60px;
+  }
+
+  nav h1 {
+    font-size: 20px;
+  }
+
+  /* Botón de soporte probando */
+  #support-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #195b35;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  #support-btn:hover {
+    background-color: #27ae60;
+  }
+
+  /* Tooltip base */
+  .tooltip {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Texto del tooltip */
+  .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    width: max-content;
+    background-color: #195b35;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    /* aparece arriba del botón */
+    left: 50%;
+    transform: translateX(-50%);
+    transition: opacity 0.3s ease;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  /* Mostrar tooltip al pasar el cursor */
+  .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+}

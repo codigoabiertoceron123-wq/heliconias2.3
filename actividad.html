@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parque de las Heliconias - Actividades</title>
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+    />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white; /* Fondo blanco */
+            z-index: -1;
+        }
+        /* Header Styles */
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #ffffff, #ffffff);
+            color: #2e7d32;
+            padding: 15px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            display: flex;           /* Activar flexbox */
+            align-items: center;     /* Centrar verticalmente el contenido */
+            gap: 15px;               /* Espacio entre logo y título */
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-img i {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-image: url("img/logo.png"); /* Tu logo real */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            font-size: 0; /* Oculta el ícono de fontawesome */
+            color: transparent;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between; /* izquierda - derecha */
+            align-items: center;            /* misma línea */
+            width: 100%;
+            margin-bottom: 10px;
+            margin-top: 15px; 
+        }
+
+        .system-date {
+            display: flex;
+            margin-left: 20px;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            color: #000000;
+            background: rgba(255, 255, 255, 0.15); /* efecto cristal */
+            padding: 10px 18px;
+            border-radius: 25px;
+            backdrop-filter: blur(6px);  /* efecto vidrio borroso */
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            font-size: 15px;
+            letter-spacing: 0.5px;        /* más elegante */
+        }
+
+        /* Navigation Styles */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 5px;
+            left: 50px;/* ajusta el valor para mover más a la izquierda o derecha */
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            color: #2e7d32;
+            text-decoration: none;
+            border-radius: 6px;
+            position: relative;
+            background: transparent; /* quitar fondo */
+            transition: all 0.3s ease;
+        }
+
+        /* Línea inferior al pasar el mouse */
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;           /* margen izquierdo de la línea */
+            width: 80%;          /* ancho de la línea */
+            height: 2px;         /* grosor de la línea */
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            transform: scaleX(0); /* inicialmente invisible */
+            transition: transform 0.3s ease;
+            transform-origin: center;
+        }
+
+        .nav-item:hover::after {
+            transform: scaleX(1); /* línea aparece */
+        }
+
+        .user-actions {
+            display: flex;        /* ya estaba flex */
+            justify-content: flex-end;  /* esto los lleva a la derecha */
+            gap: 10px; 
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            position: relative;
+            left: -20px; /* mueve cada botón 20px hacia la izquierda */
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2e7d32, #4caf50); /* verde degradado */
+            color: white;
+        }
+
+
+        .btn-accent {
+            background: linear-gradient(135deg, #e74c3c, #fe5926); 
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 30px;
+        }
+
+
+        .page-title {
+            display: flex;
+            justify-content: center; /* ← centra horizontal */
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            font-size: 28px;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2e7d32;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        .search-btn:hover {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+        }
+
+        .activities-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .container-title {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            font-size: 20px;
+            font-weight: 700;
+            color: #2e7d32;
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .activity-header {
+            padding: 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .activity-difficulty {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .difficulty-low {
+            background: #d4edda;
+            color: #2e7d32;
+        }
+
+        .difficulty-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .activity-body {
+            padding: 15px;
+        }
+
+        .activity-description {
+            color: #6c757d;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .activity-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .activity-footer {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .activity-capacity {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .activity-status {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #2e7d32;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+            grid-column: 1 / -1;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Estilos personalizados para SweetAlert */
+        .swal2-popup {
+            border-radius: 15px !important;
+            padding: 0 !important;
+            overflow: hidden;
+        }
+
+        .activity-detail-header {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        .activity-detail-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .activity-detail-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+
+        .activity-detail-content {
+            padding: 25px;
+            background: #f8f9fa;
+        }
+
+        .detail-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .detail-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #2e7d32;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .description-text {
+            line-height: 1.6;
+            color: #495057;
+            font-size: 14px;
+        }
+
+        .recommendations-list {
+            padding-left: 20px;
+            color: #495057;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .recommendations-list li {
+            margin-bottom: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .top-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .logo h1 {
+                font-size: 20px;
+            }
+
+            .system-date {
+                font-size: 14px;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .main-nav {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            .page-title h2 {
+                font-size: 24px;
+            }
+
+            .search-input {
+                min-width: 200px;
+            }
+
+            .activities-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .activity-card {
+                margin-bottom: 0;
+            }
+
+            .swal2-popup {
+                width: 95% !important;
+                margin: 20px auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 12px 15px;
+            }
+
+            .logo {
+                gap: 10px;
+            }
+
+            .logo h1 {
+                font-size: 18px;
+            }
+
+            .nav-item {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .btn {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+
+            .main-content {
+                padding: 15px 10px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-input {
+                min-width: 100%;
+            }
+
+            .activities-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                padding: 12px;
+            }
+
+            .container-title {
+                padding: 12px 15px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+            <div class="top-section">
+                <div class="logo">
+                    <div class="logo-img">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h1>Heliconias Reports</h1>
+                </div>
+                    <!-- Navegación horizontal -->
+                <nav class="main-nav">
+                    <a href="principal.html" class="nav-item active tooltip">
+                        <i class="fas fa-home"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="eventos.html" class="nav-item tooltip">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Eventos</span>
+                    </a>
+                    <a href="actividad.html" class="nav-item tooltip">
+                        <i class="fas fa-hiking"></i>
+                        <span>Actividades</span>
+                    </a>
+                    <a href="reportes.html" class="nav-item tooltip">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reportes</span>
+                    </a>
+                    <a href="configuracion.html" class="nav-item tooltip">
+                        <i class="fas fa-cog"></i>
+                        <span>Configuración</span>
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <div class="top-bar">
+            <div class="system-date">
+                <i class="fas fa-clock"></i>
+                <span id="current-date-time">Cargando fecha y hora...</span>
+            </div>
+
+            <div class="user-actions">
+                <a href="soporte.html" class="btn btn-primary tooltip">
+                    <i class="fas fa-headset"></i> Soporte
+                </a>
+
+                <button class="btn btn-primary tooltip" id="help-btn">
+                    <i class="fas fa-question-circle"></i> Ayuda
+                </button>
+
+                <button class="btn btn-accent tooltip" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-title">
+            <h2>Gestión de Actividades</h2>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar actividades por nombre...">
+                <button id="search-btn" class="search-btn">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </div>
+        </div>
+
+        <div class="activities-container">
+            <div class="container-title">Todas las Actividades</div>
+            <div id="activities-grid" class="activities-grid">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Cargando actividades...
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Incluir Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Inicialización CORRECTA de Supabase -->
+<script>
+    (function() {
+        const supabaseUrl = 'https://umncnddwzmjxgmvisvqz.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbmNuZGR3em1qeGdtdmlzdnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NDIyNzksImV4cCI6MjA3ODExODI3OX0.ODvus28cTCTD8gGewQ2sAZ8PcXbEe4CIy_zv6bip8J0';
+        
+        function initSupabase() {
+            if (typeof supabase !== 'undefined' && supabase.createClient) {
+                window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+                window.supabaseClient = window.supabase;
+                console.log('✅ Supabase inicializado correctamente');
+                return true;
+            }
+            return false;
+        }
+        
+        // Intentar inicializar inmediatamente
+        if (!initSupabase()) {
+            console.log('⏳ Esperando carga de Supabase...');
+            let attempts = 0;
+            const interval = setInterval(() => {
+                attempts++;
+                if (initSupabase()) {
+                    clearInterval(interval);
+                    console.log(`✅ Supabase inicializado después de ${attempts} intentos`);
+                } else if (attempts > 30) {
+                    clearInterval(interval);
+                    console.error('❌ Error: No se pudo inicializar Supabase');
+                    
+                    // Mostrar error en la interfaz
+                    const container = document.getElementById('data-container');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="no-data" style="color: #e74c3c;">
+                                <i class="fas fa-exclamation-triangle fa-3x"></i>
+                                <h3>Error de conexión con la base de datos</h3>
+                                <p>No se pudo conectar con Supabase. Por favor, verifica tu conexión a internet y recarga la página.</p>
+                                <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 15px;">
+                                    <i class="fas fa-sync-alt"></i> Recargar página
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            }, 200);
+        }
+    })();
+</script>
+    <script>
+       
+        // Función para actualizar fecha y hora
+            function updateDateTime() {
+                const now = new Date();
+                const dateTimeString = now.toLocaleString("es-ES", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true,
+                });
+
+                const dateTimeElement = document.getElementById("current-date-time");
+                if (dateTimeElement) {
+                    dateTimeElement.textContent = dateTimeString;
+                }
+            }
+
+            // Inicializar fecha y hora
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+
+        // Cargar actividades desde Supabase
+        async function loadActivities(searchTerm = '') {
+            const activitiesGrid = document.getElementById('activities-grid');
+            
+            try {
+                let query = supabase
+                    .from('actividades')
+                    .select('*')
+                    .order('id_actividad', { ascending: true });
+
+                // Si hay un término de búsqueda, filtrar por nombre
+                if (searchTerm) {
+                    query = query.ilike('nombre', `%${searchTerm}%`);
+                }
+
+                const { data: activities, error } = await query;
+
+                if (error) throw error;
+
+                // Limpiar el grid
+                activitiesGrid.innerHTML = '';
+
+                if (activities.length === 0) {
+                    activitiesGrid.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-search"></i>
+                            <p>No se encontraron actividades${searchTerm ? ` para "${searchTerm}"` : ''}</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Crear tarjetas para cada actividad
+                activities.forEach(activity => {
+                    const activityCard = document.createElement('div');
+                    activityCard.className = 'activity-card';
+                    activityCard.dataset.id = activity.id_actividad;
+                    
+                    // Determinar clase de dificultad
+                    let difficultyClass = 'difficulty-low';
+                    if (activity.nivel_dificultad === 'medio') {
+                        difficultyClass = 'difficulty-medium';
+                    } else if (activity.nivel_dificultad === 'alto') {
+                        difficultyClass = 'difficulty-high';
+                    }
+                    
+                    // Formatear fecha y hora
+                    let horarioFormatted = 'No especificado';
+                    if (activity.horario) {
+                        const horarioDate = new Date(activity.horario);
+                        horarioFormatted = horarioDate.toLocaleString('es-ES');
+                    }
+                    
+                    activityCard.innerHTML = `
+                        <div class="activity-header">
+                            <div class="activity-name">${activity.nombre}</div>
+                            <span class="activity-difficulty ${difficultyClass}">
+                                ${activity.nivel_dificultad}
+                            </span>
+                        </div>
+                        <div class="activity-body">
+                            <p class="activity-description">${activity.descripcion || 'Sin descripción disponible'}</p>
+                            <div class="activity-details">
+                                <div class="detail-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>${activity.duracion_minutos || 'N/A'} min</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>${activity.cupo_maximo} cupos</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-footer">
+                            <div class="activity-capacity">
+                                <i class="far fa-calendar-alt"></i>
+                                ${horarioFormatted}
+                            </div>
+                            <span class="activity-status ${activity.activo ? 'status-active' : 'status-inactive'}">
+                                ${activity.activo ? 'Activo' : 'Inactivo'}
+                            </span>
+                        </div>
+                    `;
+                    
+                    // Agregar evento de clic para mostrar detalles
+                    activityCard.addEventListener('click', () => showActivityDetails(activity));
+                    
+                    activitiesGrid.appendChild(activityCard);
+                });
+            } catch (error) {
+                console.error('Error al cargar actividades:', error);
+                activitiesGrid.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error al cargar las actividades: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Mostrar detalles de la actividad en SweetAlert mejorado
+        function showActivityDetails(activity) {
+            // Formatear fecha y hora
+            let horarioFormatted = 'No especificado';
+            if (activity.horario) {
+                const horarioDate = new Date(activity.horario);
+                horarioFormatted = horarioDate.toLocaleString('es-ES', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+            
+            // Determinar clase de dificultad
+            let difficultyBadge = 'badge-success';
+            let difficultyText = 'Bajo';
+            if (activity.nivel_dificultad === 'medio') {
+                difficultyBadge = 'badge-warning';
+                difficultyText = 'Medio';
+            } else if (activity.nivel_dificultad === 'alto') {
+                difficultyBadge = 'badge-danger';
+                difficultyText = 'Alto';
+            }
+            
+            // Determinar estado
+            let statusBadge = activity.activo ? 'badge-success' : 'badge-danger';
+            let statusText = activity.activo ? 'Activa' : 'Inactiva';
+            
+            // Procesar recomendaciones
+            let recommendationsHTML = '<p class="description-text">No hay recomendaciones específicas</p>';
+            if (activity.recomendaciones) {
+                const recommendations = activity.recomendaciones.split('\n').filter(rec => rec.trim());
+                if (recommendations.length > 0) {
+                    recommendationsHTML = `
+                        <ul class="recommendations-list">
+                            ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    `;
+                }
+            }
+
+            Swal.fire({
+                html: `
+                    <div class="activity-detail-header">
+                        <h2 class="activity-detail-title">${activity.nombre}</h2>
+                        <p class="activity-detail-subtitle">Detalles completos de la actividad</p>
+                    </div>
+                    <div class="activity-detail-content">
+                        <div class="detail-section">
+                            <h3 class="detail-section-title">
+                                <i class="fas fa-info-circle"></i> Información General
+                            </h3>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <span class="detail-label">Estado</span>
+                                    <span class="detail-value">
+                                        <span class="badge ${statusBadge}">${statusText}</span>
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Nivel de Dificultad</span>
+                                    <span class="detail-value">
+                                        <span class="badge ${difficultyBadge}">${difficultyText}</span>
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Duración</span>
+                                    <span class="detail-value">
+                                        <i class="far fa-clock"></i> ${activity.duracion_minutos || 'N/A'} minutos
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Cupo Máximo</span>
+                                    <span class="detail-value">
+                                        <i class="fas fa-users"></i> ${activity.cupo_maximo} personas
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3 class="detail-section-title">
+                                <i class="far fa-calendar-alt"></i> Horario Programado
+                            </h3>
+                            <div class="detail-item">
+                                <span class="detail-label">Fecha y Hora</span>
+                                <span class="detail-value">${horarioFormatted}</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3 class="detail-section-title">
+                                <i class="fas fa-align-left"></i> Descripción
+                            </h3>
+                            <p class="description-text">${activity.descripcion || 'No hay descripción disponible para esta actividad.'}</p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3 class="detail-section-title">
+                                <i class="fas fa-lightbulb"></i> Recomendaciones
+                            </h3>
+                            ${recommendationsHTML}
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: true,
+                confirmButtonText: 'Cerrar',
+                confirmButtonColor: '#2e7d32',
+                width: '700px',
+                customClass: {
+                    popup: 'swal2-popup'
+                },
+                showCloseButton: true,
+                background: '#f8f9fa'
+            });
+        }
+
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Actualizar fecha y hora cada segundo
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Cargar actividades al inicio
+            loadActivities();
+            
+            // Configurar búsqueda
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.getElementById('search-btn');
+            
+            searchBtn.addEventListener('click', () => {
+                loadActivities(searchInput.value.trim());
+            });
+            
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    loadActivities(searchInput.value.trim());
+                }
+            });
+            
+            // Configurar botones de la interfaz
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                Swal.fire({
+                    title: '¿Cerrar sesión?',
+                    text: 'Está a punto de salir del sistema',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#27ae60',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sí, salir',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Aquí iría la lógica para cerrar sesión
+                        window.location.href = 'index.html';
+                    }
+                });
+            });
+            
+                // Botón de ayuda del header con SweetAlert mejorado
+            document.getElementById('help-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                  title: '<div style="display: flex; align-items: center; gap: 10px; color: #2c3e50;"><i class="fas fa-life-ring" style="color: #3498db; font-size: 1.5rem;"></i><span>Centro de Ayuda - Actividades</span></div>',
+                  html: `
+                    <div style="text-align: left;">
+                      <div style="background: linear-gradient(135deg, #3498db, #2c3e50); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                          <i class="fas fa-info-circle"></i>
+                          Gestión de Actividades - Guía Rápida
+                        </h4>
+                      </div>
+                      
+                      <div style="display: grid; gap: 15px; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db;">
+                          <i class="fas fa-search" style="color: #3498db; font-size: 1.2rem; margin-top: 2px;"></i>
+                          <div>
+                            <strong style="color: #2c3e50;">Búsqueda de Actividades</strong>
+                            <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Utilice el campo de búsqueda para encontrar actividades específicas por nombre. Puede presionar Enter o hacer clic en el botón Buscar.</p>
+                          </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #27ae60;">
+                          <i class="fas fa-eye" style="color: #27ae60; font-size: 1.2rem; margin-top: 2px;"></i>
+                          <div>
+                            <strong style="color: #2c3e50;">Ver Detalles Completos</strong>
+                            <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Haga clic en cualquier tarjeta de actividad para ver información detallada incluyendo descripción, horarios, recomendaciones y más.</p>
+                          </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #f39c12;">
+                          <i class="fas fa-filter" style="color: #f39c12; font-size: 1.2rem; margin-top: 2px;"></i>
+                          <div>
+                            <strong style="color: #2c3e50;">Filtros Visuales</strong>
+                            <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Las actividades se muestran con colores según su nivel de dificultad (verde=bajo, amarillo=medio, rojo=alto) y estado (activo/inactivo).</p>
+                          </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: start; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                          <i class="fas fa-sync" style="color: #e74c3c; font-size: 1.2rem; margin-top: 2px;"></i>
+                          <div>
+                            <strong style="color: #2c3e50;">Datos en Tiempo Real</strong>
+                            <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Toda la información se carga directamente desde nuestra base de datos, garantizando que siempre vea la información más actualizada.</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style="background: linear-gradient(135deg, #ffeaa7, #fab1a0); padding: 15px; border-radius: 10px; border-left: 4px solid #e17055;">
+                        <h5 style="margin: 0 0 8px 0; color: #2d3436; display: flex; align-items: center; gap: 8px;">
+                          <i class="fas fa-graduation-cap"></i>
+                          ¿Necesita más ayuda?
+                        </h5>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                          <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #2d3436; display: flex; align-items: center; gap: 5px;">
+                            <i class="fas fa-headset" style="color: #27ae60;"></i>
+                            Soporte Técnico
+                          </span>
+                          <span style="background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #2d3436; display: flex; align-items: center; gap: 5px;">
+                            <i class="fas fa-book" style="color: #3498db;"></i>
+                            Manual de Usuario
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                  showCloseButton: true,
+                  confirmButtonColor: '#3498db',
+                  confirmButtonText: '<i class="fas fa-check-circle"></i> Entendido',
+                  width: 600,
+                  background: '#ffffff',
+                  customClass: {
+                    popup: 'help-swal-popup',
+                    title: 'help-swal-title',
+                    htmlContainer: 'help-swal-html',
+                    confirmButton: 'help-swal-confirm-btn'
+                  }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
